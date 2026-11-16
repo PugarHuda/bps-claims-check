@@ -68,12 +68,24 @@ def load_ref():
 
 # ---------- extractors ----------
 
+def secret(name):
+    """Environment first, then a local .env (git-ignored) with NAME=value lines."""
+    if name in os.environ:
+        return os.environ[name]
+    env = ROOT / ".env"
+    for line in env.read_text(encoding="utf-8").splitlines() if env.exists() else []:
+        k, _, v = line.partition("=")
+        if k.strip() == name:
+            return v.strip().strip('"')
+    raise KeyError(f"{name} not set (environment or .env)")
+
+
 def endpoint(model):
     """'gemini/<id>' -> Google AI Studio's OpenAI-compatible API (free tier, GEMINI_API_KEY); else OpenRouter."""
     if model.startswith("gemini/"):
         return ("https://generativelanguage.googleapis.com/v1beta/openai/chat/completions",
-                os.environ["GEMINI_API_KEY"], model.split("/", 1)[1])
-    return "https://openrouter.ai/api/v1/chat/completions", os.environ["OPENROUTER_API_KEY"], model
+                secret("GEMINI_API_KEY"), model.split("/", 1)[1])
+    return "https://openrouter.ai/api/v1/chat/completions", secret("OPENROUTER_API_KEY"), model
 
 
 def extract_batch(model, rows, effort=None, e2e=False):

@@ -21,6 +21,7 @@ Report draft: [`docs/REPORT_DRAFT.md`](docs/REPORT_DRAFT.md). Fact-check page (s
 | `data/bps_reference.csv` | evidence table: 104 first-release BPS figures, 2022–2026, each with its BRS URL and a `provenance` tag |
 | `data/bps_variants.csv` | 83 *other* figures from the same releases (m-to-m and y-to-d inflation, q-to-q and c-to-c growth), each with the quoted evidence sentence. Used to detect "right number, wrong frame" |
 | `data/gold_sheet.csv` | human labels; only rows with `checked` = x count |
+| `data/silver_sheet.csv` | blind **LLM** annotation (Claude Opus subagent) of all 166 sentences: provisional coverage + human-vs-LLM κ, never used as gold |
 | `data/perturbed_claims.csv`, `data/perturbed_expected.csv` | synthetic benchmark: 105 sentences with known verdicts |
 | `src/pipeline.py` | extraction (LLM batched/per-sentence, `regex` naive baseline, `rules` stronger baseline) → lookup → verdict |
 | `src/metrics.py` | scores against gold (see Metrics below); with no gold yet, writes a no-gold report |
@@ -50,6 +51,7 @@ uv run python src/pipeline.py --model rules
 uv run python src/pipeline.py --model nvidia/nemotron-3-ultra-550b-a55b:free --batch 20
 uv run python src/pipeline.py --model baidu/ernie-5.5-flash-preview:free --batch 20
 uv run python src/pipeline.py --model baidu/ernie-5.5-flash-preview:free --batch 20 --e2e   # LLM-as-judge ablation
+uv run python src/pipeline.py --model gemini/gemini-flash-latest --batch 20             # GEMINI_API_KEY in env or .env (free tier)
 
 # synthetic perturbation benchmark
 uv run python src/perturb.py make
@@ -58,7 +60,8 @@ uv run python src/perturb.py score
 
 # labels -> metrics -> figures -> ClaimReview
 #   open tools/label.html, load data/gold_sheet.csv, label, download, replace data/gold_sheet.csv
-uv run python src/metrics.py
+uv run python src/metrics.py             # human gold (falls back to a no-gold report)
+uv run python src/metrics.py --silver    # provisional, against the LLM annotator
 uv run python src/figures.py
 uv run python src/claimreview.py --source gold --review-url https://<user>.github.io/<repo>/claimreview.html
 

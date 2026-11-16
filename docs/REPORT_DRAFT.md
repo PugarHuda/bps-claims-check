@@ -133,7 +133,18 @@ Only rows marked `checked` count. To avoid anchoring the annotator:
 
 The tool was tested end-to-end in a browser (17 scripted checks plus resume). The exported CSV round-trips into `metrics.py` with stated precision intact.
 
-Coverage: `[[n checked / n tuples]]`. Inter-annotator κ: `[[if a second annotator labels data/gold_sheet_2.csv]]`.
+Coverage: `[[n checked / n tuples]]`.
+
+**Silver labels (LLM, not human).** No second human annotator was available. A fresh Claude Opus subagent annotated all 166 sentences blind (`data/silver_sheet.csv`):
+- it followed written guidelines;
+- it saw no system output and no human label;
+- it produced 97 tuples, 1 flagged frame-ambiguous.
+
+We use silver labels in two ways:
+1. a **provisional full-coverage** report (`results/silver_metrics.md`);
+2. a **human-vs-LLM-annotator κ** on the human-checked subset `[[κ]]`, which measures how far LLM labels can stand in for human ones on this task.
+
+Silver labels are not treated as gold anywhere. Because the silver annotator is a Claude model, any comparison against silver favours the Claude systems (§5.2).
 
 ## 4. Method
 
@@ -171,6 +182,14 @@ We use `Decimal` and keep the stated text.
 | Nemotron-3 Ultra 550B-A55B | open-weight, free endpoint |
 | ERNIE 5.5 Flash (preview) | free endpoint |
 | LFM-3 1.7B | open-weight small reasoning model, free endpoint |
+| Claude Sonnet 5.5, Claude Haiku 5.5 | frontier models, run as **fresh, isolated Claude Code subagents** (details below) |
+
+**Claude subagent runs.** Each subagent:
+- saw only the identical extraction instructions and `claims_raw.csv`;
+- was told not to open model outputs, labels or evidence tables;
+- labelled every sentence itself, without scripts or API calls.
+
+This is not an API run at temperature 0, so it is less reproducible. We report it as such.
 
 All LLMs run at temperature 0 on free endpoints, which allow 50 requests per day. To fit the quota:
 - sentences are batched (20 per request; 8 for LFM);
@@ -232,6 +251,33 @@ Error-taxonomy causes:
 ### 5.2 How accurate are the systems?
 
 `[[table: per system P/R/F1, verdict acc, macro-F1 (CI), false/missed MISMATCH]]` · `[[fig: figs/confusion.png]]` · `[[error taxonomy table]]`
+
+**Provisional, against silver labels** (`results/silver_metrics.md`; 164 sentences, 94 tuples):
+
+*Headline:*
+- Bindable rate: 87/94 = 92.6%, 95% CI [86.9, 97.6].
+- Mismatch rate among bindable: 1/87 = 1.1%, 95% CI [0.0, 3.8].
+- By speaker type, government officials show 0/39 mismatches.
+
+*Systems:*
+
+| System | Extract F1 | Verdict acc | False MISMATCH |
+|---|---|---|---|
+| Claude Sonnet 5.5 (agent) | 0.99 | 0.99 | 0 |
+| Claude Haiku 5.5 (agent) | 0.99 | 0.96 | 0 |
+| ERNIE 5.5 Flash | 0.96 | 0.84 | 0 |
+| Nemotron-3 Ultra | 0.96 | 0.83 | **7** |
+| Nemotron · e2e judge | 0.98 | 0.89 | 0 |
+| `rules` | 0.63 | 0.31 | **54** |
+| `regex` | 0.54 | 0.29 | **31** |
+
+*Caveats:*
+- **Claude's near-perfect scores here are an upper bound.** The silver annotator is itself Claude. `[[human gold decides]]`.
+- **Macro-F1 is unstable at this sample size** (silver contains one MISMATCH), so we lead with accuracy and false-MISMATCH counts.
+
+*Two findings that hold regardless of who labels:*
+- **The dominant error class is the period**, not the number: 8–16 wrong periods per LLM.
+- **The hand-written rule baseline buys recall at the price of false accusations**: 54, more than the naive regex. Writing scope rules by hand does not substitute for language understanding.
 
 **Before gold** (`results/pregold_metrics.md`; system outputs, not accuracy):
 
@@ -302,7 +348,8 @@ Verdicts are recomputed from the current table, so stored extractions are re-sco
 
 ## 7. Limitations
 
-- **Single annotator.** `[[second annotator: done / not done]]`
+- **Single human annotator.** The second annotator is an LLM (Claude Opus, blind), which is reported as such and never used as gold. Comparisons against silver favour the Claude systems.
+- **Claude systems ran as Claude Code subagents**, not through an API with fixed decoding parameters, so they are less reproducible than the OpenRouter runs.
 - **Selection bias** toward BPS-attributed claims. Speeches, debates and social media are out of sample.
 - **Small n**: 166 sentences, `[[n]]` gold tuples. CIs are reported.
 - **Models:** free endpoints only, no frontier closed model, batched prompting.
