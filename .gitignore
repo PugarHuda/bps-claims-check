@@ -7,6 +7,4 @@ PLAN.md
 ANALISIS_HACKATHON.md
 # full article text is cached for extraction only; not redistributed
 data/text_cache/
-# regenerated from HUMAN-verified gold only (see README, Ethics); never published from model output
-docs/claimreview.html
-results/claimreview.jsonld
+# docs/claimreview.html is published ONLY via `claimreview.py --human-checked-only` (sentences a person decided or audited)

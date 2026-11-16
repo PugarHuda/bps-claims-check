@@ -1,7 +1,7 @@
 # Do Their Numbers Match? Checking Indonesian Statistical Claims Against Official BPS Data, and What Goes Wrong When They Don't
 
 <div class="authors" markdown="1">
-**AUTHOR NAMES · AFFILIATION** — with Apart Research · AI x Epistemics Research Sprint, November 2026
+**Pugar Huda Mantoro** · Independent researcher — with Apart Research · AI x Epistemics Research Sprint, November 2026
 </div>
 
 <div class="abstract" markdown="1">
@@ -110,6 +110,12 @@ Neither mismatch is an official misquoting BPS. The failure taxonomy names both 
 
 Within this sample, attributed government claims match BPS. The failures are in reporting.
 
+**Robustness to the period convention** (`results/sensitivity.md`). The human resolved ambiguous periods as "latest release at the article date". We re-ran the headline under two alternative conventions:
+- **Strict** (every ambiguous period is undeterminable): bindable 89.4% (CI 81.0–96.4), mismatch 1/84 = 1.2% (only the typo).
+- **Lenient** (always the latest release): bindable 96.8%, mismatch 2/91 = 2.2%.
+
+Under all three conventions no official misquotes BPS. The convention moves the bindable rate by about 7 points and decides whether c0065 counts as stale.
+
 ### 4.2 Where do systems fail?
 
 | System | Extract F1 | Verdict acc. | Macro-F1 [95% CI] | False MISMATCH | Values not in source |
@@ -139,14 +145,16 @@ Within this sample, attributed government claims match BPS. The failures are in 
 
 | Labeller | 7 disputed sentences | 20 random agreed sentences |
 |---|---|---|
-| Claude Opus (reference annotator) | 2/7 | **QUIZ** |
+| Claude Opus (reference annotator) | 2/7 | **20/20** (95% CI 84–100%) |
 | Claude Sonnet 5.5 | 2/7 | – |
 | Gemini, ERNIE, Nemotron | 1/7 each | – |
 | Claude Haiku 5.5 | 0/7 | – |
 
 <span class="caption">**Table 3.** Exact agreement with a human decision. The disputed sentences are genuinely ambiguous about the period, e.g. "TPT 4,65 persen pada 2026" when BPS publishes no annual TPT. The human chose "latest release at the article date".</span>
 
-When sentences are ambiguous, no labeller, frontier models included, exceeds 2/7. On the random sample of sentences where all systems agreed, QUIZTEXT
+When sentences are ambiguous, no labeller, frontier models included, exceeds 2/7. On a random sample of 20 sentences where all systems agreed with the annotator (14 with claims, 6 without), the human found **no error (20/20; Wilson 95% CI 83.9–100%)**. The audit showed the label, so anchoring is possible (`data/human_audit_agreed.csv`).
+
+Together, the two audits locate the weakness of LLM labels precisely. Where models agree, the labels are reliable. Where they disagree, the sentence is usually ambiguous about the *period*, and there LLM labels are close to useless (≤2/7). A cheap protocol follows: let an LLM label everything, route disagreements to a human, and spot-audit the rest.
 
 ### 4.4 Should the LLM judge with the evidence in view?
 
@@ -170,14 +178,16 @@ The deterministic design keeps every extraction visible, so a judge that "reconc
 - **"right number, wrong frame"**;
 - **"stale: a newer release exists"**.
 
-We ship both as ClaimReview ratings. The export validates against schema.org (0 errors) and defaults to human-checked verdicts.
+**Stale figures are a distinct kind of misinformation.** A stale figure is neither a lie nor an error: it was true when first published. It misleads because the world moved on and the sentence did not. Fact-checking scales that offer only true or false force a choice between "true" (misleading) and "false" (unfair). Automated checkers make this worse. They rely on a release calendar from their training data, and all three LLMs we tested assumed BPS's old February/August unemployment calendar (§4.4). An evidence table that records *when* each figure was released is what makes staleness detectable.
+
+We ship both as ClaimReview ratings. The public page (https://pugarhuda.github.io/bps-claims-check/claimreview.html) publishes only the 24 claim reviews from sentences a person decided or audited. It validates against schema.org with 0 errors. Each review opens a *verification card* that shows the full chain: the sentence, the extracted tuple, the BRS row and its release date, the rounding comparison, the failure class, and who checked the label (Appendix C).
 
 **Limitations.**
 1. **Reference labels are mostly LLM labels.** A human decided all disputed sentences and audited a random sample of agreed ones. Errors shared by every system and the annotator could still be missed.
 2. **Small n with two mismatches**, so CIs are wide. Sampling on BPS attribution means our "officials 0/39" does not generalise to unattributed claims.
 3. **Free endpoints only.** Claude runs were subagents, not API calls. LFM-3 1.7B (38/166) and two e2e runs (ERNIE 126, Gemini 146) are incomplete.
 4. **Evidence scope:** first-release values, national, four indicators. Three periods are missing or weakly sourced.
-5. **The human's period convention** ("latest release at article date") decides two verdicts. A different convention changes them.
+5. **The human's period convention** decides some verdicts. We report how the headline moves under strict and lenient alternatives (§4.1).
 
 **Future work.**
 - Unattributed claims: speeches, debates, social media.
@@ -193,9 +203,11 @@ A pipeline that lets the model read but not judge, and that classifies failures 
 
 ## Code and Data
 
-- **Code, data, results, tests (15), CI:** https://github.com/PugarHuda/bps-claims-check
+- **Code, data, results, tests (16), CI:** https://github.com/PugarHuda/bps-claims-check
 - **Reproduce:** `README.md`. Every number in this report is in `results/*.md`.
+- **Public ClaimReview page** (human-checked verdicts only): https://pugarhuda.github.io/bps-claims-check/claimreview.html
 - **Monthly evidence update** (`src/update_bps.py`, GitHub Action): a live run on 16 Nov 2026 matched the three newest BPS releases.
+- **Raw Claude subagent outputs and exact instructions:** `results/agent_raw/`.
 
 ## References
 
@@ -247,7 +259,10 @@ No private individuals or personal data are included. Untrusted scraped text is 
 
 ## Appendix C. Prompts and tooling
 
-The extraction prompt is in `src/pipeline.py` (`PROMPT`, `BATCH_PROMPT`, `E2E_PROMPT`). The labelling tool `tools/label.html` was tested end to end with Playwright (17 checks).
+The extraction prompt is in `src/pipeline.py` (`PROMPT`, `BATCH_PROMPT`, `E2E_PROMPT`). The labelling tool `tools/label.html` was tested end to end with Playwright (17 checks). The audit tool `tools/audit.html` recorded the 20-sentence audit.
+
+![Figure C1](../figs/human_in_the_loop.png)
+<span class="caption">**Figure C1.** Human in the loop. *Left:* the audit tool with the 20 recorded answers (all "Benar"; the label was shown). *Right:* the public ClaimReview page, with c0065's verification card open. The card shows the extracted tuple, the BRS row and its release date, the rounding comparison, the stale classification, and that a human decided the label.</span>
 
 ## LLM Usage Statement
 

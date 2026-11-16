@@ -208,6 +208,15 @@ def test_hard_benchmark_oracle_is_perfect():
         assert perturb.ok(got, r["expected"]), r
 
 
+def test_public_page_only_publishes_human_checked():
+    """Ethics guard: the public ClaimReview export must contain only sentences a person decided or audited."""
+    import claimreview as cr
+    checked = cr.human_checked()
+    rows = list(cr.rows_from("gold", only_checked=True))
+    assert rows and all(r["claim_id"] in checked for r in rows)
+    assert all(r["checked"] != "label LLM (belum dicek manusia)" for r in rows)
+
+
 def test_claimreview():
     import claimreview as cr
     doc = cr.build([{"claim_id": "a", "sentence": "Inflasi 1,6 persen.", "url": "https://x.id/a", "article_date": "2025-01-02",

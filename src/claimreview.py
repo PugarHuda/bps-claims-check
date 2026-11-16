@@ -53,8 +53,20 @@ def build(rows, review_url):
     return out
 
 
-def rows_from(source):
+def human_checked():
+    """claim_id -> how a person checked it (adjudication of a dispute, or the random audit)."""
+    out = {}
+    for name, how in (("human_adjudication.csv", "diputuskan manusia (kalimat yang diperdebatkan)"),
+                      ("human_audit_agreed.csv", "diaudit manusia (sampel acak)")):
+        f = p.ROOT / "data" / name
+        if f.exists():
+            out |= {r["claim_id"]: how for r in csv.DictReader(f.open(encoding="utf-8"))}
+    return out
+
+
+def rows_from(source, only_checked=False):
     claims = {c["claim_id"]: c for c in p.load_claims()}
+    checked = human_checked()
     ref = p.load_ref()
     urls = {(r["indicator"], r["period"]): r["source_url"]
             for r in csv.DictReader((p.ROOT / "data/bps_reference.csv").open(encoding="utf-8-sig"))}
@@ -65,6 +77,8 @@ def rows_from(source):
     else:
         by_id = {d["claim_id"]: d["claims"] for d in map(json.loads, Path(source).open(encoding="utf-8"))}
     for cid, cl in by_id.items():
+        if only_checked and cid not in checked:
+            continue
         for c in cl:
             v, official = p.verdict(c, ref)  # recompute against the current table
             if v == "UNVERIFIABLE":
@@ -74,19 +88,30 @@ def rows_from(source):
             yield {**claims[cid], **c, "text": c.get("text") or repr(c["value"]),
                    "verdict": "MISFRAMED" if frame else "STALE" if stale else v,
                    "official": official, "source_url": urls[(c["indicator"], c["period"])], "frame": frame,
-                   "frame_value": variants.get((frame, c["period"])) if frame else None, "stale": stale}
+                   "frame_value": variants.get((frame, c["period"])) if frame else None, "stale": stale,
+                   "rounded": rounded(official, c), "release": releases.get((c["indicator"], c["period"]), ""),
+                   "checked": checked.get(cid, "label LLM (belum dicek manusia)")}
+
+
+def rounded(official, c):
+    """The official value at the precision the claim states: the exact comparison the verdict made."""
+    from decimal import ROUND_HALF_UP, Decimal
+    stated = Decimal(c.get("text") or repr(c["value"]))
+    return str(Decimal(repr(official)).quantize(Decimal(1).scaleb(min(stated.as_tuple().exponent, 0)), ROUND_HALF_UP))
 
 
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--source", default="gold", help="'gold' or a results/extract_*.jsonl path")
     ap.add_argument("--review-url", required=True, help="public URL where docs/claimreview.html is served")
+    ap.add_argument("--human-checked-only", action="store_true",
+                    help="publish only sentences a person decided or audited (the setting for a public page)")
     a = ap.parse_args()
-    rows = list(rows_from(a.source))
+    rows = list(rows_from(a.source, a.human_checked_only))
     doc = build(rows, a.review_url)
     (p.ROOT / "results/claimreview.jsonld").write_text(json.dumps(doc, ensure_ascii=False, indent=1), encoding="utf-8")
     (p.ROOT / "docs").mkdir(exist_ok=True)
-    (p.ROOT / "docs/claimreview.html").write_text(page(rows, doc, a.source), encoding="utf-8")
+    (p.ROOT / "docs/claimreview.html").write_text(page(rows, doc, a.source + (" · hanya yang dicek manusia" if a.human_checked_only else "")), encoding="utf-8")
     print(f"{len(doc)} ClaimReview items -> results/claimreview.jsonld, docs/claimreview.html")
 
 
@@ -99,8 +124,13 @@ def page(rows, doc, source):
         items.append(f'''<article id="{esc(anchor(r))}" class="{r["verdict"].lower()}">
 <p class="rating">{esc(RATING[r["verdict"]][1])} · {esc(NAMES[r["indicator"]])} {esc(r["period"])}</p>
 <blockquote>{esc(r["sentence"])}</blockquote>
-<p>Klaim: <b>{esc(r["text"])}%</b> · Data BPS: <b>{esc(r["official"])}%</b> (<a href="{esc(r["source_url"])}">BRS</a>)
-{f'· sama dengan angka <b>{esc(FRAME_NAMES[r["frame"]])}</b> BPS ({esc(r["frame_value"])}%)' if r.get("frame") else ""}</p>
+<details><summary>Kartu verifikasi</summary><ol class="chain">
+<li><b>Tuple yang diekstrak:</b> {esc(NAMES[r["indicator"]])} · periode {esc(r["period"])} · nilai seperti tertulis <b>{esc(r["text"])}%</b></li>
+<li><b>Baris BPS:</b> {esc(r["official"])}% · rilis {esc(r["release"])} · <a href="{esc(r["source_url"])}">Berita Resmi Statistik</a></li>
+<li><b>Pembulatan:</b> {esc(r["official"])} dibulatkan ke presisi klaim = <b>{esc(r["rounded"])}</b> {"=" if r["verdict"] == "MATCH" else "≠"} {esc(r["text"])}</li>
+<li><b>Kelas:</b> {esc(RATING[r["verdict"]][1])}{f' · angka ini = {esc(FRAME_NAMES[r["frame"]])} BPS ({esc(r["frame_value"])}%)' if r.get("frame") else ""}{f' · angka ini = data {esc(r["stale"][0])}; data {esc(r["stale"][1])} terbit {esc(r["stale"][2])}' if r.get("stale") else ""}</li>
+<li><b>Label:</b> {esc(r["checked"])}</li></ol></details>
+<p>Klaim: <b>{esc(r["text"])}%</b> · Data BPS: <b>{esc(r["official"])}%</b> (<a href="{esc(r["source_url"])}">BRS</a>)</p>
 <p class="src"><a href="{esc(r["url"])}">{esc(r["url"])}</a> · {esc(r["article_date"])}</p>
 <script type="application/ld+json">{json.dumps(d, ensure_ascii=False).replace("</", "<\\/")}</script>
 </article>''')
@@ -114,6 +144,7 @@ body{{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 system-ui,san
 main{{max-width:760px;margin:0 auto;padding:16px}} a{{color:inherit;word-break:break-all}}
 article{{border-left:4px solid var(--line);padding:4px 0 4px 14px;margin:22px 0}}
 article.match{{border-color:var(--ok)}} article.mismatch{{border-color:var(--bad)}} article.misframed,article.stale{{border-color:var(--frame)}}
+details{{margin:6px 0}} summary{{cursor:pointer;color:var(--muted)}} .chain{{margin:6px 0 0 18px;padding:0;font-size:14px}}
 .rating{{font-weight:700;margin:0}} blockquote{{margin:8px 0;font-style:italic}} .src,.note{{color:var(--muted);font-size:14px}}
 </style></head><body><main>
 <h1>Cek klaim statistik vs data BPS</h1>

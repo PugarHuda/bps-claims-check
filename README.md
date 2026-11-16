@@ -41,7 +41,7 @@ Report: [`docs/REPORT.md`](docs/REPORT.md) → [`docs/report.pdf`](docs/report.p
 | `src/update_bps.py` + `.github/workflows/update-bps.yml` | monthly job that reads new BRS releases and opens a PR to append them |
 | `src/figures.py` | figures → `figs/` |
 | `tools/label.html` | labelling tool (open in a browser, no install) |
-| `tests/test_pipeline.py` | 15 plain-assert tests: verdict rule, parsers, metrics, perturbation oracle, data integrity |
+| `tests/test_pipeline.py` | 16 plain-assert tests: verdict rule, parsers, metrics, perturbation oracle, data integrity |
 
 **Metrics reported by `src/metrics.py`:**
 - bindable and mismatch rates with bootstrap CIs, broken down by indicator, speaker and source;
@@ -54,7 +54,7 @@ Report: [`docs/REPORT.md`](docs/REPORT.md) → [`docs/report.pdf`](docs/report.p
 ```bash
 uv sync
 export OPENROUTER_API_KEY=...            # free tier is enough (50 requests/day)
-uv run python tests/test_pipeline.py     # 15 tests, offline
+uv run python tests/test_pipeline.py     # 16 tests, offline
 
 # extraction (resumable: already-done claims are skipped)
 uv run python src/pipeline.py --model regex

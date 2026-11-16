@@ -18,7 +18,7 @@ code { font-size: 8.8pt; }
 .pagebreak { page-break-before: always; }
 </style></head><body><h1>Do Their Numbers Match? Checking Indonesian Statistical Claims Against Official BPS Data, and What Goes Wrong When They Don't</h1>
 <div class="authors">
-<p><strong>AUTHOR NAMES · AFFILIATION</strong> — with Apart Research · AI x Epistemics Research Sprint, November 2026</p>
+<p><strong>Pugar Huda Mantoro</strong> · Independent researcher — with Apart Research · AI x Epistemics Research Sprint, November 2026</p>
 </div>
 <div class="abstract">
 <p><strong>Abstract.</strong> Indonesian officials and media routinely attribute headline statistics to Statistics Indonesia (BPS). We ask:</p>
@@ -148,6 +148,12 @@ code { font-size: 8.8pt; }
 <li><strong>Implausible (c0137).</strong> Poverty is given as "23,85%" for "Meret 20025". This is a typo for 23.85 <em>million people</em>.</li>
 </ul>
 <p>Within this sample, attributed government claims match BPS. The failures are in reporting.</p>
+<p><strong>Robustness to the period convention</strong> (<code>results/sensitivity.md</code>). The human resolved ambiguous periods as "latest release at the article date". We re-ran the headline under two alternative conventions:</p>
+<ul>
+<li><strong>Strict</strong> (every ambiguous period is undeterminable): bindable 89.4% (CI 81.0–96.4), mismatch 1/84 = 1.2% (only the typo).</li>
+<li><strong>Lenient</strong> (always the latest release): bindable 96.8%, mismatch 2/91 = 2.2%.</li>
+</ul>
+<p>Under all three conventions no official misquotes BPS. The convention moves the bindable rate by about 7 points and decides whether c0065 counts as stale.</p>
 <h3>4.2 Where do systems fail?</h3>
 <table>
 <thead>
@@ -242,7 +248,7 @@ code { font-size: 8.8pt; }
 <tr>
 <td>Claude Opus (reference annotator)</td>
 <td>2/7</td>
-<td><strong>QUIZ</strong></td>
+<td><strong>20/20</strong> (95% CI 84–100%)</td>
 </tr>
 <tr>
 <td>Claude Sonnet 5.5</td>
@@ -262,7 +268,8 @@ code { font-size: 8.8pt; }
 </tbody>
 </table>
 <p><span class="caption"><strong>Table 3.</strong> Exact agreement with a human decision. The disputed sentences are genuinely ambiguous about the period, e.g. "TPT 4,65 persen pada 2026" when BPS publishes no annual TPT. The human chose "latest release at the article date".</span></p>
-<p>When sentences are ambiguous, no labeller, frontier models included, exceeds 2/7. On the random sample of sentences where all systems agreed, QUIZTEXT</p>
+<p>When sentences are ambiguous, no labeller, frontier models included, exceeds 2/7. On a random sample of 20 sentences where all systems agreed with the annotator (14 with claims, 6 without), the human found <strong>no error (20/20; Wilson 95% CI 83.9–100%)</strong>. The audit showed the label, so anchoring is possible (<code>data/human_audit_agreed.csv</code>).</p>
+<p>Together, the two audits locate the weakness of LLM labels precisely. Where models agree, the labels are reliable. Where they disagree, the sentence is usually ambiguous about the <em>period</em>, and there LLM labels are close to useless (≤2/7). A cheap protocol follows: let an LLM label everything, route disagreements to a human, and spot-audit the rest.</p>
 <h3>4.4 Should the LLM judge with the evidence in view?</h3>
 <table>
 <thead>
@@ -304,14 +311,15 @@ code { font-size: 8.8pt; }
 <li><strong>"right number, wrong frame"</strong>;</li>
 <li><strong>"stale: a newer release exists"</strong>.</li>
 </ul>
-<p>We ship both as ClaimReview ratings. The export validates against schema.org (0 errors) and defaults to human-checked verdicts.</p>
+<p><strong>Stale figures are a distinct kind of misinformation.</strong> A stale figure is neither a lie nor an error: it was true when first published. It misleads because the world moved on and the sentence did not. Fact-checking scales that offer only true or false force a choice between "true" (misleading) and "false" (unfair). Automated checkers make this worse. They rely on a release calendar from their training data, and all three LLMs we tested assumed BPS's old February/August unemployment calendar (§4.4). An evidence table that records <em>when</em> each figure was released is what makes staleness detectable.</p>
+<p>We ship both as ClaimReview ratings. The public page (https://pugarhuda.github.io/bps-claims-check/claimreview.html) publishes only the 24 claim reviews from sentences a person decided or audited. It validates against schema.org with 0 errors. Each review opens a <em>verification card</em> that shows the full chain: the sentence, the extracted tuple, the BRS row and its release date, the rounding comparison, the failure class, and who checked the label (Appendix C).</p>
 <p><strong>Limitations.</strong></p>
 <ol>
 <li><strong>Reference labels are mostly LLM labels.</strong> A human decided all disputed sentences and audited a random sample of agreed ones. Errors shared by every system and the annotator could still be missed.</li>
 <li><strong>Small n with two mismatches</strong>, so CIs are wide. Sampling on BPS attribution means our "officials 0/39" does not generalise to unattributed claims.</li>
 <li><strong>Free endpoints only.</strong> Claude runs were subagents, not API calls. LFM-3 1.7B (38/166) and two e2e runs (ERNIE 126, Gemini 146) are incomplete.</li>
 <li><strong>Evidence scope:</strong> first-release values, national, four indicators. Three periods are missing or weakly sourced.</li>
-<li><strong>The human's period convention</strong> ("latest release at article date") decides two verdicts. A different convention changes them.</li>
+<li><strong>The human's period convention</strong> decides some verdicts. We report how the headline moves under strict and lenient alternatives (§4.1).</li>
 </ol>
 <p><strong>Future work.</strong></p>
 <ul>
@@ -325,9 +333,11 @@ code { font-size: 8.8pt; }
 <p>A pipeline that lets the model read but not judge, and that classifies failures against the statistics office's own release data, turns these into specific verdicts that are auditable and publishable.</p>
 <h2>Code and Data</h2>
 <ul>
-<li><strong>Code, data, results, tests (15), CI:</strong> https://github.com/PugarHuda/bps-claims-check</li>
+<li><strong>Code, data, results, tests (16), CI:</strong> https://github.com/PugarHuda/bps-claims-check</li>
 <li><strong>Reproduce:</strong> <code>README.md</code>. Every number in this report is in <code>results/*.md</code>.</li>
+<li><strong>Public ClaimReview page</strong> (human-checked verdicts only): https://pugarhuda.github.io/bps-claims-check/claimreview.html</li>
 <li><strong>Monthly evidence update</strong> (<code>src/update_bps.py</code>, GitHub Action): a live run on 16 Nov 2026 matched the three newest BPS releases.</li>
+<li><strong>Raw Claude subagent outputs and exact instructions:</strong> <code>results/agent_raw/</code>.</li>
 </ul>
 <h2>References</h2>
 <ol>
@@ -428,7 +438,9 @@ code { font-size: 8.8pt; }
 </table>
 <p><span class="caption"><strong>Table B1.</strong> Hard synthetic benchmark (<code>results/perturb_hard_metrics.md</code>). Expected verdicts follow the rule "latest release at the article date"; for unlabelled m-to-m figures, anything but a year-on-year MATCH is accepted.</span></p>
 <h2>Appendix C. Prompts and tooling</h2>
-<p>The extraction prompt is in <code>src/pipeline.py</code> (<code>PROMPT</code>, <code>BATCH_PROMPT</code>, <code>E2E_PROMPT</code>). The labelling tool <code>tools/label.html</code> was tested end to end with Playwright (17 checks).</p>
+<p>The extraction prompt is in <code>src/pipeline.py</code> (<code>PROMPT</code>, <code>BATCH_PROMPT</code>, <code>E2E_PROMPT</code>). The labelling tool <code>tools/label.html</code> was tested end to end with Playwright (17 checks). The audit tool <code>tools/audit.html</code> recorded the 20-sentence audit.</p>
+<p><img alt="Figure C1" src="../figs/human_in_the_loop.png" />
+<span class="caption"><strong>Figure C1.</strong> Human in the loop. <em>Left:</em> the audit tool with the 20 recorded answers (all "Benar"; the label was shown). <em>Right:</em> the public ClaimReview page, with c0065's verification card open. The card shows the extracted tuple, the BRS row and its release date, the rounding comparison, the stale classification, and that a human decided the label.</span></p>
 <h2>LLM Usage Statement</h2>
 <p>We used Claude (Anthropic) extensively as a coding and writing assistant. It helped:</p>
 <ul>

@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cek Klaim BPS</title>
+<style>
+:root{--bg:#fcfcfb;--fg:#0b0b0b;--muted:#52514e;--line:#e1e0d9;--ok:#2a78d6;--bad:#eb6834;--frame:#eda100}
+@media (prefers-color-scheme:dark){:root{--bg:#1a1a19;--fg:#f0efec;--muted:#c3c2b7;--line:#2c2c2a;--ok:#3987e5;--bad:#d95926;--frame:#c98500}}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 system-ui,sans-serif}
+main{max-width:760px;margin:0 auto;padding:16px} a{color:inherit;word-break:break-all}
+article{border-left:4px solid var(--line);padding:4px 0 4px 14px;margin:22px 0}
+article.match{border-color:var(--ok)} article.mismatch{border-color:var(--bad)} article.misframed,article.stale{border-color:var(--frame)}
+details{margin:6px 0} summary{cursor:pointer;color:var(--muted)} .chain{margin:6px 0 0 18px;padding:0;font-size:14px}
+.rating{font-weight:700;margin:0} blockquote{margin:8px 0;font-style:italic} .src,.note{color:var(--muted);font-size:14px}
+</style></head><body><main>
+<h1>Cek klaim statistik vs data BPS</h1>
+<p class="note">24 klaim. Sumber verdict: <code>gold · hanya yang dicek manusia</code>. Angka resmi BPS (rilis pertama) dibulatkan
+setengah-ke-atas ke jumlah desimal yang disebut klaim. “Angka benar, konteks keliru” = angkanya sama dengan varian lain
+dari rilis yang sama (mis. inflasi bulanan disajikan sebagai inflasi tahunan).</p>
+<article id="c0005-inflation_yoy-2026-10" class="match">
+<p class="rating">Sesuai data BPS · inflasi (y-on-y) 2026-10</p>
+<blockquote>- Badan Pusat Statistik mencatat tingkat inflasi tahunan Indonesia pada Oktober 2026 mencapai 3,23 persen. - Kenaikan indeks harga dipicu oleh lonjakan harga kelompok makanan, transportasi, serta komoditas emas perhiasan. - Seluruh provinsi mengalami inflasi tahunan, dengan Sulawesi Utara tertinggi dan DKI Jakarta mencatat tingkat terendah.</blockquote>
+<details><summary>Kartu verifikasi</summary><ol class="chain">
+<li><b>Tuple yang diekstrak:</b> inflasi (y-on-y) · periode 2026-10 · nilai seperti tertulis <b>3.23%</b></li>
+<li><b>Baris BPS:</b> 3.23% · rilis 2026-11-02 · <a href="https://www.bps.go.id/id/pressrelease/2026/11/02/170347/inflasi-year-on-year--y-on-y--pada-oktober-2026-sebesar-3-23-persen-.html">Berita Resmi Statistik</a></li>
+<li><b>Pembulatan:</b> 3.23 dibulatkan ke presisi klaim = <b>3.23</b> = 3.23</li>
+<li><b>Kelas:</b> Sesuai data BPS</li>
+<li><b>Label:</b> diaudit manusia (sampel acak)</li></ol></details>
+<p>Klaim: <b>3.23%</b> · Data BPS: <b>3.23%</b> (<a href="https://www.bps.go.id/id/pressrelease/2026/11/02/170347/inflasi-year-on-year--y-on-y--pada-oktober-2026-sebesar-3-23-persen-.html">BRS</a>)</p>
+<p class="src"><a href="https://www.suara.com/bisnis/2026/11/02/113809/bps-ungkap-inflasi-tahunan-oktober-2026-capai-323-dipicu-harga-pangan-hingga-transportasi">https://www.suara.com/bisnis/2026/11/02/113809/bps-ungkap-inflasi-tahunan-oktober-2026-capai-323-dipicu-harga-pangan-hingga-transportasi</a> · 2026-11-02</p>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "ClaimReview", "url": "https://pugarhuda.github.io/bps-claims-check/claimreview.html#c0005-inflation_yoy-2026-10", "claimReviewed": "- Badan Pusat Statistik mencatat tingkat inflasi tahunan Indonesia pada Oktober 2026 mencapai 3,23 persen. - Kenaikan indeks harga dipicu oleh lonjakan harga kelompok makanan, transportasi, serta komoditas emas perhiasan. - Seluruh provinsi mengalami inflasi tahunan, dengan Sulawesi Utara tertinggi dan DKI Jakarta mencatat tingkat terendah.", "author": {"@type": "Organization", "name": "BPS claim-check (Apart AI x Epistemics hackathon)"}, "reviewRating": {"@type": "Rating", "ratingValue": 5, "bestRating": 5, "worstRating": 1, "alternateName": "Sesuai data BPS"}, "reviewBody": "Klaim: inflasi (y-on-y) periode 2026-10 = 3.23 persen. Data resmi BPS (rilis pertama): 3.23 persen. Sumber: https://www.bps.go.id/id/pressrelease/2026/11/02/170347/inflasi-year-on-year--y-on-y--pada-oktober-2026-sebesar-3-23-persen-.html", "itemReviewed": {"@type": "Claim", "datePublished": "2026-11-02", "appearance": [{"@type": "CreativeWork", "url": "https://www.suara.com/bisnis/2026/11/02/113809/bps-ungkap-inflasi-tahunan-oktober-2026-capai-323-dipicu-harga-pangan-hingga-transportasi"}]}}</script>
+</article>
+<article id="c0032-unemployment_rate-2026-02" class="match">
+<p class="rating">Sesuai data BPS · tingkat pengangguran terbuka 2026-02</p>
+<blockquote>Jakarta, CNN Indonesia -- Badan Pusat Statistik (BPS) melaporkan Tingkat Pengangguran Terbuka (TPT) pada Februari 2026 yang sebesar 4,68 persen.</blockquote>
+<details><summary>Kartu verifikasi</summary><ol class="chain">
+<li><b>Tuple yang diekstrak:</b> tingkat pengangguran terbuka · periode 2026-02 · nilai seperti tertulis <b>4.68%</b></li>
+<li><b>Baris BPS:</b> 4.68% · rilis 2026-05-05 · <a href="https://www.bps.go.id/id/pressrelease/2026/05/05/169891/tingkat-pengangguran-terbuka--tpt--sebesar-4-68-persen--rata-rata-upah-buruh-sebesar-3-29-juta-rupiah-.html">Berita Resmi Statistik</a></li>
+<li><b>Pembulatan:</b> 4.68 dibulatkan ke presisi klaim = <b>4.68</b> = 4.68</li>
+<li><b>Kelas:</b> Sesuai data BPS</li>
+<li><b>Label:</b> diaudit manusia (sampel acak)</li></ol></details>
+<p>Klaim: <b>4.68%</b> · Data BPS: <b>4.68%</b> (<a href="https://www.bps.go.id/id/pressrelease/2026/05/05/169891/tingkat-pengangguran-terbuka--tpt--sebesar-4-68-persen--rata-rata-upah-buruh-sebesar-3-29-juta-rupiah-.html">BRS</a>)</p>
+<p class="src"><a href="https://www.cnnindonesia.com/ekonomi/20260506140952-537-1355743/bps-tingkat-pengangguran-terbuka-per-februari-2026-468-persen">https://www.cnnindonesia.com/ekonomi/20260506140952-537-1355743/bps-tingkat-pengangguran-terbuka-per-februari-2026-468-persen</a> · 2026-05-06</p>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "ClaimReview", "url": "https://pugarhuda.github.io/bps-claims-check/claimreview.html#c0032-unemployment_rate-2026-02", "claimReviewed": "Jakarta, CNN Indonesia -- Badan Pusat Statistik (BPS) melaporkan Tingkat Pengangguran Terbuka (TPT) pada Februari 2026 yang sebesar 4,68 persen.", "author": {"@type": "Organization", "name": "BPS claim-check (Apart AI x Epistemics hackathon)"}, "reviewRating": {"@type": "Rating", "ratingValue": 5, "bestRating": 5, "worstRating": 1, "alternateName": "Sesuai data BPS"}, "reviewBody": "Klaim: tingkat pengangguran terbuka periode 2026-02 = 4.68 persen. Data resmi BPS (rilis pertama): 4.68 persen. Sumber: https://www.bps.go.id/id/pressrelease/2026/05/05/169891/tingkat-pengangguran-terbuka--tpt--sebesar-4-68-persen--rata-rata-upah-buruh-sebesar-3-29-juta-rupiah-.html", "itemReviewed": {"@type": "Claim", "datePublished": "2026-05-06", "appearance": [{"@type": "CreativeWork", "url": "https://www.cnnindonesia.com/ekonomi/20260506140952-537-1355743/bps-tingkat-pengangguran-terbuka-per-februari-2026-468-persen"}]}}</script>
+</article>
+<article id="c0033-unemployment_rate-2026-02" class="match">
+<p class="rating">Sesuai data BPS · tingkat pengangguran terbuka 2026-02</p>
+<blockquote>&quot;Tingkat pengangguran terbuka pada Februari 2026 adalah 4,68 persen.</blockquote>
+<details><summary>Kartu verifikasi</summary><ol class="chain">
+<li><b>Tuple yang diekstrak:</b> tingkat pengangguran terbuka · periode 2026-02 · nilai seperti tertulis <b>4.68%</b></li>
+<li><b>Baris BPS:</b> 4.68% · rilis 2026-05-05 · <a href="https://www.bps.go.id/id/pressrelease/2026/05/05/169891/tingkat-pengangguran-terbuka--tpt--sebesar-4-68-persen--rata-rata-upah-buruh-sebesar-3-29-juta-rupiah-.html">Berita Resmi Statistik</a></li>
+<li><b>Pembulatan:</b> 4.68 dibulatkan ke presisi klaim = <b>4.68</b> = 4.68</li>
+<li><b>Kelas:</b> Sesuai data BPS</li>
+<li><b>Label:</b> diaudit manusia (sampel acak)</li></ol></details>
+<p>Klaim: <b>4.68%</b> · Data BPS: <b>4.68%</b> (<a href="https://www.bps.go.id/id/pressrelease/2026/05/05/169891/tingkat-pengangguran-terbuka--tpt--sebesar-4-68-persen--rata-rata-upah-buruh-sebesar-3-29-juta-rupiah-.html">BRS</a>)</p>
+<p class="src"><a href="https://www.cnnindonesia.com/ekonomi/20260506140952-537-1355743/bps-tingkat-pengangguran-terbuka-per-februari-2026-468-persen">https://www.cnnindonesia.com/ekonomi/20260506140952-537-1355743/bps-tingkat-pengangguran-terbuka-per-februari-2026-468-persen</a> · 2026-05-06</p>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "ClaimReview", "url": "https://pugarhuda.github.io/bps-claims-check/claimreview.html#c0033-unemployment_rate-2026-02", "claimReviewed": "\"Tingkat pengangguran terbuka pada Februari 2026 adalah 4,68 persen.", "author": {"@type": "Organization", "name": "BPS claim-check (Apart AI x Epistemics hackathon)"}, "reviewRating": {"@type": "Rating", "ratingValue": 5, "bestRating": 5, "worstRating": 1, "alternateName": "Sesuai data BPS"}, "reviewBody": "Klaim: tingkat pengangguran terbuka periode 2026-02 = 4.68 persen. Data resmi BPS (rilis pertama): 4.68 persen. Sumber: https://www.bps.go.id/id/pressrelease/2026/05/05/169891/tingkat-pengangguran-terbuka--tpt--sebesar-4-68-persen--rata-rata-upah-buruh-sebesar-3-29-juta-rupiah-.html", "itemReviewed": {"@type": "Claim", "datePublished": "2026-05-06", "appearance": [{"@type": "CreativeWork", "url": "https://www.cnnindonesia.com/ekonomi/20260506140952-537-1355743/bps-tingkat-pengangguran-terbuka-per-februari-2026-468-persen"}]}}</script>
+</article>
+<article id="c0035-unemployment_rate-2026-05" class="match">
+<p class="rating">Sesuai data BPS · tingkat pengangguran terbuka 2026-05</p>
+<blockquote>Tingkat Pengangguran Terbuka 4,65 Persen di 2026, Kemenko: Terendah Sejak 1994 - BPS mencatat TPT nasional 4,65 persen pada 2026, sementara basis angkatan kerja mencapai 155,41 juta orang. - Haryo Limanseto mengaitkan capaian tersebut dengan program sektor riil dan investasi yang memfasilitasi kebutuhan pasar kerja. - Pemerintah memantau dinamika ketenagakerjaan sebagai indikator kesejahteraan masyarakat dan efektivitas kebijakan ekonomi.</blockquote>
+<details><summary>Kartu verifikasi</summary><ol class="chain">
+<li><b>Tuple yang diekstrak:</b> tingkat pengangguran terbuka · periode 2026-05 · nilai seperti tertulis <b>4.65%</b></li>
+<li><b>Baris BPS:</b> 4.65% · rilis 2026-08-05 · <a href="https://www.bps.go.id/id/pressrelease/2026/08/05/169926/tingkat-pengangguran-terbuka--tpt--sebesar-4-65-persen---rata-rata-upah-buruh-sebesar-3-39-juta-rupiah-.html">Berita Resmi Statistik</a></li>
+<li><b>Pembulatan:</b> 4.65 dibulatkan ke presisi klaim = <b>4.65</b> = 4.65</li>
+<li><b>Kelas:</b> Sesuai data BPS</li>
+<li><b>Label:</b> diputuskan manusia (kalimat yang diperdebatkan)</li></ol></details>
+<p>Klaim: <b>4.65%</b> · Data BPS: <b>4.65%</b> (<a href="https://www.bps.go.id/id/pressrelease/2026/08/05/169926/tingkat-pengangguran-terbuka--tpt--sebesar-4-65-persen---rata-rata-upah-buruh-sebesar-3-39-juta-rupiah-.html">BRS</a>)</p>
+<p class="src"><a href="https://www.fortuneidn.com/news/tingkat-pengangguran-terbuka-4-65-persen-pada-2026-00-6cmtl-x58q92">https://www.fortuneidn.com/news/tingkat-pengangguran-terbuka-4-65-persen-pada-2026-00-6cmtl-x58q92</a> · 2026-10-27</p>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "ClaimReview", "url": "https://pugarhuda.github.io/bps-claims-check/claimreview.html#c0035-unemployment_rate-2026-05", "claimReviewed": "Tingkat Pengangguran Terbuka 4,65 Persen di 2026, Kemenko: Terendah Sejak 1994 - BPS mencatat TPT nasional 4,65 persen pada 2026, sementara basis angkatan kerja mencapai 155,41 juta orang. - Haryo Limanseto mengaitkan capaian tersebut dengan program sektor riil dan investasi yang memfasilitasi kebutuhan pasar kerja. - Pemerintah memantau dinamika ketenagakerjaan sebagai indikator kesejahteraan masyarakat dan efektivitas kebijakan ekonomi.", "author": {"@type": "Organization", "name": "BPS claim-check (Apart AI x Epistemics hackathon)"}, "reviewRating": {"@type": "Rating", "ratingValue": 5, "bestRating": 5, "worstRating": 1, "alternateName": "Sesuai data BPS"}, "reviewBody": "Klaim: tingkat pengangguran terbuka periode 2026-05 = 4.65 persen. Data resmi BPS (rilis pertama): 4.65 persen. Sumber: https://www.bps.go.id/id/pressrelease/2026/08/05/169926/tingkat-pengangguran-terbuka--tpt--sebesar-4-65-persen---rata-rata-upah-buruh-sebesar-3-39-juta-rupiah-.html", "itemReviewed": {"@type": "Claim", "datePublished": "2026-10-27", "appearance": [{"@type": "CreativeWork", "url": "https://www.fortuneidn.com/news/tingkat-pengangguran-terbuka-4-65-persen-pada-2026-00-6cmtl-x58q92"}]}}</script>
+</article>
+<article id="c0036-unemployment_rate-2026-05" class="match">
+<p class="rating">Sesuai data BPS · tingkat pengangguran terbuka 2026-05</p>
+<blockquote>Jakarta, FORTUNE - Badan Pusat Statistik (BPS) mencatat bahwa tingkat pengangguran terbuka (TPT) nasional berhasil ditekan menjadi 4,65 persen pada 2026.</blockquote>
+<details><summary>Kartu verifikasi</summary><ol class="chain">
+<li><b>Tuple yang diekstrak:</b> tingkat pengangguran terbuka · periode 2026-05 · nilai seperti tertulis <b>4.65%</b></li>
+<li><b>Baris BPS:</b> 4.65% · rilis 2026-08-05 · <a href="https://www.bps.go.id/id/pressrelease/2026/08/05/169926/tingkat-pengangguran-terbuka--tpt--sebesar-4-65-persen---rata-rata-upah-buruh-sebesar-3-39-juta-rupiah-.html">Berita Resmi Statistik</a></li>
+<li><b>Pembulatan:</b> 4.65 dibulatkan ke presisi klaim = <b>4.65</b> = 4.65</li>
+<li><b>Kelas:</b> Sesuai data BPS</li>
+<li><b>Label:</b> diputuskan manusia (kalimat yang diperdebatkan)</li></ol></details>
+<p>Klaim: <b>4.65%</b> · Data BPS: <b>4.65%</b> (<a href="https://www.bps.go.id/id/pressrelease/2026/08/05/169926/tingkat-pengangguran-terbuka--tpt--sebesar-4-65-persen---rata-rata-upah-buruh-sebesar-3-39-juta-rupiah-.html">BRS</a>)</p>
+<p class="src"><a href="https://www.fortuneidn.com/news/tingkat-pengangguran-terbuka-4-65-persen-pada-2026-00-6cmtl-x58q92">https://www.fortuneidn.com/news/tingkat-pengangguran-terbuka-4-65-persen-pada-2026-00-6cmtl-x58q92</a> · 2026-10-27</p>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "ClaimReview", "url": "https://pugarhuda.github.io/bps-claims-check/claimreview.html#c0036-unemployment_rate-2026-05", "claimReviewed": "Jakarta, FORTUNE - Badan Pusat Statistik (BPS) mencatat bahwa tingkat pengangguran terbuka (TPT) nasional berhasil ditekan menjadi 4,65 persen pada 2026.", "author": {"@type": "Organization", "name": "BPS claim-check (Apart AI x Epistemics hackathon)"}, "reviewRating": {"@type": "Rating", "ratingValue": 5, "bestRating": 5, "worstRating": 1, "alternateName": "Sesuai data BPS"}, "reviewBody": "Klaim: tingkat pengangguran terbuka periode 2026-05 = 4.65 persen. Data resmi BPS (rilis pertama): 4.65 persen. Sumber: https://www.bps.go.id/id/pressrelease/2026/08/05/169926/tingkat-pengangguran-terbuka--tpt--sebesar-4-65-persen---rata-rata-upah-buruh-sebesar-3-39-juta-rupiah-.html", "itemReviewed": {"@type": "Claim", "datePublished": "2026-10-27", "appearance": [{"@type": "CreativeWork", "url": "https://www.fortuneidn.com/news/tingkat-pengangguran-terbuka-4-65-persen-pada-2026-00-6cmtl-x58q92"}]}}</script>
+</article>
+<article id="c0037-unemployment_rate-2026-05" class="match">
+<p class="rating">Sesuai data BPS · tingkat pengangguran terbuka 2026-05</p>
+<blockquote>“Capaian TPT 4,65 persen ini mencerminkan keberhasilan berbagai program dorongan sektor riil dan investasi dalam memfasilitasi kebutuhan pasar kerja,” ujar Juru Bicara Kementerian Koordinator Bidang Perekonomian Haryo Limanseto dalam keterangannya, Selasa (27/10).</blockquote>
+<details><summary>Kartu verifikasi</summary><ol class="chain">
+<li><b>Tuple yang diekstrak:</b> tingkat pengangguran terbuka · periode 2026-05 · nilai seperti tertulis <b>4.65%</b></li>
+<li><b>Baris BPS:</b> 4.65% · rilis 2026-08-05 · <a href="https://www.bps.go.id/id/pressrelease/2026/08/05/169926/tingkat-pengangguran-terbuka--tpt--sebesar-4-65-persen---rata-rata-upah-buruh-sebesar-3-39-juta-rupiah-.html">Berita Resmi Statistik</a></li>
+<li><b>Pembulatan:</b> 4.65 dibulatkan ke presisi klaim = <b>4.65</b> = 4.65</li>
+<li><b>Kelas:</b> Sesuai data BPS</li>
+<li><b>Label:</b> diputuskan manusia (kalimat yang diperdebatkan)</li></ol></details>
+<p>Klaim: <b>4.65%</b> · Data BPS: <b>4.65%</b> (<a href="https://www.bps.go.id/id/pressrelease/2026/08/05/169926/tingkat-pengangguran-terbuka--tpt--sebesar-4-65-persen---rata-rata-upah-buruh-sebesar-3-39-juta-rupiah-.html">BRS</a>)</p>
+<p class="src"><a href="https://www.fortuneidn.com/news/tingkat-pengangguran-terbuka-4-65-persen-pada-2026-00-6cmtl-x58q92">https://www.fortuneidn.com/news/tingkat-pengangguran-terbuka-4-65-persen-pada-2026-00-6cmtl-x58q92</a> · 2026-10-27</p>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "ClaimReview", "url": "https://pugarhuda.github.io/bps-claims-check/claimreview.html#c0037-unemployment_rate-2026-05", "claimReviewed": "“Capaian TPT 4,65 persen ini mencerminkan keberhasilan berbagai program dorongan sektor riil dan investasi dalam memfasilitasi kebutuhan pasar kerja,” ujar Juru Bicara Kementerian Koordinator Bidang Perekonomian Haryo Limanseto dalam keterangannya, Selasa (27/10).", "author": {"@type": "Organization", "name": "BPS claim-check (Apart AI x Epistemics hackathon)"}, "reviewRating": {"@type": "Rating", "ratingValue": 5, "bestRating": 5, "worstRating": 1, "alternateName": "Sesuai data BPS"}, "reviewBody": "Klaim: tingkat pengangguran terbuka periode 2026-05 = 4.65 persen. Data resmi BPS (rilis pertama): 4.65 persen. Sumber: https://www.bps.go.id/id/pressrelease/2026/08/05/169926/tingkat-pengangguran-terbuka--tpt--sebesar-4-65-persen---rata-rata-upah-buruh-sebesar-3-39-juta-rupiah-.html", "itemReviewed": {"@type": "Claim", "datePublished": "2026-10-27", "appearance": [{"@type": "CreativeWork", "url": "https://www.fortuneidn.com/news/tingkat-pengangguran-terbuka-4-65-persen-pada-2026-00-6cmtl-x58q92"}]}}</script>
+</article>
+<article id="c0042-unemployment_rate-2026-08" class="match">
+<p class="rating">Sesuai data BPS · tingkat pengangguran terbuka 2026-08</p>
+<blockquote>“Pada bulan Agustus 2026 terdapat sebanyak 7,38 juta penganggur atau setara dengan tingkat pengangguran terbuka sebesar 4,75 persen.</blockquote>
+<details><summary>Kartu verifikasi</summary><ol class="chain">
+<li><b>Tuple yang diekstrak:</b> tingkat pengangguran terbuka · periode 2026-08 · nilai seperti tertulis <b>4.75%</b></li>
+<li><b>Baris BPS:</b> 4.75% · rilis 2026-11-05 · <a href="https://www.bps.go.id/id/pressrelease/2026/11/05/169961/tingkat-pengangguran-terbuka--tpt--sebesar-4-75-persen---rata-rata-upah-buruh-sebesar-3-42-juta-rupiah.html">Berita Resmi Statistik</a></li>
+<li><b>Pembulatan:</b> 4.75 dibulatkan ke presisi klaim = <b>4.75</b> = 4.75</li>
+<li><b>Kelas:</b> Sesuai data BPS</li>
+<li><b>Label:</b> diaudit manusia (sampel acak)</li></ol></details>
+<p>Klaim: <b>4.75%</b> · Data BPS: <b>4.75%</b> (<a href="https://www.bps.go.id/id/pressrelease/2026/11/05/169961/tingkat-pengangguran-terbuka--tpt--sebesar-4-75-persen---rata-rata-upah-buruh-sebesar-3-42-juta-rupiah.html">BRS</a>)</p>
+<p class="src"><a href="https://www.antaranews.com/berita/5833335/bps-pengangguran-terbuka-turun-tipis-pada-agustus-2026">https://www.antaranews.com/berita/5833335/bps-pengangguran-terbuka-turun-tipis-pada-agustus-2026</a> · 2026-11-05</p>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "ClaimReview", "url": "https://pugarhuda.github.io/bps-claims-check/claimreview.html#c0042-unemployment_rate-2026-08", "claimReviewed": "“Pada bulan Agustus 2026 terdapat sebanyak 7,38 juta penganggur atau setara dengan tingkat pengangguran terbuka sebesar 4,75 persen.", "author": {"@type": "Organization", "name": "BPS claim-check (Apart AI x Epistemics hackathon)"}, "reviewRating": {"@type": "Rating", "ratingValue": 5, "bestRating": 5, "worstRating": 1, "alternateName": "Sesuai data BPS"}, "reviewBody": "Klaim: tingkat pengangguran terbuka periode 2026-08 = 4.75 persen. Data resmi BPS (rilis pertama): 4.75 persen. Sumber: https://www.bps.go.id/id/pressrelease/2026/11/05/169961/tingkat-pengangguran-terbuka--tpt--sebesar-4-75-persen---rata-rata-upah-buruh-sebesar-3-42-juta-rupiah.html", "itemReviewed": {"@type": "Claim", "datePublished": "2026-11-05", "appearance": [{"@type": "CreativeWork", "url": "https://www.antaranews.com/berita/5833335/bps-pengangguran-terbuka-turun-tipis-pada-agustus-2026"}]}}</script>
+</article>
+<article id="c0058-poverty_rate-2025-03" class="match">
+<p class="rating">Sesuai data BPS · persentase penduduk miskin 2025-03</p>
+<blockquote>Dalam periode 2021-2025, tingkat kemiskinan turun dari 10,14 persen menjadi 8,47 persen, sedangkan kemiskinan ekstrem berkurang dari 2,14 persen menjadi 0,85 persen.</blockquote>
+<details><summary>Kartu verifikasi</summary><ol class="chain">
+<li><b>Tuple yang diekstrak:</b> persentase penduduk miskin · periode 2025-03 · nilai seperti tertulis <b>8.47%</b></li>
+<li><b>Baris BPS:</b> 8.47% · rilis 2025-07-25 · <a href="https://www.bps.go.id/id/pressrelease/2025/07/25/149542/persentase-penduduk-miskin-maret-2025-turun-menjadi-8-47-persen-.html">Berita Resmi Statistik</a></li>
+<li><b>Pembulatan:</b> 8.47 dibulatkan ke presisi klaim = <b>8.47</b> = 8.47</li>
+<li><b>Kelas:</b> Sesuai data BPS</li>
+<li><b>Label:</b> diputuskan manusia (kalimat yang diperdebatkan)</li></ol></details>
+<p>Klaim: <b>8.47%</b> · Data BPS: <b>8.47%</b> (<a href="https://www.bps.go.id/id/pressrelease/2025/07/25/149542/persentase-penduduk-miskin-maret-2025-turun-menjadi-8-47-persen-.html">BRS</a>)</p>
+<p class="src"><a href="https://www.antaranews.com/berita/5794781/dua-tahun-prabowo-gibran-kemiskinan-turun-jadi-807-persen">https://www.antaranews.com/berita/5794781/dua-tahun-prabowo-gibran-kemiskinan-turun-jadi-807-persen</a> · 2026-10-18</p>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "ClaimReview", "url": "https://pugarhuda.github.io/bps-claims-check/claimreview.html#c0058-poverty_rate-2025-03", "claimReviewed": "Dalam periode 2021-2025, tingkat kemiskinan turun dari 10,14 persen menjadi 8,47 persen, sedangkan kemiskinan ekstrem berkurang dari 2,14 persen menjadi 0,85 persen.", "author": {"@type": "Organization", "name": "BPS claim-check (Apart AI x Epistemics hackathon)"}, "reviewRating": {"@type": "Rating", "ratingValue": 5, "bestRating": 5, "worstRating": 1, "alternateName": "Sesuai data BPS"}, "reviewBody": "Klaim: persentase penduduk miskin periode 2025-03 = 8.47 persen. Data resmi BPS (rilis pertama): 8.47 persen. Sumber: https://www.bps.go.id/id/pressrelease/2025/07/25/149542/persentase-penduduk-miskin-maret-2025-turun-menjadi-8-47-persen-.html", "itemReviewed": {"@type": "Claim", "datePublished": "2026-10-18", "appearance": [{"@type": "CreativeWork", "url": "https://www.antaranews.com/berita/5794781/dua-tahun-prabowo-gibran-kemiskinan-turun-jadi-807-persen"}]}}</script>
+</article>
+<article id="c0060-poverty_rate-2026-03" class="match">
+<p class="rating">Sesuai data BPS · persentase penduduk miskin 2026-03</p>
+<blockquote>Menjelang dua tahun pemerintahan Presiden Prabowo Subianto dan Wakil Presiden Gibran Rakabuming Raka pada 20 Oktober 2026, data terbaru Badan Pusat Statistik (BPS) mencatat tingkat kemiskinan Indonesia sebesar 8,07 persen pada Maret 2026.</blockquote>
+<details><summary>Kartu verifikasi</summary><ol class="chain">
+<li><b>Tuple yang diekstrak:</b> persentase penduduk miskin · periode 2026-03 · nilai seperti tertulis <b>8.07%</b></li>
+<li><b>Baris BPS:</b> 8.07% · rilis 2026-08-05 · <a href="https://www.bps.go.id/id/pressrelease/2026/08/05/167857/persentase-penduduk-miskin-maret-2026-turun-menjadi-8-07-persen-.html">Berita Resmi Statistik</a></li>
+<li><b>Pembulatan:</b> 8.07 dibulatkan ke presisi klaim = <b>8.07</b> = 8.07</li>
+<li><b>Kelas:</b> Sesuai data BPS</li>
+<li><b>Label:</b> diaudit manusia (sampel acak)</li></ol></details>
+<p>Klaim: <b>8.07%</b> · Data BPS: <b>8.07%</b> (<a href="https://www.bps.go.id/id/pressrelease/2026/08/05/167857/persentase-penduduk-miskin-maret-2026-turun-menjadi-8-07-persen-.html">BRS</a>)</p>
+<p class="src"><a href="https://www.viva.co.id/berita/nasional/1936976-dua-tahun-prabowo-gibran-angka-kemiskinan-turun-jadi-807-persen-ini-data-terbarunya">https://www.viva.co.id/berita/nasional/1936976-dua-tahun-prabowo-gibran-angka-kemiskinan-turun-jadi-807-persen-ini-data-terbarunya</a> · 2026-10-19</p>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "ClaimReview", "url": "https://pugarhuda.github.io/bps-claims-check/claimreview.html#c0060-poverty_rate-2026-03", "claimReviewed": "Menjelang dua tahun pemerintahan Presiden Prabowo Subianto dan Wakil Presiden Gibran Rakabuming Raka pada 20 Oktober 2026, data terbaru Badan Pusat Statistik (BPS) mencatat tingkat kemiskinan Indonesia sebesar 8,07 persen pada Maret 2026.", "author": {"@type": "Organization", "name": "BPS claim-check (Apart AI x Epistemics hackathon)"}, "reviewRating": {"@type": "Rating", "ratingValue": 5, "bestRating": 5, "worstRating": 1, "alternateName": "Sesuai data BPS"}, "reviewBody": "Klaim: persentase penduduk miskin periode 2026-03 = 8.07 persen. Data resmi BPS (rilis pertama): 8.07 persen. Sumber: https://www.bps.go.id/id/pressrelease/2026/08/05/167857/persentase-penduduk-miskin-maret-2026-turun-menjadi-8-07-persen-.html", "itemReviewed": {"@type": "Claim", "datePublished": "2026-10-19", "appearance": [{"@type": "CreativeWork", "url": "https://www.viva.co.id/berita/nasional/1936976-dua-tahun-prabowo-gibran-angka-kemiskinan-turun-jadi-807-persen-ini-data-terbarunya"}]}}</script>
+</article>
+<article id="c0062-poverty_rate-2025-03" class="match">
+<p class="rating">Sesuai data BPS · persentase penduduk miskin 2025-03</p>
+<blockquote>Kemiskinan Ekstrem Ikut Menurun Dalam rentang 2021 hingga 2025, tingkat kemiskinan nasional turun dari 10,14 persen menjadi 8,47 persen.</blockquote>
+<details><summary>Kartu verifikasi</summary><ol class="chain">
+<li><b>Tuple yang diekstrak:</b> persentase penduduk miskin · periode 2025-03 · nilai seperti tertulis <b>8.47%</b></li>
+<li><b>Baris BPS:</b> 8.47% · rilis 2025-07-25 · <a href="https://www.bps.go.id/id/pressrelease/2025/07/25/149542/persentase-penduduk-miskin-maret-2025-turun-menjadi-8-47-persen-.html">Berita Resmi Statistik</a></li>
+<li><b>Pembulatan:</b> 8.47 dibulatkan ke presisi klaim = <b>8.47</b> = 8.47</li>
+<li><b>Kelas:</b> Sesuai data BPS</li>
+<li><b>Label:</b> diputuskan manusia (kalimat yang diperdebatkan)</li></ol></details>
+<p>Klaim: <b>8.47%</b> · Data BPS: <b>8.47%</b> (<a href="https://www.bps.go.id/id/pressrelease/2025/07/25/149542/persentase-penduduk-miskin-maret-2025-turun-menjadi-8-47-persen-.html">BRS</a>)</p>
+<p class="src"><a href="https://www.viva.co.id/berita/nasional/1936976-dua-tahun-prabowo-gibran-angka-kemiskinan-turun-jadi-807-persen-ini-data-terbarunya">https://www.viva.co.id/berita/nasional/1936976-dua-tahun-prabowo-gibran-angka-kemiskinan-turun-jadi-807-persen-ini-data-terbarunya</a> · 2026-10-19</p>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "ClaimReview", "url": "https://pugarhuda.github.io/bps-claims-check/claimreview.html#c0062-poverty_rate-2025-03", "claimReviewed": "Kemiskinan Ekstrem Ikut Menurun Dalam rentang 2021 hingga 2025, tingkat kemiskinan nasional turun dari 10,14 persen menjadi 8,47 persen.", "author": {"@type": "Organization", "name": "BPS claim-check (Apart AI x Epistemics hackathon)"}, "reviewRating": {"@type": "Rating", "ratingValue": 5, "bestRating": 5, "worstRating": 1, "alternateName": "Sesuai data BPS"}, "reviewBody": "Klaim: persentase penduduk miskin periode 2025-03 = 8.47 persen. Data resmi BPS (rilis pertama): 8.47 persen. Sumber: https://www.bps.go.id/id/pressrelease/2025/07/25/149542/persentase-penduduk-miskin-maret-2025-turun-menjadi-8-47-persen-.html", "itemReviewed": {"@type": "Claim", "datePublished": "2026-10-19", "appearance": [{"@type": "CreativeWork", "url": "https://www.viva.co.id/berita/nasional/1936976-dua-tahun-prabowo-gibran-angka-kemiskinan-turun-jadi-807-persen-ini-data-terbarunya"}]}}</script>
+</article>
+<article id="c0065-unemployment_rate-2026-08" class="stale">
+<p class="rating">Angka lama: sudah ada rilis BPS yang lebih baru · tingkat pengangguran terbuka 2026-08</p>
+<blockquote>Tingkat Pengangguran Terbuka (TPT) turun ke 4,65 persen pada 2026, terendah sejak 1994.</blockquote>
+<details><summary>Kartu verifikasi</summary><ol class="chain">
+<li><b>Tuple yang diekstrak:</b> tingkat pengangguran terbuka · periode 2026-08 · nilai seperti tertulis <b>4.65%</b></li>
+<li><b>Baris BPS:</b> 4.75% · rilis 2026-11-05 · <a href="https://www.bps.go.id/id/pressrelease/2026/11/05/169961/tingkat-pengangguran-terbuka--tpt--sebesar-4-75-persen---rata-rata-upah-buruh-sebesar-3-42-juta-rupiah.html">Berita Resmi Statistik</a></li>
+<li><b>Pembulatan:</b> 4.75 dibulatkan ke presisi klaim = <b>4.75</b> ≠ 4.65</li>
+<li><b>Kelas:</b> Angka lama: sudah ada rilis BPS yang lebih baru · angka ini = data 2026-05; data 2026-08 terbit 2026-11-05</li>
+<li><b>Label:</b> diputuskan manusia (kalimat yang diperdebatkan)</li></ol></details>
+<p>Klaim: <b>4.65%</b> · Data BPS: <b>4.75%</b> (<a href="https://www.bps.go.id/id/pressrelease/2026/11/05/169961/tingkat-pengangguran-terbuka--tpt--sebesar-4-75-persen---rata-rata-upah-buruh-sebesar-3-42-juta-rupiah.html">BRS</a>)</p>
+<p class="src"><a href="https://gurindam.id/2026/11/14/dari-konstitusi-ke-kesejahteraan-nyata-arah-tujuan-bernegara-indonesia-di-bawah-kepemimpinan-prabowo-subianto">https://gurindam.id/2026/11/14/dari-konstitusi-ke-kesejahteraan-nyata-arah-tujuan-bernegara-indonesia-di-bawah-kepemimpinan-prabowo-subianto</a> · 2026-11-14</p>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "ClaimReview", "url": "https://pugarhuda.github.io/bps-claims-check/claimreview.html#c0065-unemployment_rate-2026-08", "claimReviewed": "Tingkat Pengangguran Terbuka (TPT) turun ke 4,65 persen pada 2026, terendah sejak 1994.", "author": {"@type": "Organization", "name": "BPS claim-check (Apart AI x Epistemics hackathon)"}, "reviewRating": {"@type": "Rating", "ratingValue": 3, "bestRating": 5, "worstRating": 1, "alternateName": "Angka lama: sudah ada rilis BPS yang lebih baru"}, "reviewBody": "Klaim: tingkat pengangguran terbuka periode 2026-08 = 4.65 persen. Data resmi BPS (rilis pertama): 4.75 persen. Sumber: https://www.bps.go.id/id/pressrelease/2026/11/05/169961/tingkat-pengangguran-terbuka--tpt--sebesar-4-75-persen---rata-rata-upah-buruh-sebesar-3-42-juta-rupiah.html Angka 4.65 persen adalah data periode 2026-05; data 2026-08 sudah dirilis BPS pada 2026-11-05, sebelum artikel terbit.", "itemReviewed": {"@type": "Claim", "datePublished": "2026-11-14", "appearance": [{"@type": "CreativeWork", "url": "https://gurindam.id/2026/11/14/dari-konstitusi-ke-kesejahteraan-nyata-arah-tujuan-bernegara-indonesia-di-bawah-kepemimpinan-prabowo-subianto"}]}}</script>
+</article>
+<article id="c0098-inflation_yoy-2026-01" class="match">
+<p class="rating">Sesuai data BPS · inflasi (y-on-y) 2026-01</p>
+<blockquote>Inflasi Dijaga Terus Terkendali  Inflasi tahunan Januari 2026 tercatat sebesar 3,55% (year-on-year), dimana angka tersebut tidak mencerminkan kenaikan harga yang signifikan, melainkan dipengaruhi oleh low base effect dari kebijakan diskon tarif listrik 50% pada Januari–Februari 2025, yang membuat inflasi tahunan terlihat lebih tinggi secara perhitungan.</blockquote>
+<details><summary>Kartu verifikasi</summary><ol class="chain">
+<li><b>Tuple yang diekstrak:</b> inflasi (y-on-y) · periode 2026-01 · nilai seperti tertulis <b>3.55%</b></li>
+<li><b>Baris BPS:</b> 3.55% · rilis 2026-02-02 · <a href="https://www.bps.go.id/id/pressrelease/2026/02/02/170032/inflasi-year-on-year--y-on-y--pada-januari-2026-sebesar-3-55-persen.html">Berita Resmi Statistik</a></li>
+<li><b>Pembulatan:</b> 3.55 dibulatkan ke presisi klaim = <b>3.55</b> = 3.55</li>
+<li><b>Kelas:</b> Sesuai data BPS</li>
+<li><b>Label:</b> diaudit manusia (sampel acak)</li></ol></details>
+<p>Klaim: <b>3.55%</b> · Data BPS: <b>3.55%</b> (<a href="https://www.bps.go.id/id/pressrelease/2026/02/02/170032/inflasi-year-on-year--y-on-y--pada-januari-2026-sebesar-3-55-persen.html">BRS</a>)</p>
+<p class="src"><a href="https://www.ekon.go.id/publikasi/detail/6795/fundamental-ekonomi-indonesia-tetap-kuat-inflasi-terkendali-neraca-perdagangan-surplus-dan-sektor-manufaktur-melanjutkan-ekspansi">https://www.ekon.go.id/publikasi/detail/6795/fundamental-ekonomi-indonesia-tetap-kuat-inflasi-terkendali-neraca-perdagangan-surplus-dan-sektor-manufaktur-melanjutkan-ekspansi</a> · 2026-02-04</p>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "ClaimReview", "url": "https://pugarhuda.github.io/bps-claims-check/claimreview.html#c0098-inflation_yoy-2026-01", "claimReviewed": "Inflasi Dijaga Terus Terkendali  Inflasi tahunan Januari 2026 tercatat sebesar 3,55% (year-on-year), dimana angka tersebut tidak mencerminkan kenaikan harga yang signifikan, melainkan dipengaruhi oleh low base effect dari kebijakan diskon tarif listrik 50% pada Januari–Februari 2025, yang membuat inflasi tahunan terlihat lebih tinggi secara perhitungan.", "author": {"@type": "Organization", "name": "BPS claim-check (Apart AI x Epistemics hackathon)"}, "reviewRating": {"@type": "Rating", "ratingValue": 5, "bestRating": 5, "worstRating": 1, "alternateName": "Sesuai data BPS"}, "reviewBody": "Klaim: inflasi (y-on-y) periode 2026-01 = 3.55 persen. Data resmi BPS (rilis pertama): 3.55 persen. Sumber: https://www.bps.go.id/id/pressrelease/2026/02/02/170032/inflasi-year-on-year--y-on-y--pada-januari-2026-sebesar-3-55-persen.html", "itemReviewed": {"@type": "Claim", "datePublished": "2026-02-04", "appearance": [{"@type": "CreativeWork", "url": "https://www.ekon.go.id/publikasi/detail/6795/fundamental-ekonomi-indonesia-tetap-kuat-inflasi-terkendali-neraca-perdagangan-surplus-dan-sektor-manufaktur-melanjutkan-ekspansi"}]}}</script>
+</article>
+<article id="c0109-inflation_yoy-2025-09" class="match">
+<p class="rating">Sesuai data BPS · inflasi (y-on-y) 2025-09</p>
+<blockquote>Hal ini tercermin dari data Badan Pusat Statistik (BPS) yang mencatat inflasi sebesar 0,21 persen month to month (mtm), sehingga secara tahunan inflasi mencapai 2,65 persen.</blockquote>
+<details><summary>Kartu verifikasi</summary><ol class="chain">
+<li><b>Tuple yang diekstrak:</b> inflasi (y-on-y) · periode 2025-09 · nilai seperti tertulis <b>2.65%</b></li>
+<li><b>Baris BPS:</b> 2.65% · rilis 2025-10-01 · <a href="https://www.bps.go.id/id/pressrelease/2025/10/01/2468/inflasi-year-on-year--y-on-y--pada-september-2025-sebesar-2-65-persen.html">Berita Resmi Statistik</a></li>
+<li><b>Pembulatan:</b> 2.65 dibulatkan ke presisi klaim = <b>2.65</b> = 2.65</li>
+<li><b>Kelas:</b> Sesuai data BPS</li>
+<li><b>Label:</b> diaudit manusia (sampel acak)</li></ol></details>
+<p>Klaim: <b>2.65%</b> · Data BPS: <b>2.65%</b> (<a href="https://www.bps.go.id/id/pressrelease/2025/10/01/2468/inflasi-year-on-year--y-on-y--pada-september-2025-sebesar-2-65-persen.html">BRS</a>)</p>
+<p class="src"><a href="https://ekonomi.republika.co.id/berita/t3hsph423/bi-inflasi-september-2025-terkendali-di-265-persen">https://ekonomi.republika.co.id/berita/t3hsph423/bi-inflasi-september-2025-terkendali-di-265-persen</a> · 2025-10-02</p>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "ClaimReview", "url": "https://pugarhuda.github.io/bps-claims-check/claimreview.html#c0109-inflation_yoy-2025-09", "claimReviewed": "Hal ini tercermin dari data Badan Pusat Statistik (BPS) yang mencatat inflasi sebesar 0,21 persen month to month (mtm), sehingga secara tahunan inflasi mencapai 2,65 persen.", "author": {"@type": "Organization", "name": "BPS claim-check (Apart AI x Epistemics hackathon)"}, "reviewRating": {"@type": "Rating", "ratingValue": 5, "bestRating": 5, "worstRating": 1, "alternateName": "Sesuai data BPS"}, "reviewBody": "Klaim: inflasi (y-on-y) periode 2025-09 = 2.65 persen. Data resmi BPS (rilis pertama): 2.65 persen. Sumber: https://www.bps.go.id/id/pressrelease/2025/10/01/2468/inflasi-year-on-year--y-on-y--pada-september-2025-sebesar-2-65-persen.html", "itemReviewed": {"@type": "Claim", "datePublished": "2025-10-02", "appearance": [{"@type": "CreativeWork", "url": "https://ekonomi.republika.co.id/berita/t3hsph423/bi-inflasi-september-2025-terkendali-di-265-persen"}]}}</script>
+</article>
+<article id="c0118-gdp_growth_yoy-2026-Q1" class="match">
+<p class="rating">Sesuai data BPS · pertumbuhan ekonomi (y-on-y) 2026-Q1</p>
+<blockquote>Jakarta, CNN Indonesia -- Ketua Komisi XI DPR RI Mukhamad Misbakhun menilai capaian pertumbuhan ekonomi Indonesia pada Kuartal I 2026 yang mencapai 5,61 persen (year-on-year) merupakan bukti konkret ketangguhan ekonomi RI di tengah tekanan ketidakpastian global.</blockquote>
+<details><summary>Kartu verifikasi</summary><ol class="chain">
+<li><b>Tuple yang diekstrak:</b> pertumbuhan ekonomi (y-on-y) · periode 2026-Q1 · nilai seperti tertulis <b>5.61%</b></li>
+<li><b>Baris BPS:</b> 5.61% · rilis 2026-05-05 · <a href="https://www.bps.go.id/id/pressrelease/2026/05/05/169698/ekonomi-indonesia-triwulan-i-2026-tumbuh-5-61-persen--y-on-y-.html">Berita Resmi Statistik</a></li>
+<li><b>Pembulatan:</b> 5.61 dibulatkan ke presisi klaim = <b>5.61</b> = 5.61</li>
+<li><b>Kelas:</b> Sesuai data BPS</li>
+<li><b>Label:</b> diaudit manusia (sampel acak)</li></ol></details>
+<p>Klaim: <b>5.61%</b> · Data BPS: <b>5.61%</b> (<a href="https://www.bps.go.id/id/pressrelease/2026/05/05/169698/ekonomi-indonesia-triwulan-i-2026-tumbuh-5-61-persen--y-on-y-.html">BRS</a>)</p>
+<p class="src"><a href="https://www.cnnindonesia.com/ekonomi/20260505163526-532-1355363/misbakhun-pertumbuhan-561-persen-bukti-ketangguhan-ekonomi-ri">https://www.cnnindonesia.com/ekonomi/20260505163526-532-1355363/misbakhun-pertumbuhan-561-persen-bukti-ketangguhan-ekonomi-ri</a> · 2026-05-05</p>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "ClaimReview", "url": "https://pugarhuda.github.io/bps-claims-check/claimreview.html#c0118-gdp_growth_yoy-2026-Q1", "claimReviewed": "Jakarta, CNN Indonesia -- Ketua Komisi XI DPR RI Mukhamad Misbakhun menilai capaian pertumbuhan ekonomi Indonesia pada Kuartal I 2026 yang mencapai 5,61 persen (year-on-year) merupakan bukti konkret ketangguhan ekonomi RI di tengah tekanan ketidakpastian global.", "author": {"@type": "Organization", "name": "BPS claim-check (Apart AI x Epistemics hackathon)"}, "reviewRating": {"@type": "Rating", "ratingValue": 5, "bestRating": 5, "worstRating": 1, "alternateName": "Sesuai data BPS"}, "reviewBody": "Klaim: pertumbuhan ekonomi (y-on-y) periode 2026-Q1 = 5.61 persen. Data resmi BPS (rilis pertama): 5.61 persen. Sumber: https://www.bps.go.id/id/pressrelease/2026/05/05/169698/ekonomi-indonesia-triwulan-i-2026-tumbuh-5-61-persen--y-on-y-.html", "itemReviewed": {"@type": "Claim", "datePublished": "2026-05-05", "appearance": [{"@type": "CreativeWork", "url": "https://www.cnnindonesia.com/ekonomi/20260505163526-532-1355363/misbakhun-pertumbuhan-561-persen-bukti-ketangguhan-ekonomi-ri"}]}}</script>
+</article>
+<article id="c0124-inflation_yoy-2026-01" class="match">
+<p class="rating">Sesuai data BPS · inflasi (y-on-y) 2026-01</p>
+<blockquote>Badan Pusat Statistik (BPS) mencatat inflasi tahunan Indonesia pada Januari 2026 mencapai 3,55 persen (yoy), lebih tinggi dibandingkan inflasi pada bulan sebelumnya yang berada di angka 2,92 persen.</blockquote>
+<details><summary>Kartu verifikasi</summary><ol class="chain">
+<li><b>Tuple yang diekstrak:</b> inflasi (y-on-y) · periode 2026-01 · nilai seperti tertulis <b>3.55%</b></li>
+<li><b>Baris BPS:</b> 3.55% · rilis 2026-02-02 · <a href="https://www.bps.go.id/id/pressrelease/2026/02/02/170032/inflasi-year-on-year--y-on-y--pada-januari-2026-sebesar-3-55-persen.html">Berita Resmi Statistik</a></li>
+<li><b>Pembulatan:</b> 3.55 dibulatkan ke presisi klaim = <b>3.55</b> = 3.55</li>
+<li><b>Kelas:</b> Sesuai data BPS</li>
+<li><b>Label:</b> diaudit manusia (sampel acak)</li></ol></details>
+<p>Klaim: <b>3.55%</b> · Data BPS: <b>3.55%</b> (<a href="https://www.bps.go.id/id/pressrelease/2026/02/02/170032/inflasi-year-on-year--y-on-y--pada-januari-2026-sebesar-3-55-persen.html">BRS</a>)</p>
+<p class="src"><a href="https://ekonomi.republika.co.id/berita/t9xr4t423/purbaya-perkirakan-inflasi-mereda-memasuki-maret-2026">https://ekonomi.republika.co.id/berita/t9xr4t423/purbaya-perkirakan-inflasi-mereda-memasuki-maret-2026</a> · 2026-02-04</p>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "ClaimReview", "url": "https://pugarhuda.github.io/bps-claims-check/claimreview.html#c0124-inflation_yoy-2026-01", "claimReviewed": "Badan Pusat Statistik (BPS) mencatat inflasi tahunan Indonesia pada Januari 2026 mencapai 3,55 persen (yoy), lebih tinggi dibandingkan inflasi pada bulan sebelumnya yang berada di angka 2,92 persen.", "author": {"@type": "Organization", "name": "BPS claim-check (Apart AI x Epistemics hackathon)"}, "reviewRating": {"@type": "Rating", "ratingValue": 5, "bestRating": 5, "worstRating": 1, "alternateName": "Sesuai data BPS"}, "reviewBody": "Klaim: inflasi (y-on-y) periode 2026-01 = 3.55 persen. Data resmi BPS (rilis pertama): 3.55 persen. Sumber: https://www.bps.go.id/id/pressrelease/2026/02/02/170032/inflasi-year-on-year--y-on-y--pada-januari-2026-sebesar-3-55-persen.html", "itemReviewed": {"@type": "Claim", "datePublished": "2026-02-04", "appearance": [{"@type": "CreativeWork", "url": "https://ekonomi.republika.co.id/berita/t9xr4t423/purbaya-perkirakan-inflasi-mereda-memasuki-maret-2026"}]}}</script>
+</article>
+<article id="c0124-inflation_yoy-2025-12" class="match">
+<p class="rating">Sesuai data BPS · inflasi (y-on-y) 2025-12</p>
+<blockquote>Badan Pusat Statistik (BPS) mencatat inflasi tahunan Indonesia pada Januari 2026 mencapai 3,55 persen (yoy), lebih tinggi dibandingkan inflasi pada bulan sebelumnya yang berada di angka 2,92 persen.</blockquote>
+<details><summary>Kartu verifikasi</summary><ol class="chain">
+<li><b>Tuple yang diekstrak:</b> inflasi (y-on-y) · periode 2025-12 · nilai seperti tertulis <b>2.92%</b></li>
+<li><b>Baris BPS:</b> 2.92% · rilis 2026-01-05 · <a href="https://www.bps.go.id/id/pressrelease/2026/01/05/169997/inflasi-year-on-year--y-on-y--pada-desember-2025-sebesar-2-92-persen.html">Berita Resmi Statistik</a></li>
+<li><b>Pembulatan:</b> 2.92 dibulatkan ke presisi klaim = <b>2.92</b> = 2.92</li>
+<li><b>Kelas:</b> Sesuai data BPS</li>
+<li><b>Label:</b> diaudit manusia (sampel acak)</li></ol></details>
+<p>Klaim: <b>2.92%</b> · Data BPS: <b>2.92%</b> (<a href="https://www.bps.go.id/id/pressrelease/2026/01/05/169997/inflasi-year-on-year--y-on-y--pada-desember-2025-sebesar-2-92-persen.html">BRS</a>)</p>
+<p class="src"><a href="https://ekonomi.republika.co.id/berita/t9xr4t423/purbaya-perkirakan-inflasi-mereda-memasuki-maret-2026">https://ekonomi.republika.co.id/berita/t9xr4t423/purbaya-perkirakan-inflasi-mereda-memasuki-maret-2026</a> · 2026-02-04</p>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "ClaimReview", "url": "https://pugarhuda.github.io/bps-claims-check/claimreview.html#c0124-inflation_yoy-2025-12", "claimReviewed": "Badan Pusat Statistik (BPS) mencatat inflasi tahunan Indonesia pada Januari 2026 mencapai 3,55 persen (yoy), lebih tinggi dibandingkan inflasi pada bulan sebelumnya yang berada di angka 2,92 persen.", "author": {"@type": "Organization", "name": "BPS claim-check (Apart AI x Epistemics hackathon)"}, "reviewRating": {"@type": "Rating", "ratingValue": 5, "bestRating": 5, "worstRating": 1, "alternateName": "Sesuai data BPS"}, "reviewBody": "Klaim: inflasi (y-on-y) periode 2025-12 = 2.92 persen. Data resmi BPS (rilis pertama): 2.92 persen. Sumber: https://www.bps.go.id/id/pressrelease/2026/01/05/169997/inflasi-year-on-year--y-on-y--pada-desember-2025-sebesar-2-92-persen.html", "itemReviewed": {"@type": "Claim", "datePublished": "2026-02-04", "appearance": [{"@type": "CreativeWork", "url": "https://ekonomi.republika.co.id/berita/t9xr4t423/purbaya-perkirakan-inflasi-mereda-memasuki-maret-2026"}]}}</script>
+</article>
+<article id="c0144-unemployment_rate-2025-08" class="match">
+<p class="rating">Sesuai data BPS · tingkat pengangguran terbuka 2025-08</p>
+<blockquote>Tingkat pengangguran tercatat turun menjadi 4,85 persen pada Agustus 2025, dari 4,91 persen pada periode yang sama tahun sebelumnya.</blockquote>
+<details><summary>Kartu verifikasi</summary><ol class="chain">
+<li><b>Tuple yang diekstrak:</b> tingkat pengangguran terbuka · periode 2025-08 · nilai seperti tertulis <b>4.85%</b></li>
+<li><b>Baris BPS:</b> 4.85% · rilis 2025-11-05 · <a href="https://www.bps.go.id/id/pressrelease/2025/11/05/152696/tingkat-pengangguran-terbuka--tpt--sebesar-4-85-persen--rata-rata-upah-buruh-sebesar-3-33-juta-rupiah-.html">Berita Resmi Statistik</a></li>
+<li><b>Pembulatan:</b> 4.85 dibulatkan ke presisi klaim = <b>4.85</b> = 4.85</li>
+<li><b>Kelas:</b> Sesuai data BPS</li>
+<li><b>Label:</b> diaudit manusia (sampel acak)</li></ol></details>
+<p>Klaim: <b>4.85%</b> · Data BPS: <b>4.85%</b> (<a href="https://www.bps.go.id/id/pressrelease/2025/11/05/152696/tingkat-pengangguran-terbuka--tpt--sebesar-4-85-persen--rata-rata-upah-buruh-sebesar-3-33-juta-rupiah-.html">BRS</a>)</p>
+<p class="src"><a href="https://www.rctiplus.com/news/detail/okezone/5419462/pemerintah-klaim-pengangguran-dan-kemiskinan-turun--ini-buktinya">https://www.rctiplus.com/news/detail/okezone/5419462/pemerintah-klaim-pengangguran-dan-kemiskinan-turun--ini-buktinya</a> · 2026-07-02</p>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "ClaimReview", "url": "https://pugarhuda.github.io/bps-claims-check/claimreview.html#c0144-unemployment_rate-2025-08", "claimReviewed": "Tingkat pengangguran tercatat turun menjadi 4,85 persen pada Agustus 2025, dari 4,91 persen pada periode yang sama tahun sebelumnya.", "author": {"@type": "Organization", "name": "BPS claim-check (Apart AI x Epistemics hackathon)"}, "reviewRating": {"@type": "Rating", "ratingValue": 5, "bestRating": 5, "worstRating": 1, "alternateName": "Sesuai data BPS"}, "reviewBody": "Klaim: tingkat pengangguran terbuka periode 2025-08 = 4.85 persen. Data resmi BPS (rilis pertama): 4.85 persen. Sumber: https://www.bps.go.id/id/pressrelease/2025/11/05/152696/tingkat-pengangguran-terbuka--tpt--sebesar-4-85-persen--rata-rata-upah-buruh-sebesar-3-33-juta-rupiah-.html", "itemReviewed": {"@type": "Claim", "datePublished": "2026-07-02", "appearance": [{"@type": "CreativeWork", "url": "https://www.rctiplus.com/news/detail/okezone/5419462/pemerintah-klaim-pengangguran-dan-kemiskinan-turun--ini-buktinya"}]}}</script>
+</article>
+<article id="c0144-unemployment_rate-2024-08" class="match">
+<p class="rating">Sesuai data BPS · tingkat pengangguran terbuka 2024-08</p>
+<blockquote>Tingkat pengangguran tercatat turun menjadi 4,85 persen pada Agustus 2025, dari 4,91 persen pada periode yang sama tahun sebelumnya.</blockquote>
+<details><summary>Kartu verifikasi</summary><ol class="chain">
+<li><b>Tuple yang diekstrak:</b> tingkat pengangguran terbuka · periode 2024-08 · nilai seperti tertulis <b>4.91%</b></li>
+<li><b>Baris BPS:</b> 4.91% · rilis 2024-11-05 · <a href="https://www.bps.go.id/id/pressrelease/2024/11/05/2373/tingkat-pengangguran-terbuka--tpt--sebesar-4-91-persen-dan-rata-rata-upah-buruh-sebesar-3-27-juta-rupiah-per-bulan-.html">Berita Resmi Statistik</a></li>
+<li><b>Pembulatan:</b> 4.91 dibulatkan ke presisi klaim = <b>4.91</b> = 4.91</li>
+<li><b>Kelas:</b> Sesuai data BPS</li>
+<li><b>Label:</b> diaudit manusia (sampel acak)</li></ol></details>
+<p>Klaim: <b>4.91%</b> · Data BPS: <b>4.91%</b> (<a href="https://www.bps.go.id/id/pressrelease/2024/11/05/2373/tingkat-pengangguran-terbuka--tpt--sebesar-4-91-persen-dan-rata-rata-upah-buruh-sebesar-3-27-juta-rupiah-per-bulan-.html">BRS</a>)</p>
+<p class="src"><a href="https://www.rctiplus.com/news/detail/okezone/5419462/pemerintah-klaim-pengangguran-dan-kemiskinan-turun--ini-buktinya">https://www.rctiplus.com/news/detail/okezone/5419462/pemerintah-klaim-pengangguran-dan-kemiskinan-turun--ini-buktinya</a> · 2026-07-02</p>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "ClaimReview", "url": "https://pugarhuda.github.io/bps-claims-check/claimreview.html#c0144-unemployment_rate-2024-08", "claimReviewed": "Tingkat pengangguran tercatat turun menjadi 4,85 persen pada Agustus 2025, dari 4,91 persen pada periode yang sama tahun sebelumnya.", "author": {"@type": "Organization", "name": "BPS claim-check (Apart AI x Epistemics hackathon)"}, "reviewRating": {"@type": "Rating", "ratingValue": 5, "bestRating": 5, "worstRating": 1, "alternateName": "Sesuai data BPS"}, "reviewBody": "Klaim: tingkat pengangguran terbuka periode 2024-08 = 4.91 persen. Data resmi BPS (rilis pertama): 4.91 persen. Sumber: https://www.bps.go.id/id/pressrelease/2024/11/05/2373/tingkat-pengangguran-terbuka--tpt--sebesar-4-91-persen-dan-rata-rata-upah-buruh-sebesar-3-27-juta-rupiah-per-bulan-.html", "itemReviewed": {"@type": "Claim", "datePublished": "2026-07-02", "appearance": [{"@type": "CreativeWork", "url": "https://www.rctiplus.com/news/detail/okezone/5419462/pemerintah-klaim-pengangguran-dan-kemiskinan-turun--ini-buktinya"}]}}</script>
+</article>
+<article id="c0148-poverty_rate-2025-03" class="match">
+<p class="rating">Sesuai data BPS · persentase penduduk miskin 2025-03</p>
+<blockquote>Angka kemiskinan turun ke 8,47 persen dalam setahun kinerja Prabowo-Gibran.</blockquote>
+<details><summary>Kartu verifikasi</summary><ol class="chain">
+<li><b>Tuple yang diekstrak:</b> persentase penduduk miskin · periode 2025-03 · nilai seperti tertulis <b>8.47%</b></li>
+<li><b>Baris BPS:</b> 8.47% · rilis 2025-07-25 · <a href="https://www.bps.go.id/id/pressrelease/2025/07/25/149542/persentase-penduduk-miskin-maret-2025-turun-menjadi-8-47-persen-.html">Berita Resmi Statistik</a></li>
+<li><b>Pembulatan:</b> 8.47 dibulatkan ke presisi klaim = <b>8.47</b> = 8.47</li>
+<li><b>Kelas:</b> Sesuai data BPS</li>
+<li><b>Label:</b> diaudit manusia (sampel acak)</li></ol></details>
+<p>Klaim: <b>8.47%</b> · Data BPS: <b>8.47%</b> (<a href="https://www.bps.go.id/id/pressrelease/2025/07/25/149542/persentase-penduduk-miskin-maret-2025-turun-menjadi-8-47-persen-.html">BRS</a>)</p>
+<p class="src"><a href="https://www.metrotvnews.com/read/NxGCGwmq-setahun-prabowo-gibran-ekonomi-stabil-dan-ketahanan-pangan-diperkuat">https://www.metrotvnews.com/read/NxGCGwmq-setahun-prabowo-gibran-ekonomi-stabil-dan-ketahanan-pangan-diperkuat</a> · 2025-10-20</p>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "ClaimReview", "url": "https://pugarhuda.github.io/bps-claims-check/claimreview.html#c0148-poverty_rate-2025-03", "claimReviewed": "Angka kemiskinan turun ke 8,47 persen dalam setahun kinerja Prabowo-Gibran.", "author": {"@type": "Organization", "name": "BPS claim-check (Apart AI x Epistemics hackathon)"}, "reviewRating": {"@type": "Rating", "ratingValue": 5, "bestRating": 5, "worstRating": 1, "alternateName": "Sesuai data BPS"}, "reviewBody": "Klaim: persentase penduduk miskin periode 2025-03 = 8.47 persen. Data resmi BPS (rilis pertama): 8.47 persen. Sumber: https://www.bps.go.id/id/pressrelease/2025/07/25/149542/persentase-penduduk-miskin-maret-2025-turun-menjadi-8-47-persen-.html", "itemReviewed": {"@type": "Claim", "datePublished": "2025-10-20", "appearance": [{"@type": "CreativeWork", "url": "https://www.metrotvnews.com/read/NxGCGwmq-setahun-prabowo-gibran-ekonomi-stabil-dan-ketahanan-pangan-diperkuat"}]}}</script>
+</article>
+<article id="c0156-gdp_growth_yoy-2025" class="match">
+<p class="rating">Sesuai data BPS · pertumbuhan ekonomi (y-on-y) 2025</p>
+<blockquote>Pertumbuhan Ekonomi RI Tahun 2025 Capai 5,11%, Airlangga Buka Suara Jakarta, CNBC Indonesia - Menteri Koordinator Bidang Perekonomian Airlangga Hartarto buka suara ihwal pertumbuhan ekonomi Indonesia pada 2025 yang tidak mencapai target pemerintah.</blockquote>
+<details><summary>Kartu verifikasi</summary><ol class="chain">
+<li><b>Tuple yang diekstrak:</b> pertumbuhan ekonomi (y-on-y) · periode 2025 · nilai seperti tertulis <b>5.11%</b></li>
+<li><b>Baris BPS:</b> 5.11% · rilis 2026-02-05 · <a href="https://www.bps.go.id/id/pressrelease/2026/02/05/169697/ekonomi-indonesia-tahun-2025-tumbuh-5-11-persen.html">Berita Resmi Statistik</a></li>
+<li><b>Pembulatan:</b> 5.11 dibulatkan ke presisi klaim = <b>5.11</b> = 5.11</li>
+<li><b>Kelas:</b> Sesuai data BPS</li>
+<li><b>Label:</b> diaudit manusia (sampel acak)</li></ol></details>
+<p>Klaim: <b>5.11%</b> · Data BPS: <b>5.11%</b> (<a href="https://www.bps.go.id/id/pressrelease/2026/02/05/169697/ekonomi-indonesia-tahun-2025-tumbuh-5-11-persen.html">BRS</a>)</p>
+<p class="src"><a href="https://www.cnbcindonesia.com/news/20260205155443-4-708536/pertumbuhan-ekonomi-ri-tahun-2025-capai-511-airlangga-buka-suara/amp">https://www.cnbcindonesia.com/news/20260205155443-4-708536/pertumbuhan-ekonomi-ri-tahun-2025-capai-511-airlangga-buka-suara/amp</a> · 2026-02-05</p>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "ClaimReview", "url": "https://pugarhuda.github.io/bps-claims-check/claimreview.html#c0156-gdp_growth_yoy-2025", "claimReviewed": "Pertumbuhan Ekonomi RI Tahun 2025 Capai 5,11%, Airlangga Buka Suara Jakarta, CNBC Indonesia - Menteri Koordinator Bidang Perekonomian Airlangga Hartarto buka suara ihwal pertumbuhan ekonomi Indonesia pada 2025 yang tidak mencapai target pemerintah.", "author": {"@type": "Organization", "name": "BPS claim-check (Apart AI x Epistemics hackathon)"}, "reviewRating": {"@type": "Rating", "ratingValue": 5, "bestRating": 5, "worstRating": 1, "alternateName": "Sesuai data BPS"}, "reviewBody": "Klaim: pertumbuhan ekonomi (y-on-y) periode 2025 = 5.11 persen. Data resmi BPS (rilis pertama): 5.11 persen. Sumber: https://www.bps.go.id/id/pressrelease/2026/02/05/169697/ekonomi-indonesia-tahun-2025-tumbuh-5-11-persen.html", "itemReviewed": {"@type": "Claim", "datePublished": "2026-02-05", "appearance": [{"@type": "CreativeWork", "url": "https://www.cnbcindonesia.com/news/20260205155443-4-708536/pertumbuhan-ekonomi-ri-tahun-2025-capai-511-airlangga-buka-suara/amp"}]}}</script>
+</article>
+<article id="c0158-gdp_growth_yoy-2025-Q2" class="match">
+<p class="rating">Sesuai data BPS · pertumbuhan ekonomi (y-on-y) 2025-Q2</p>
+<blockquote>Pada kuartal II-2025, laju pertumbuhan ekonomi sudah mampu bangkit ke level 5,12%, lalu kuartal III-2025 sebesar 5,04%, sebelum pada akhirnya pada kuartal IV-2025 melesat ke level 5,39%.</blockquote>
+<details><summary>Kartu verifikasi</summary><ol class="chain">
+<li><b>Tuple yang diekstrak:</b> pertumbuhan ekonomi (y-on-y) · periode 2025-Q2 · nilai seperti tertulis <b>5.12%</b></li>
+<li><b>Baris BPS:</b> 5.12% · rilis 2025-08-05 · <a href="https://www.bps.go.id/id/pressrelease/2025/08/05/150773/ekonomi-indonesia-triwulan-ii-2025-tumbuh-4-04-persen--q-to-q---5-12-persen--y-on-y---semester-i-2025-tumbuh-4-99-persen--c-to-c--.html">Berita Resmi Statistik</a></li>
+<li><b>Pembulatan:</b> 5.12 dibulatkan ke presisi klaim = <b>5.12</b> = 5.12</li>
+<li><b>Kelas:</b> Sesuai data BPS</li>
+<li><b>Label:</b> diaudit manusia (sampel acak)</li></ol></details>
+<p>Klaim: <b>5.12%</b> · Data BPS: <b>5.12%</b> (<a href="https://www.bps.go.id/id/pressrelease/2025/08/05/150773/ekonomi-indonesia-triwulan-ii-2025-tumbuh-4-04-persen--q-to-q---5-12-persen--y-on-y---semester-i-2025-tumbuh-4-99-persen--c-to-c--.html">BRS</a>)</p>
+<p class="src"><a href="https://www.cnbcindonesia.com/news/20260205155443-4-708536/pertumbuhan-ekonomi-ri-tahun-2025-capai-511-airlangga-buka-suara/amp">https://www.cnbcindonesia.com/news/20260205155443-4-708536/pertumbuhan-ekonomi-ri-tahun-2025-capai-511-airlangga-buka-suara/amp</a> · 2026-02-05</p>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "ClaimReview", "url": "https://pugarhuda.github.io/bps-claims-check/claimreview.html#c0158-gdp_growth_yoy-2025-Q2", "claimReviewed": "Pada kuartal II-2025, laju pertumbuhan ekonomi sudah mampu bangkit ke level 5,12%, lalu kuartal III-2025 sebesar 5,04%, sebelum pada akhirnya pada kuartal IV-2025 melesat ke level 5,39%.", "author": {"@type": "Organization", "name": "BPS claim-check (Apart AI x Epistemics hackathon)"}, "reviewRating": {"@type": "Rating", "ratingValue": 5, "bestRating": 5, "worstRating": 1, "alternateName": "Sesuai data BPS"}, "reviewBody": "Klaim: pertumbuhan ekonomi (y-on-y) periode 2025-Q2 = 5.12 persen. Data resmi BPS (rilis pertama): 5.12 persen. Sumber: https://www.bps.go.id/id/pressrelease/2025/08/05/150773/ekonomi-indonesia-triwulan-ii-2025-tumbuh-4-04-persen--q-to-q---5-12-persen--y-on-y---semester-i-2025-tumbuh-4-99-persen--c-to-c--.html", "itemReviewed": {"@type": "Claim", "datePublished": "2026-02-05", "appearance": [{"@type": "CreativeWork", "url": "https://www.cnbcindonesia.com/news/20260205155443-4-708536/pertumbuhan-ekonomi-ri-tahun-2025-capai-511-airlangga-buka-suara/amp"}]}}</script>
+</article>
+<article id="c0158-gdp_growth_yoy-2025-Q3" class="match">
+<p class="rating">Sesuai data BPS · pertumbuhan ekonomi (y-on-y) 2025-Q3</p>
+<blockquote>Pada kuartal II-2025, laju pertumbuhan ekonomi sudah mampu bangkit ke level 5,12%, lalu kuartal III-2025 sebesar 5,04%, sebelum pada akhirnya pada kuartal IV-2025 melesat ke level 5,39%.</blockquote>
+<details><summary>Kartu verifikasi</summary><ol class="chain">
+<li><b>Tuple yang diekstrak:</b> pertumbuhan ekonomi (y-on-y) · periode 2025-Q3 · nilai seperti tertulis <b>5.04%</b></li>
+<li><b>Baris BPS:</b> 5.04% · rilis 2025-11-05 · <a href="https://www.bps.go.id/id/pressrelease/2025/11/05/150808/ekonomi-indonesia-triwulan-iii-2025-tumbuh-5-04-persen--y-on-y-.html">Berita Resmi Statistik</a></li>
+<li><b>Pembulatan:</b> 5.04 dibulatkan ke presisi klaim = <b>5.04</b> = 5.04</li>
+<li><b>Kelas:</b> Sesuai data BPS</li>
+<li><b>Label:</b> diaudit manusia (sampel acak)</li></ol></details>
+<p>Klaim: <b>5.04%</b> · Data BPS: <b>5.04%</b> (<a href="https://www.bps.go.id/id/pressrelease/2025/11/05/150808/ekonomi-indonesia-triwulan-iii-2025-tumbuh-5-04-persen--y-on-y-.html">BRS</a>)</p>
+<p class="src"><a href="https://www.cnbcindonesia.com/news/20260205155443-4-708536/pertumbuhan-ekonomi-ri-tahun-2025-capai-511-airlangga-buka-suara/amp">https://www.cnbcindonesia.com/news/20260205155443-4-708536/pertumbuhan-ekonomi-ri-tahun-2025-capai-511-airlangga-buka-suara/amp</a> · 2026-02-05</p>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "ClaimReview", "url": "https://pugarhuda.github.io/bps-claims-check/claimreview.html#c0158-gdp_growth_yoy-2025-Q3", "claimReviewed": "Pada kuartal II-2025, laju pertumbuhan ekonomi sudah mampu bangkit ke level 5,12%, lalu kuartal III-2025 sebesar 5,04%, sebelum pada akhirnya pada kuartal IV-2025 melesat ke level 5,39%.", "author": {"@type": "Organization", "name": "BPS claim-check (Apart AI x Epistemics hackathon)"}, "reviewRating": {"@type": "Rating", "ratingValue": 5, "bestRating": 5, "worstRating": 1, "alternateName": "Sesuai data BPS"}, "reviewBody": "Klaim: pertumbuhan ekonomi (y-on-y) periode 2025-Q3 = 5.04 persen. Data resmi BPS (rilis pertama): 5.04 persen. Sumber: https://www.bps.go.id/id/pressrelease/2025/11/05/150808/ekonomi-indonesia-triwulan-iii-2025-tumbuh-5-04-persen--y-on-y-.html", "itemReviewed": {"@type": "Claim", "datePublished": "2026-02-05", "appearance": [{"@type": "CreativeWork", "url": "https://www.cnbcindonesia.com/news/20260205155443-4-708536/pertumbuhan-ekonomi-ri-tahun-2025-capai-511-airlangga-buka-suara/amp"}]}}</script>
+</article>
+<article id="c0158-gdp_growth_yoy-2025-Q4" class="match">
+<p class="rating">Sesuai data BPS · pertumbuhan ekonomi (y-on-y) 2025-Q4</p>
+<blockquote>Pada kuartal II-2025, laju pertumbuhan ekonomi sudah mampu bangkit ke level 5,12%, lalu kuartal III-2025 sebesar 5,04%, sebelum pada akhirnya pada kuartal IV-2025 melesat ke level 5,39%.</blockquote>
+<details><summary>Kartu verifikasi</summary><ol class="chain">
+<li><b>Tuple yang diekstrak:</b> pertumbuhan ekonomi (y-on-y) · periode 2025-Q4 · nilai seperti tertulis <b>5.39%</b></li>
+<li><b>Baris BPS:</b> 5.39% · rilis 2026-02-05 · <a href="https://www.bps.go.id/id/pressrelease/2026/02/05/2546/ekonomi-indonesia-tahun-2025-tumbuh-5-11-persen">Berita Resmi Statistik</a></li>
+<li><b>Pembulatan:</b> 5.39 dibulatkan ke presisi klaim = <b>5.39</b> = 5.39</li>
+<li><b>Kelas:</b> Sesuai data BPS</li>
+<li><b>Label:</b> diaudit manusia (sampel acak)</li></ol></details>
+<p>Klaim: <b>5.39%</b> · Data BPS: <b>5.39%</b> (<a href="https://www.bps.go.id/id/pressrelease/2026/02/05/2546/ekonomi-indonesia-tahun-2025-tumbuh-5-11-persen">BRS</a>)</p>
+<p class="src"><a href="https://www.cnbcindonesia.com/news/20260205155443-4-708536/pertumbuhan-ekonomi-ri-tahun-2025-capai-511-airlangga-buka-suara/amp">https://www.cnbcindonesia.com/news/20260205155443-4-708536/pertumbuhan-ekonomi-ri-tahun-2025-capai-511-airlangga-buka-suara/amp</a> · 2026-02-05</p>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "ClaimReview", "url": "https://pugarhuda.github.io/bps-claims-check/claimreview.html#c0158-gdp_growth_yoy-2025-Q4", "claimReviewed": "Pada kuartal II-2025, laju pertumbuhan ekonomi sudah mampu bangkit ke level 5,12%, lalu kuartal III-2025 sebesar 5,04%, sebelum pada akhirnya pada kuartal IV-2025 melesat ke level 5,39%.", "author": {"@type": "Organization", "name": "BPS claim-check (Apart AI x Epistemics hackathon)"}, "reviewRating": {"@type": "Rating", "ratingValue": 5, "bestRating": 5, "worstRating": 1, "alternateName": "Sesuai data BPS"}, "reviewBody": "Klaim: pertumbuhan ekonomi (y-on-y) periode 2025-Q4 = 5.39 persen. Data resmi BPS (rilis pertama): 5.39 persen. Sumber: https://www.bps.go.id/id/pressrelease/2026/02/05/2546/ekonomi-indonesia-tahun-2025-tumbuh-5-11-persen", "itemReviewed": {"@type": "Claim", "datePublished": "2026-02-05", "appearance": [{"@type": "CreativeWork", "url": "https://www.cnbcindonesia.com/news/20260205155443-4-708536/pertumbuhan-ekonomi-ri-tahun-2025-capai-511-airlangga-buka-suara/amp"}]}}</script>
+</article>
+<article id="c0165-gdp_growth_yoy-2025" class="match">
+<p class="rating">Sesuai data BPS · pertumbuhan ekonomi (y-on-y) 2025</p>
+<blockquote>&quot;Sepanjang tahun 2025, ekonomi Indonesia tumbuh sebesar 5,11 persen,&quot; ujar Kepala BPS Amalia Adininggar Widyasanti dalam konferensi pers, Kamis (5/2).</blockquote>
+<details><summary>Kartu verifikasi</summary><ol class="chain">
+<li><b>Tuple yang diekstrak:</b> pertumbuhan ekonomi (y-on-y) · periode 2025 · nilai seperti tertulis <b>5.11%</b></li>
+<li><b>Baris BPS:</b> 5.11% · rilis 2026-02-05 · <a href="https://www.bps.go.id/id/pressrelease/2026/02/05/169697/ekonomi-indonesia-tahun-2025-tumbuh-5-11-persen.html">Berita Resmi Statistik</a></li>
+<li><b>Pembulatan:</b> 5.11 dibulatkan ke presisi klaim = <b>5.11</b> = 5.11</li>
+<li><b>Kelas:</b> Sesuai data BPS</li>
+<li><b>Label:</b> diaudit manusia (sampel acak)</li></ol></details>
+<p>Klaim: <b>5.11%</b> · Data BPS: <b>5.11%</b> (<a href="https://www.bps.go.id/id/pressrelease/2026/02/05/169697/ekonomi-indonesia-tahun-2025-tumbuh-5-11-persen.html">BRS</a>)</p>
+<p class="src"><a href="https://www.cnnindonesia.com/ekonomi/20260205151111-532-1324971/purbaya-akui-pertumbuhan-ekonomi-2025-tak-sesuai-janji-tapi-lumayan">https://www.cnnindonesia.com/ekonomi/20260205151111-532-1324971/purbaya-akui-pertumbuhan-ekonomi-2025-tak-sesuai-janji-tapi-lumayan</a> · 2026-02-05</p>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "ClaimReview", "url": "https://pugarhuda.github.io/bps-claims-check/claimreview.html#c0165-gdp_growth_yoy-2025", "claimReviewed": "\"Sepanjang tahun 2025, ekonomi Indonesia tumbuh sebesar 5,11 persen,\" ujar Kepala BPS Amalia Adininggar Widyasanti dalam konferensi pers, Kamis (5/2).", "author": {"@type": "Organization", "name": "BPS claim-check (Apart AI x Epistemics hackathon)"}, "reviewRating": {"@type": "Rating", "ratingValue": 5, "bestRating": 5, "worstRating": 1, "alternateName": "Sesuai data BPS"}, "reviewBody": "Klaim: pertumbuhan ekonomi (y-on-y) periode 2025 = 5.11 persen. Data resmi BPS (rilis pertama): 5.11 persen. Sumber: https://www.bps.go.id/id/pressrelease/2026/02/05/169697/ekonomi-indonesia-tahun-2025-tumbuh-5-11-persen.html", "itemReviewed": {"@type": "Claim", "datePublished": "2026-02-05", "appearance": [{"@type": "CreativeWork", "url": "https://www.cnnindonesia.com/ekonomi/20260205151111-532-1324971/purbaya-akui-pertumbuhan-ekonomi-2025-tak-sesuai-janji-tapi-lumayan"}]}}</script>
+</article>
+</main></body></html>

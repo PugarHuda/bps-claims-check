@@ -303,6 +303,39 @@ def pregold(ref):
 SILVER = p.ROOT / "data/silver_sheet.csv"  # blind Claude Opus annotation (an LLM, NOT a human)
 
 
+def sensitivity():
+    """How much the headline depends on the human's period convention for ambiguous sentences.
+    S0 = the human's decisions; S1 = every adjudicated period treated as undeterminable (strict);
+    S2 = 'latest release at the article date' applied to every adjudicated sentence (lenient)."""
+    ref, releases = p.load_ref(), load_releases()
+    gold, meta = load_gold()
+    adj = [cid for cid in gold if meta[cid].get("label_source", "").startswith("human_adjudicated")]
+
+    def latest(ind, date):
+        rows = sorted((d, per) for (i, per), d in releases.items() if i == ind and "-" in per and d <= date)
+        return rows[-1][1] if rows else None
+
+    scenarios = {"S0 human decisions": gold,
+                 "S1 strict: ambiguous period = undeterminable": {
+                     cid: [{**c, "period": None} for c in cl] if cid in adj else cl for cid, cl in gold.items()},
+                 "S2 lenient: latest release at article date": {
+                     cid: [{**c, "period": c["period"] or latest(c["indicator"], meta[cid]["article_date"])}
+                           for c in cl] if cid in adj else cl for cid, cl in gold.items()}}
+    L = ["# Sensitivity of the headline to the period convention\n",
+         f"Only the {len(adj)} human-adjudicated (ambiguous) sentences change between scenarios.\n",
+         "| scenario | tuples | bindable | mismatch among bindable | MISMATCH claims |", "|---|---|---|---|---|"]
+    for name, g in scenarios.items():
+        c, bind, lab = headline(g, ref)
+        n = sum(c.values())
+        mism = sorted(k[0] for k, v in lab.items() if v == "MISMATCH")
+        L.append(f"| {name} | {n} | {bind}/{n} = {bind / n:.1%} {ci(g, lambda d: rates(resample(g, d), ref)['bindable'])} | "
+                 f"{c['MISMATCH']}/{bind} = {c['MISMATCH'] / bind:.1%} {ci(g, lambda d: rates(resample(g, d), ref)['mismatch'])} | "
+                 f"{', '.join(mism)} |")
+    out = p.ROOT / "results/sensitivity.md"
+    out.write_text("\n".join(L) + "\n", encoding="utf-8")
+    print(out.read_text(encoding="utf-8"))
+
+
 def main(gold_path=None, out_name="metrics.md", label="human gold"):
     ref = p.load_ref()
     gold, meta = load_gold(gold_path)
@@ -422,8 +455,11 @@ if __name__ == "__main__":
     ap.add_argument("--gold", help="gold sheet (default data/gold_sheet.csv)")
     ap.add_argument("--out", default="metrics.md", help="file name under results/")
     ap.add_argument("--silver", action="store_true", help="score against data/silver_sheet.csv -> silver_metrics.md")
+    ap.add_argument("--sensitivity", action="store_true", help="period-convention scenarios -> sensitivity.md")
     a = ap.parse_args()
-    if a.silver:
+    if a.sensitivity:
+        sensitivity()
+    elif a.silver:
         main(SILVER, "silver_metrics.md", "silver (blind Claude Opus annotator, not human-verified)")
     else:
         main(a.gold, a.out)

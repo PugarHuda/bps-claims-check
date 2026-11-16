@@ -1,0 +1,82 @@
+<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Audit 20 Kalimat</title><style>
+:root{--bg:#fcfcfb;--fg:#0b0b0b;--mu:#52514e;--line:#e1e0d9;--ok:#2a78d6;--no:#eb6834}
+@media (prefers-color-scheme:dark){:root{--bg:#1a1a19;--fg:#f0efec;--mu:#c3c2b7;--line:#2c2c2a;--ok:#3987e5;--no:#d95926}}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.5 system-ui,sans-serif} main{max-width:760px;margin:0 auto;padding:16px}
+article{border:1px solid var(--line);border-radius:8px;padding:12px 14px;margin:12px 0} article.done-ok{border-color:var(--ok)} article.done-no{border-color:var(--no)}
+.meta{color:var(--mu);font-size:13px} .s{margin:6px 0;font-style:italic} .l{margin:6px 0}
+button{font:inherit;padding:6px 16px;border-radius:6px;border:1px solid var(--line);background:transparent;color:inherit;cursor:pointer;margin-right:8px}
+article.done-ok .ok{background:var(--ok);color:#fff} article.done-no .no{background:var(--no);color:#fff}
+input{width:100%;box-sizing:border-box;margin-top:8px;padding:6px;font:inherit;background:transparent;color:inherit;border:1px solid var(--line);border-radius:6px}
+#bar{position:sticky;top:0;background:var(--bg);padding:8px 0;border-bottom:1px solid var(--line)}
+</style></head><body><main><div id="bar"><b>Audit label Opus</b>: klik Benar/Salah untuk tiap kalimat. <span id="prog">0/20</span> selesai. Setelah semua, bilang "sudah" di Claude Code.</div>
+<p class="meta">Aturan scope: hanya angka <b>nasional</b> realisasi untuk inflasi y-on-y, TPT, kemiskinan (%), pertumbuhan ekonomi y-on-y. Bukan mtm/ytd/inti/daerah/target.</p>
+<article data-cid="c0004"><div class="meta">#1 · c0004 · artikel 2026-10-19</div>
+<p class="s">Rekam jejak pada 2024 turut memperlihatkan eskalasi inflasi dari 0,30 persen pada November menjadi 0,44 persen pada Desember.</p><p class="l">Label Opus: <b>TIDAK ADA klaim in-scope</b></p>
+<div class="btns"><button class="ok">Benar</button><button class="no">Salah</button></div>
+<input class="fix" placeholder="Kalau salah: label yang benar (mis. inflasi 2025-09 = 2,65 / tidak ada klaim)" hidden></article><article data-cid="c0005"><div class="meta">#2 · c0005 · artikel 2026-11-02</div>
+<p class="s">- Badan Pusat Statistik mencatat tingkat inflasi tahunan Indonesia pada Oktober 2026 mencapai 3,23 persen. - Kenaikan indeks harga dipicu oleh lonjakan harga kelompok makanan, transportasi, serta komoditas emas perhiasan. - Seluruh provinsi mengalami inflasi t</p><p class="l">Label Opus: <b>inflation_yoy 2026-10 = 3.23</b></p>
+<div class="btns"><button class="ok">Benar</button><button class="no">Salah</button></div>
+<input class="fix" placeholder="Kalau salah: label yang benar (mis. inflasi 2025-09 = 2,65 / tidak ada klaim)" hidden></article><article data-cid="c0032"><div class="meta">#3 · c0032 · artikel 2026-05-06</div>
+<p class="s">Jakarta, CNN Indonesia -- Badan Pusat Statistik (BPS) melaporkan Tingkat Pengangguran Terbuka (TPT) pada Februari 2026 yang sebesar 4,68 persen.</p><p class="l">Label Opus: <b>unemployment_rate 2026-02 = 4.68</b></p>
+<div class="btns"><button class="ok">Benar</button><button class="no">Salah</button></div>
+<input class="fix" placeholder="Kalau salah: label yang benar (mis. inflasi 2025-09 = 2,65 / tidak ada klaim)" hidden></article><article data-cid="c0033"><div class="meta">#4 · c0033 · artikel 2026-05-06</div>
+<p class="s">&quot;Tingkat pengangguran terbuka pada Februari 2026 adalah 4,68 persen.</p><p class="l">Label Opus: <b>unemployment_rate 2026-02 = 4.68</b></p>
+<div class="btns"><button class="ok">Benar</button><button class="no">Salah</button></div>
+<input class="fix" placeholder="Kalau salah: label yang benar (mis. inflasi 2025-09 = 2,65 / tidak ada klaim)" hidden></article><article data-cid="c0042"><div class="meta">#5 · c0042 · artikel 2026-11-05</div>
+<p class="s">“Pada bulan Agustus 2026 terdapat sebanyak 7,38 juta penganggur atau setara dengan tingkat pengangguran terbuka sebesar 4,75 persen.</p><p class="l">Label Opus: <b>unemployment_rate 2026-08 = 4.75</b></p>
+<div class="btns"><button class="ok">Benar</button><button class="no">Salah</button></div>
+<input class="fix" placeholder="Kalau salah: label yang benar (mis. inflasi 2025-09 = 2,65 / tidak ada klaim)" hidden></article><article data-cid="c0060"><div class="meta">#6 · c0060 · artikel 2026-10-19</div>
+<p class="s">Menjelang dua tahun pemerintahan Presiden Prabowo Subianto dan Wakil Presiden Gibran Rakabuming Raka pada 20 Oktober 2026, data terbaru Badan Pusat Statistik (BPS) mencatat tingkat kemiskinan Indonesia sebesar 8,07 persen pada Maret 2026.</p><p class="l">Label Opus: <b>poverty_rate 2026-03 = 8.07</b></p>
+<div class="btns"><button class="ok">Benar</button><button class="no">Salah</button></div>
+<input class="fix" placeholder="Kalau salah: label yang benar (mis. inflasi 2025-09 = 2,65 / tidak ada klaim)" hidden></article><article data-cid="c0069"><div class="meta">#7 · c0069 · artikel 2026-11-15</div>
+<p class="s">Mengenai pertumbuhan ekonomi di wilayah Maluku dan Papua yang tercatat 1,36 persen secara tahunan (yoy), Purbaya mengakui sumber pertumbuhan di kawasan tersebut belum optimal.</p><p class="l">Label Opus: <b>TIDAK ADA klaim in-scope</b></p>
+<div class="btns"><button class="ok">Benar</button><button class="no">Salah</button></div>
+<input class="fix" placeholder="Kalau salah: label yang benar (mis. inflasi 2025-09 = 2,65 / tidak ada klaim)" hidden></article><article data-cid="c0098"><div class="meta">#8 · c0098 · artikel 2026-02-04</div>
+<p class="s">Inflasi Dijaga Terus Terkendali  Inflasi tahunan Januari 2026 tercatat sebesar 3,55% (year-on-year), dimana angka tersebut tidak mencerminkan kenaikan harga yang signifikan, melainkan dipengaruhi oleh low base effect dari kebijakan diskon tarif listrik 50% pad</p><p class="l">Label Opus: <b>inflation_yoy 2026-01 = 3.55</b></p>
+<div class="btns"><button class="ok">Benar</button><button class="no">Salah</button></div>
+<input class="fix" placeholder="Kalau salah: label yang benar (mis. inflasi 2025-09 = 2,65 / tidak ada klaim)" hidden></article><article data-cid="c0109"><div class="meta">#9 · c0109 · artikel 2025-10-02</div>
+<p class="s">Hal ini tercermin dari data Badan Pusat Statistik (BPS) yang mencatat inflasi sebesar 0,21 persen month to month (mtm), sehingga secara tahunan inflasi mencapai 2,65 persen.</p><p class="l">Label Opus: <b>inflation_yoy 2025-09 = 2.65</b></p>
+<div class="btns"><button class="ok">Benar</button><button class="no">Salah</button></div>
+<input class="fix" placeholder="Kalau salah: label yang benar (mis. inflasi 2025-09 = 2,65 / tidak ada klaim)" hidden></article><article data-cid="c0112"><div class="meta">#10 · c0112 · artikel 2025-10-02</div>
+<p class="s">Secara lebih rinci, inflasi inti pada September 2025 tercatat sebesar 0,18 persen (mtm), lebih tinggi dari realisasi bulan sebelumnya sebesar 0,06 persen (mtm).</p><p class="l">Label Opus: <b>TIDAK ADA klaim in-scope</b></p>
+<div class="btns"><button class="ok">Benar</button><button class="no">Salah</button></div>
+<input class="fix" placeholder="Kalau salah: label yang benar (mis. inflasi 2025-09 = 2,65 / tidak ada klaim)" hidden></article><article data-cid="c0117"><div class="meta">#11 · c0117 · artikel 2025-10-02</div>
+<p class="s">Secara tahunan, kelompok administered prices mencatat inflasi 1,10 persen (yoy), lebih tinggi dibandingkan bulan sebelumnya sebesar 1 persen (yoy).</p><p class="l">Label Opus: <b>TIDAK ADA klaim in-scope</b></p>
+<div class="btns"><button class="ok">Benar</button><button class="no">Salah</button></div>
+<input class="fix" placeholder="Kalau salah: label yang benar (mis. inflasi 2025-09 = 2,65 / tidak ada klaim)" hidden></article><article data-cid="c0118"><div class="meta">#12 · c0118 · artikel 2026-05-05</div>
+<p class="s">Jakarta, CNN Indonesia -- Ketua Komisi XI DPR RI Mukhamad Misbakhun menilai capaian pertumbuhan ekonomi Indonesia pada Kuartal I 2026 yang mencapai 5,61 persen (year-on-year) merupakan bukti konkret ketangguhan ekonomi RI di tengah tekanan ketidakpastian globa</p><p class="l">Label Opus: <b>gdp_growth_yoy 2026-Q1 = 5.61</b></p>
+<div class="btns"><button class="ok">Benar</button><button class="no">Salah</button></div>
+<input class="fix" placeholder="Kalau salah: label yang benar (mis. inflasi 2025-09 = 2,65 / tidak ada klaim)" hidden></article><article data-cid="c0124"><div class="meta">#13 · c0124 · artikel 2026-02-04</div>
+<p class="s">Badan Pusat Statistik (BPS) mencatat inflasi tahunan Indonesia pada Januari 2026 mencapai 3,55 persen (yoy), lebih tinggi dibandingkan inflasi pada bulan sebelumnya yang berada di angka 2,92 persen.</p><p class="l">Label Opus: <b>inflation_yoy 2026-01 = 3.55; inflation_yoy 2025-12 = 2.92</b></p>
+<div class="btns"><button class="ok">Benar</button><button class="no">Salah</button></div>
+<input class="fix" placeholder="Kalau salah: label yang benar (mis. inflasi 2025-09 = 2,65 / tidak ada klaim)" hidden></article><article data-cid="c0133"><div class="meta">#14 · c0133 · artikel 2026-04-06</div>
+<p class="s">Adapun inflasi bulanan (mtm) Maret 2026 tercatat sebesar 0,41 persen atau terjadi kenaikan Indeks Harga Konsumen (IHK) dari 110,50 pada Februari 2026 menjadi 110,95 pada Maret 2026.</p><p class="l">Label Opus: <b>TIDAK ADA klaim in-scope</b></p>
+<div class="btns"><button class="ok">Benar</button><button class="no">Salah</button></div>
+<input class="fix" placeholder="Kalau salah: label yang benar (mis. inflasi 2025-09 = 2,65 / tidak ada klaim)" hidden></article><article data-cid="c0136"><div class="meta">#15 · c0136 · artikel 2026-04-06</div>
+<p class="s">Angka inflasi tahun kalender ini jauh lebih tinggi ketimbang periode yang sama tahun lalu yang hanya sebesar 0,39 persen.</p><p class="l">Label Opus: <b>TIDAK ADA klaim in-scope</b></p>
+<div class="btns"><button class="ok">Benar</button><button class="no">Salah</button></div>
+<input class="fix" placeholder="Kalau salah: label yang benar (mis. inflasi 2025-09 = 2,65 / tidak ada klaim)" hidden></article><article data-cid="c0144"><div class="meta">#16 · c0144 · artikel 2026-07-02</div>
+<p class="s">Tingkat pengangguran tercatat turun menjadi 4,85 persen pada Agustus 2025, dari 4,91 persen pada periode yang sama tahun sebelumnya.</p><p class="l">Label Opus: <b>unemployment_rate 2025-08 = 4.85; unemployment_rate 2024-08 = 4.91</b></p>
+<div class="btns"><button class="ok">Benar</button><button class="no">Salah</button></div>
+<input class="fix" placeholder="Kalau salah: label yang benar (mis. inflasi 2025-09 = 2,65 / tidak ada klaim)" hidden></article><article data-cid="c0148"><div class="meta">#17 · c0148 · artikel 2025-10-20</div>
+<p class="s">Angka kemiskinan turun ke 8,47 persen dalam setahun kinerja Prabowo-Gibran.</p><p class="l">Label Opus: <b>poverty_rate 2025-03 = 8.47</b></p>
+<div class="btns"><button class="ok">Benar</button><button class="no">Salah</button></div>
+<input class="fix" placeholder="Kalau salah: label yang benar (mis. inflasi 2025-09 = 2,65 / tidak ada klaim)" hidden></article><article data-cid="c0156"><div class="meta">#18 · c0156 · artikel 2026-02-05</div>
+<p class="s">Pertumbuhan Ekonomi RI Tahun 2025 Capai 5,11%, Airlangga Buka Suara Jakarta, CNBC Indonesia - Menteri Koordinator Bidang Perekonomian Airlangga Hartarto buka suara ihwal pertumbuhan ekonomi Indonesia pada 2025 yang tidak mencapai target pemerintah.</p><p class="l">Label Opus: <b>gdp_growth_yoy 2025 = 5.11</b></p>
+<div class="btns"><button class="ok">Benar</button><button class="no">Salah</button></div>
+<input class="fix" placeholder="Kalau salah: label yang benar (mis. inflasi 2025-09 = 2,65 / tidak ada klaim)" hidden></article><article data-cid="c0158"><div class="meta">#19 · c0158 · artikel 2026-02-05</div>
+<p class="s">Pada kuartal II-2025, laju pertumbuhan ekonomi sudah mampu bangkit ke level 5,12%, lalu kuartal III-2025 sebesar 5,04%, sebelum pada akhirnya pada kuartal IV-2025 melesat ke level 5,39%.</p><p class="l">Label Opus: <b>gdp_growth_yoy 2025-Q2 = 5.12; gdp_growth_yoy 2025-Q3 = 5.04; gdp_growth_yoy 2025-Q4 = 5.39</b></p>
+<div class="btns"><button class="ok">Benar</button><button class="no">Salah</button></div>
+<input class="fix" placeholder="Kalau salah: label yang benar (mis. inflasi 2025-09 = 2,65 / tidak ada klaim)" hidden></article><article data-cid="c0165"><div class="meta">#20 · c0165 · artikel 2026-02-05</div>
+<p class="s">&quot;Sepanjang tahun 2025, ekonomi Indonesia tumbuh sebesar 5,11 persen,&quot; ujar Kepala BPS Amalia Adininggar Widyasanti dalam konferensi pers, Kamis (5/2).</p><p class="l">Label Opus: <b>gdp_growth_yoy 2025 = 5.11</b></p>
+<div class="btns"><button class="ok">Benar</button><button class="no">Salah</button></div>
+<input class="fix" placeholder="Kalau salah: label yang benar (mis. inflasi 2025-09 = 2,65 / tidak ada klaim)" hidden></article></main><script>
+const KEY='audit20'; let st={}; try{st=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}; document.getElementById('prog').textContent=Object.keys(st).length+'/20'; window.auditResult=st;};
+document.querySelectorAll('article').forEach(a=>{const id=a.dataset.cid, fix=a.querySelector('.fix');
+ const paint=()=>{a.classList.toggle('done-ok',st[id]?.v==='ok');a.classList.toggle('done-no',st[id]?.v==='no');fix.hidden=st[id]?.v!=='no';if(st[id]?.fix)fix.value=st[id].fix;};
+ a.querySelector('.ok').onclick=()=>{st[id]={v:'ok'};paint();save()};
+ a.querySelector('.no').onclick=()=>{st[id]={v:'no',fix:fix.value};paint();save();fix.focus()};
+ fix.oninput=()=>{if(st[id])st[id].fix=fix.value;save()}; paint();}); save();
+</script></body></html>
