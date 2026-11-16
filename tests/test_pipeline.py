@@ -180,6 +180,34 @@ def test_untrusted_text_handling():
     assert ns["safe"]("Inflasi 2 persen") == "Inflasi 2 persen"
 
 
+def test_failure_taxonomy_on_real_cases():
+    """The two reference MISMATCHes, classified from data alone (release dates come from BRS URLs)."""
+    import metrics as m
+    ref, var, rel = p.load_ref(), m.load_variants(), m.load_releases()
+    C = lambda ind, per, val: p.clean([{"indicator": ind, "period": per, "value": val}])[0]
+    # c0065: TPT 4,65 on 14 Nov 2026; Aug-2026 TPT (4.75) was released 5 Nov; 4.65 is the May-2026 figure
+    stale = C("unemployment_rate", "2026-08", "4.65")
+    assert m.stale_of(stale, "2026-11-14", ref, rel) == ("2026-05", "2026-08", "2026-11-05")
+    assert m.failure_class(stale, "2026-11-14", ref, var, rel).startswith("stale")
+    assert m.stale_of(stale, "2026-11-01", ref, rel) is None  # before the August release: not stale
+    # c0137: poverty "23,85%" (23.85 million people) vs 8.47%
+    assert m.failure_class(C("poverty_rate", "2025-03", "23.85"), "2025-10-20", ref, var, rel).startswith("implausible")
+    # Nemotron's m-to-m read: 0.64 for Dec 2025 equals the published m-to-m figure
+    assert m.failure_class(C("inflation_yoy", "2025-12", "0.64"), "2026-10-19", ref, var, rel) == "wrong frame (inflation_mtm)"
+    assert m.failure_class(C("inflation_yoy", "2025-12", "2.50"), "2026-10-19", ref, var, rel) == "wrong number"
+
+
+def test_hard_benchmark_oracle_is_perfect():
+    import csv
+    import perturb
+    if not perturb.HARD_EXPECTED.exists():
+        perturb.make_hard()
+    ref = p.load_ref()
+    for r in csv.DictReader(perturb.HARD_EXPECTED.open(encoding="utf-8")):
+        got = p.verdict(p.clean([{"indicator": r["indicator"], "period": r["period"], "value": r["value"]}])[0], ref)[0]
+        assert perturb.ok(got, r["expected"]), r
+
+
 def test_claimreview():
     import claimreview as cr
     doc = cr.build([{"claim_id": "a", "sentence": "Inflasi 1,6 persen.", "url": "https://x.id/a", "article_date": "2025-01-02",

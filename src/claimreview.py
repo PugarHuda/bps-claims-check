@@ -6,8 +6,9 @@ and Indonesian fact-checkers such as cekfakta.com publish), so results drop into
 
 Writes results/claimreview.jsonld (array) + docs/claimreview.html (the page each ClaimReview `url` anchors
 into, JSON-LD embedded; Google requires the review to live on a real page).
-Three ratings: MATCH 5 "Sesuai data BPS"; MISFRAMED 3 "Angka benar, konteks keliru" (the stated number is a
-different published variant of the same release, e.g. m-to-m inflation stated as inflation); MISMATCH 1.
+Four ratings: MATCH 5 "Sesuai data BPS"; MISFRAMED 3 "Angka benar, konteks keliru" (the stated number is a
+different published variant of the same release, e.g. m-to-m inflation stated as inflation); STALE 3 "Angka lama"
+(the number was right for an earlier release, but a newer one was already out on the article date); MISMATCH 1.
 UNVERIFIABLE tuples are not exported: no evidence, no review.
 """
 import argparse, csv, html, json, sys
@@ -19,7 +20,7 @@ import pipeline as p  # noqa: E402
 NAMES = {"inflation_yoy": "inflasi (y-on-y)", "unemployment_rate": "tingkat pengangguran terbuka",
          "poverty_rate": "persentase penduduk miskin", "gdp_growth_yoy": "pertumbuhan ekonomi (y-on-y)"}
 RATING = {"MATCH": (5, "Sesuai data BPS"), "MISFRAMED": (3, "Angka benar, konteks keliru"),
-          "MISMATCH": (1, "Tidak sesuai data BPS")}
+          "STALE": (3, "Angka lama: sudah ada rilis BPS yang lebih baru"), "MISMATCH": (1, "Tidak sesuai data BPS")}
 FRAME_NAMES = {"inflation_mtm": "inflasi bulanan (m-to-m)", "inflation_ytd": "inflasi tahun kalender (y-to-d)",
                "gdp_growth_qoq": "pertumbuhan q-to-q", "gdp_growth_ctc": "pertumbuhan kumulatif (c-to-c)"}
 ORG = {"@type": "Organization", "name": "BPS claim-check (Apart AI x Epistemics hackathon)"}
@@ -43,7 +44,9 @@ def build(rows, review_url):
             "reviewBody": f"Klaim: {NAMES[r['indicator']]} periode {r['period']} = {r['text']} persen. "
                           f"Data resmi BPS (rilis pertama): {r['official']} persen. Sumber: {r['source_url']}"
                           + (f" Angka {r['text']} persen adalah {FRAME_NAMES[r['frame']]} pada rilis yang sama."
-                             if r.get("frame") else ""),
+                             if r.get("frame") else "")
+                          + (f" Angka {r['text']} persen adalah data periode {r['stale'][0]}; data {r['stale'][1]} "
+                             f"sudah dirilis BPS pada {r['stale'][2]}, sebelum artikel terbit." if r.get("stale") else ""),
             "itemReviewed": {"@type": "Claim", "datePublished": r["article_date"] or None,
                              "appearance": [{"@type": "CreativeWork", "url": r["url"]}]},
         })
@@ -56,7 +59,7 @@ def rows_from(source):
     urls = {(r["indicator"], r["period"]): r["source_url"]
             for r in csv.DictReader((p.ROOT / "data/bps_reference.csv").open(encoding="utf-8-sig"))}
     import metrics
-    variants = metrics.load_variants()
+    variants, releases = metrics.load_variants(), metrics.load_releases()
     if source == "gold":
         by_id = metrics.load_gold()[0]
     else:
@@ -67,9 +70,11 @@ def rows_from(source):
             if v == "UNVERIFIABLE":
                 continue
             frame = metrics.frame_of(c, variants) if v == "MISMATCH" else None
-            yield {**claims[cid], **c, "text": c.get("text") or repr(c["value"]), "verdict": "MISFRAMED" if frame else v,
+            stale = metrics.stale_of(c, claims[cid]["article_date"], ref, releases) if v == "MISMATCH" and not frame else None
+            yield {**claims[cid], **c, "text": c.get("text") or repr(c["value"]),
+                   "verdict": "MISFRAMED" if frame else "STALE" if stale else v,
                    "official": official, "source_url": urls[(c["indicator"], c["period"])], "frame": frame,
-                   "frame_value": variants.get((frame, c["period"])) if frame else None}
+                   "frame_value": variants.get((frame, c["period"])) if frame else None, "stale": stale}
 
 
 def main():
@@ -108,7 +113,7 @@ def page(rows, doc, source):
 body{{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 system-ui,sans-serif}}
 main{{max-width:760px;margin:0 auto;padding:16px}} a{{color:inherit;word-break:break-all}}
 article{{border-left:4px solid var(--line);padding:4px 0 4px 14px;margin:22px 0}}
-article.match{{border-color:var(--ok)}} article.mismatch{{border-color:var(--bad)}} article.misframed{{border-color:var(--frame)}}
+article.match{{border-color:var(--ok)}} article.mismatch{{border-color:var(--bad)}} article.misframed,article.stale{{border-color:var(--frame)}}
 .rating{{font-weight:700;margin:0}} blockquote{{margin:8px 0;font-style:italic}} .src,.note{{color:var(--muted);font-size:14px}}
 </style></head><body><main>
 <h1>Cek klaim statistik vs data BPS</h1>

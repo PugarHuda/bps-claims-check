@@ -160,6 +160,53 @@ def frame_of(c, variants):
     return None
 
 
+# ---------- stale figures and the failure taxonomy of MISMATCHes ----------
+
+def load_releases():
+    """(indicator, period) -> release date (YYYY-MM-DD), read from the BRS URL path /pressrelease/YYYY/MM/DD/."""
+    out = {}
+    for r in csv.DictReader((p.ROOT / "data/bps_reference.csv").open(encoding="utf-8-sig")):
+        if m := re.search(r"/(20\d\d)/(\d\d)/(\d\d)/", r["source_url"]):
+            out[(r["indicator"], r["period"])] = "-".join(m.groups())
+    return out
+
+
+def kind(period):
+    return "Q" if "-Q" in period else "M" if "-" in period else "Y"
+
+
+def stale_of(c, article_date, ref, releases):
+    """For a MISMATCH tuple: the older release whose value the claim matches, when a newer release of the same
+    indicator (same period kind) was already out on the article date. -> (old_period, newer_period, newer_date)."""
+    if not article_date or not c.get("period"):
+        return None
+    out_by = sorted((d, per) for (ind, per), d in releases.items()
+                    if ind == c["indicator"] and kind(per) == kind(c["period"]) and d <= article_date)
+    if not out_by:
+        return None
+    newest_date, newest = out_by[-1]
+    for d, per in reversed(out_by[:-1]):
+        if per != c["period"] and p.verdict({**c, "period": per}, ref)[0] == "MATCH":
+            return per, newest, newest_date
+    return None
+
+
+def implausible(c, official):
+    """A claim off by more than a factor of 2 from the official rate: almost always units (people vs %) or a typo."""
+    return official not in (None, 0) and not 0.5 <= abs(c["value"] / official) <= 2
+
+
+def failure_class(c, article_date, ref, variants, releases):
+    """MISMATCH -> right number, wrong frame | stale figure | implausible (typo/units) | wrong number."""
+    if f := frame_of(c, variants):
+        return f"wrong frame ({f})"
+    if s := stale_of(c, article_date, ref, releases):
+        return f"stale (equals {s[0]}; {s[1]} out since {s[2]})"
+    if implausible(c, p.verdict(c, ref)[1]):
+        return "implausible value (typo/units)"
+    return "wrong number"
+
+
 # ---------- error taxonomy ----------
 CUES = [("mtm read as y-on-y", r"m-to-m|\bmtm\b|month[- ]to[- ]month|secara bulanan|bulan sebelumnya"),
         ("ytd read as y-on-y", r"y-to-d|\bytd\b|year[- ]to[- ]date|tahun kalender"),
@@ -224,23 +271,25 @@ def ungrounded(pred, only=None):
 def pregold(ref):
     """What can be said without human labels: verdict mix per system, how many of each system's MISMATCHes are
     exactly another published variant (right number, wrong frame), and system-system agreement."""
-    variants = load_variants()
+    variants, releases = load_variants(), load_releases()
+    dates = {c["claim_id"]: c["article_date"] for c in p.load_claims()}
     preds = {Path(f).stem.removeprefix("extract_"): load_pred(f)
              for f in sorted(glob.glob(str(p.ROOT / "results/extract_*.jsonl")))}
     L = ["# No-gold report (system outputs only — NOT accuracy)\n",
          f"Reference table {len(ref)} rows; variant table {len(variants)} rows. Duplicates dropped: {len(duplicate_ids())}.\n",
-         "| system | sentences | tuples | MATCH | MISMATCH | of which = another published variant | UNVERIFIABLE | values not in sentence |",
+         "| system | sentences | tuples | MATCH | MISMATCH | of which: wrong frame / stale / implausible / wrong number | UNVERIFIABLE | values not in sentence |",
          "|---|---|---|---|---|---|---|---|"]
     for name, pred in preds.items():
-        c, framed = Counter(), Counter()
+        c, why = Counter(), Counter()
         for cid, cl in pred.items():
             for x in cl:
                 v = x.get("llm_verdict") or p.verdict(x, ref)[0]
                 c[v] += 1
-                if v == "MISMATCH" and (f := frame_of(x, variants)):
-                    framed[f] += 1
+                if v == "MISMATCH" and x.get("period"):
+                    why[failure_class(x, dates.get(cid, ""), ref, variants, releases).split(" (")[0]] += 1
         L.append(f"| {name} | {len(pred)} | {sum(c.values())} | {c['MATCH']} | {c['MISMATCH']} | "
-                 f"{sum(framed.values())} ({', '.join(f'{k} {v}' for k, v in framed.items()) or '–'}) | {c['UNVERIFIABLE']} | {ungrounded(pred)} |")
+                 f"{why['wrong frame']} / {why['stale']} / {why['implausible value']} / {why['wrong number']} | "
+                 f"{c['UNVERIFIABLE']} | {ungrounded(pred)} |")
     names = list(preds)
     L += ["\n## Verdict agreement (Cohen's κ; n = sentences both systems processed)\n",
           "| | " + " | ".join(names) + " |", "|---" * (len(names) + 1) + "|"]
@@ -286,11 +335,12 @@ def main(gold_path=None, out_name="metrics.md", label="human gold"):
                  f"{ci(gold, lambda d: rates(resample(gold, d), ref)['mismatch'])}")
     L.append(f"- Unverifiable: {c['UNVERIFIABLE']}")
     mism = [(k, next(x for x in gold[k[0]] if key(k[0], x) == k)) for k, v in lab.items() if v == "MISMATCH"]
-    framed = Counter(frame_of(x, variants) for _, x in mism)
+    releases = load_releases()
     if mism:
-        L.append(f"- Of {len(mism)} MISMATCHes, **right number, wrong frame** (claim equals another published "
-                 f"variant of the same release): " + (", ".join(f"{v}: {k}" for v, k in framed.items() if v) or "none")
-                 + f"; wrong number: {framed[None]}" + ("" if variants else " (variant table not available)"))
+        L.append(f"- What the {len(mism)} MISMATCHes are (failure taxonomy):")
+        for (cid, *_), x in mism:
+            L.append(f"  - {cid}: {x['indicator']} {x['period']} = {x.get('text') or x['value']} → "
+                     f"**{failure_class(x, meta[cid].get('article_date', ''), ref, variants, releases)}**")
     by_ind = Counter((k[1], v) for k, v in lab.items())
     L += ["\n| indicator | MATCH | MISMATCH | UNVERIFIABLE |", "|---|---|---|---|"]
     for ind in p.INDICATORS:

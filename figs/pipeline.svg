@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 300" font-family="Helvetica, Arial, sans-serif" font-size="13">
+  <!-- Figure 1: pipeline with the real example c0065. Palette: reference dataviz palette (light). -->
+  <rect width="960" height="300" fill="#fcfcfb"/>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#898781"/>
+    </marker>
+  </defs>
+  <!-- stage boxes -->
+  <g fill="#ffffff" stroke="#c3c2b7" stroke-width="1.2">
+    <rect x="10" y="40" width="210" height="150" rx="8"/>
+    <rect x="255" y="40" width="190" height="150" rx="8"/>
+    <rect x="480" y="40" width="210" height="150" rx="8"/>
+    <rect x="725" y="40" width="225" height="150" rx="8"/>
+  </g>
+  <g font-weight="700" fill="#0b0b0b">
+    <text x="22" y="30">1 · Claim sentence</text>
+    <text x="267" y="30">2 · LLM extraction</text>
+    <text x="492" y="30">3 · Lookup (BPS table)</text>
+    <text x="737" y="30">4 · Deterministic verdict</text>
+  </g>
+  <g fill="#52514e" font-size="12">
+    <text x="22" y="64">c0065 · news, 14 Nov 2026</text>
+    <text x="22" y="90" fill="#0b0b0b" font-style="italic">"Tingkat Pengangguran</text>
+    <text x="22" y="108" fill="#0b0b0b" font-style="italic">Terbuka (TPT) turun ke</text>
+    <text x="22" y="126" fill="#0b0b0b" font-style="italic">4,65 persen pada 2026,</text>
+    <text x="22" y="144" fill="#0b0b0b" font-style="italic">terendah sejak 1994."</text>
+    <text x="22" y="174">article date resolves "2026"</text>
+
+    <text x="267" y="64">only language understanding:</text>
+    <text x="267" y="96" fill="#0b0b0b">indicator  unemployment_rate</text>
+    <text x="267" y="118" fill="#0b0b0b">period     2026-08 (latest)</text>
+    <text x="267" y="140" fill="#0b0b0b">value      "4.65" (as stated)</text>
+    <text x="267" y="174">the model never sees BPS data</text>
+
+    <text x="492" y="64">first-release BRS figures</text>
+    <text x="492" y="96" fill="#0b0b0b">2026-08 → 4.75</text>
+    <text x="492" y="114">released 2026-11-05 (BRS URL)</text>
+    <text x="492" y="140" fill="#0b0b0b">2026-05 → 4.65</text>
+    <text x="492" y="158">+ 83 variant rows (m-to-m, y-to-d…)</text>
+    <text x="492" y="176">every row: URL + provenance</text>
+
+    <text x="737" y="64">round official to stated precision:</text>
+    <text x="737" y="86" fill="#0b0b0b">4.75 ≠ 4.65  →  MISMATCH</text>
+    <text x="737" y="112">then classify the failure:</text>
+    <text x="737" y="132">equals another variant? → wrong frame</text>
+    <text x="737" y="150" fill="#0b0b0b" font-weight="700">equals 2026-05, superseded</text>
+    <text x="737" y="166" fill="#0b0b0b" font-weight="700">9 days earlier → STALE</text>
+    <text x="737" y="182">off by &gt;2×? → typo/units</text>
+  </g>
+  <g stroke="#898781" stroke-width="1.5" marker-end="url(#a)">
+    <line x1="222" y1="115" x2="252" y2="115"/>
+    <line x1="447" y1="115" x2="477" y2="115"/>
+    <line x1="692" y1="115" x2="722" y2="115"/>
+  </g>
+  <!-- outputs -->
+  <rect x="725" y="210" width="225" height="62" rx="8" fill="#ffffff" stroke="#eda100" stroke-width="2"/>
+  <text x="737" y="232" font-weight="700" fill="#0b0b0b">ClaimReview rating</text>
+  <text x="737" y="252" fill="#52514e" font-size="12">"Angka lama: sudah ada rilis</text>
+  <text x="737" y="267" fill="#52514e" font-size="12">BPS yang lebih baru" (3/5)</text>
+  <line x1="837" y1="192" x2="837" y2="207" stroke="#898781" stroke-width="1.5" marker-end="url(#a)"/>
+  <text x="10" y="230" fill="#52514e" font-size="12">Every verdict traces to one table row and one rounding comparison.</text>
+  <text x="10" y="248" fill="#52514e" font-size="12">An LLM can misread a sentence (visible in step 2) but cannot decide that a number is wrong.</text>
+</svg>

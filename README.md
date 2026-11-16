@@ -1,5 +1,16 @@
 # Do their numbers match? Indonesian statistical claims vs official BPS data
 
+[![tests](https://github.com/PugarHuda/bps-claims-check/actions/workflows/tests.yml/badge.svg)](https://github.com/PugarHuda/bps-claims-check/actions/workflows/tests.yml)
+[![update-bps](https://github.com/PugarHuda/bps-claims-check/actions/workflows/update-bps.yml/badge.svg)](https://github.com/PugarHuda/bps-claims-check/actions/workflows/update-bps.yml)
+
+**Key findings** (report: [`docs/report.pdf`](docs/report.pdf)):
+1. **Attributed claims match BPS.** 95.7% of claims are bindable and 2.2% of those mismatch. Neither mismatch is an official misquoting BPS: one is a *stale* figure in a news article, the other a typo.
+2. **Automated checkers fail on frame, period and staleness, not arithmetic.**
+   - Month-on-month inflation quoted as "inflasi" produced all 7 false accusations of one large model.
+   - Every LLM misses a stale figure because it assumes the old BPS release calendar.
+   - Batched prompts leaked values between items.
+3. **LLM labels cannot replace a human on ambiguous claims.** On sentences where systems disagreed with the reference annotator, no model matched the human decision on more than 2 of 7.
+
 Apart Research **AI × Epistemics** sprint, November 2026.
 
 We take sentences in which Indonesian officials, ministries or news media state a headline statistic: inflation,
@@ -10,7 +21,7 @@ An LLM only **extracts** `(indicator, period, value)` from the sentence. The **v
 lookup in a versioned evidence table with a precision-aware rounding rule, so every verdict can be audited and none
 can be hallucinated.
 
-Report draft: [`docs/REPORT_DRAFT.md`](docs/REPORT_DRAFT.md). Fact-check page (schema.org ClaimReview): [`docs/claimreview.html`](docs/claimreview.html).
+Report: [`docs/REPORT.md`](docs/REPORT.md) → [`docs/report.pdf`](docs/report.pdf) (`uv run python src/build_report.py`); longer working draft: [`docs/REPORT_DRAFT.md`](docs/REPORT_DRAFT.md). Fact-check page (schema.org ClaimReview): [`docs/claimreview.html`](docs/claimreview.html).
 
 ## What is in here
 
@@ -30,7 +41,7 @@ Report draft: [`docs/REPORT_DRAFT.md`](docs/REPORT_DRAFT.md). Fact-check page (s
 | `src/update_bps.py` + `.github/workflows/update-bps.yml` | monthly job that reads new BRS releases and opens a PR to append them |
 | `src/figures.py` | figures → `figs/` |
 | `tools/label.html` | labelling tool (open in a browser, no install) |
-| `tests/test_pipeline.py` | 12 plain-assert tests: verdict rule, parsers, metrics, perturbation oracle, data integrity |
+| `tests/test_pipeline.py` | 15 plain-assert tests: verdict rule, parsers, metrics, perturbation oracle, data integrity |
 
 **Metrics reported by `src/metrics.py`:**
 - bindable and mismatch rates with bootstrap CIs, broken down by indicator, speaker and source;
@@ -43,7 +54,7 @@ Report draft: [`docs/REPORT_DRAFT.md`](docs/REPORT_DRAFT.md). Fact-check page (s
 ```bash
 uv sync
 export OPENROUTER_API_KEY=...            # free tier is enough (50 requests/day)
-uv run python tests/test_pipeline.py     # 12 tests, offline
+uv run python tests/test_pipeline.py     # 15 tests, offline
 
 # extraction (resumable: already-done claims are skipped)
 uv run python src/pipeline.py --model regex

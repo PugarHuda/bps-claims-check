@@ -9,7 +9,9 @@ Labels: 164 checked sentences (2 duplicate sentences dropped), 75 with ≥1 in-s
 - Bindable rate (claim resolves to a BPS figure): **90/94 = 95.7%** [91.1%, 99.1%]
 - Mismatch rate among bindable: **2/90 = 2.2%** [0.0%, 5.7%]
 - Unverifiable: 4
-- Of 2 MISMATCHes, **right number, wrong frame** (claim equals another published variant of the same release): none; wrong number: 2
+- What the 2 MISMATCHes are (failure taxonomy):
+  - c0065: unemployment_rate 2026-08 = 4.65 → **stale (equals 2026-05; 2026-08 out since 2026-11-05)**
+  - c0137: poverty_rate 2025-03 = 23.85 → **implausible value (typo/units)**
 
 | indicator | MATCH | MISMATCH | UNVERIFIABLE |
 |---|---|---|---|
@@ -62,20 +64,20 @@ Labels: 164 checked sentences (2 duplicate sentences dropped), 75 with ≥1 in-s
 
 ## Error taxonomy (one cause per disagreement with gold)
 
-| system | wrong period | other out-of-scope figure | target / projection | missed claim | core / component inflation | mtm read as y-on-y | wrong value | regional figure | q-to-q / c-to-c read as y-on-y | ytd read as y-on-y |
+| system | wrong period | other out-of-scope figure | target / projection | missed claim | core / component inflation | wrong value | mtm read as y-on-y | regional figure | q-to-q / c-to-c read as y-on-y | ytd read as y-on-y |
 |---|---|---|---|---|---|---|---|---|---|---|
 | anthropic__claude-haiku-5.5__agent | 12 | 0 | 0 | 1 | 0 | 0 | 0 | 0 | 0 | 0 |
 | anthropic__claude-sonnet-5.5__agent | 6 | 0 | 0 | 1 | 0 | 0 | 0 | 0 | 0 | 0 |
 | baidu__ernie-5.5-flash-preview_free | 15 | 2 | 1 | 3 | 0 | 0 | 0 | 0 | 1 | 0 |
-| baidu__ernie-5.5-flash-preview_free__e2e | 7 | 0 | 1 | 0 | 0 | 0 | 1 | 0 | 0 | 0 |
+| baidu__ernie-5.5-flash-preview_free__e2e | 7 | 0 | 1 | 0 | 0 | 1 | 0 | 0 | 0 | 0 |
 | baidu__ernie-5.5-flash-preview_free__persentence | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | gemini__gemini-3.8-flash | 12 | 0 | 1 | 1 | 0 | 0 | 0 | 0 | 0 | 0 |
 | gemini__gemini-3.8-flash__e2e | 7 | 0 | 1 | 3 | 0 | 0 | 0 | 0 | 0 | 0 |
 | liquid__lfm-3-1.7b_free | 0 | 1 | 0 | 2 | 0 | 0 | 0 | 0 | 0 | 0 |
-| nvidia__nemotron-3-ultra-550b-a55b_free | 14 | 3 | 0 | 0 | 0 | 5 | 0 | 0 | 0 | 0 |
+| nvidia__nemotron-3-ultra-550b-a55b_free | 14 | 3 | 0 | 0 | 0 | 0 | 5 | 0 | 0 | 0 |
 | nvidia__nemotron-3-ultra-550b-a55b_free__e2e | 12 | 1 | 0 | 2 | 0 | 0 | 0 | 0 | 0 | 0 |
 | regex | 22 | 43 | 15 | 19 | 15 | 4 | 4 | 6 | 3 | 3 |
-| rules | 36 | 58 | 18 | 2 | 6 | 9 | 13 | 2 | 1 | 0 |
+| rules | 36 | 58 | 18 | 2 | 6 | 13 | 9 | 2 | 1 | 0 |
 
 ## Model–model agreement (verdict-level Cohen's κ on claims both processed; no gold needed)
 

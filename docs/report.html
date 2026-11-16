@@ -1,0 +1,439 @@
+<!doctype html><html lang='en'><head><meta charset='utf-8'><title>BPS claims report</title><style>
+@page { size: A4; margin: 18mm 17mm 18mm 17mm; }
+body { font-family: "Georgia", "Times New Roman", serif; font-size: 10.4pt; line-height: 1.42; color: #111; }
+h1 { font-family: Helvetica, Arial, sans-serif; font-size: 17pt; line-height: 1.2; margin: 0 0 6pt; }
+h2 { font-family: Helvetica, Arial, sans-serif; font-size: 12pt; margin: 14pt 0 4pt; }
+h3 { font-family: Helvetica, Arial, sans-serif; font-size: 10.6pt; margin: 10pt 0 3pt; }
+p, li { text-align: justify; hyphens: auto; }
+p { margin: 0 0 6pt; }
+ul, ol { margin: 0 0 6pt 16pt; padding: 0; }
+table { border-collapse: collapse; width: 100%; font-size: 8.6pt; margin: 4pt 0 8pt; font-family: Helvetica, Arial, sans-serif; }
+th, td { border-bottom: 0.6pt solid #c3c2b7; padding: 2.2pt 4pt; text-align: left; vertical-align: top; }
+th { border-bottom: 1pt solid #52514e; }
+img { max-width: 100%; display: block; margin: 4pt auto 2pt; }
+code { font-size: 8.8pt; }
+.authors { font-family: Helvetica, Arial, sans-serif; font-size: 10pt; color: #333; margin-bottom: 8pt; }
+.abstract { border-left: 3pt solid #2a78d6; padding: 4pt 10pt; background: #f4f8fd; margin: 6pt 0 10pt; }
+.caption, em.caption { font-size: 8.8pt; color: #333; display: block; margin: 0 0 8pt; }
+.pagebreak { page-break-before: always; }
+</style></head><body><h1>Do Their Numbers Match? Checking Indonesian Statistical Claims Against Official BPS Data, and What Goes Wrong When They Don't</h1>
+<div class="authors">
+<p><strong>AUTHOR NAMES · AFFILIATION</strong> — with Apart Research · AI x Epistemics Research Sprint, November 2026</p>
+</div>
+<div class="abstract">
+<p><strong>Abstract.</strong> Indonesian officials and media routinely attribute headline statistics to Statistics Indonesia (BPS). We ask:</p>
+<ul>
+<li>how many such claims can be bound automatically to the official figure;</li>
+<li>how many disagree with it;</li>
+<li>how reliably language models do the binding.</li>
+</ul>
+<p>We collected 166 claim sentences from ministry releases and national news, and built an evidence table of 104 first-release BPS figures (2022–2026, each with its release URL and date). We added a second table of 83 <em>variant</em> figures from the same releases. An LLM only extracts (indicator, period, value). The verdict is a deterministic, precision-aware comparison, so it is auditable and cannot be hallucinated.</p>
+<p><strong>Findings.</strong></p>
+<ul>
+<li>95.7% of claims are bindable, and 2.2% of those mismatch (95% CI 0–5.7). Neither mismatch is an official misquoting BPS: one is a <em>stale</em> figure in a news article, the other a typo.</li>
+<li>The errors that matter are not wrong numbers. They are <strong>right numbers in the wrong frame</strong> (month-on-month presented as inflation), <strong>stale numbers</strong>, and <strong>wrong periods</strong>.</li>
+<li>On sentences where models disagreed with the reference labeller, a human decided, and no labeller, frontier models included, matched the human on more than 2 of 7.</li>
+<li>Batched prompting leaked values between items.</li>
+</ul>
+<p>We turn these failure types into schema.org ClaimReview ratings fact-checkers can publish, and keep the evidence table current with a monthly job.</p>
+</div>
+<h2>1. Introduction</h2>
+<p>Statistical claims are unusually checkable: "unemployment fell to 4.65 percent" has one authoritative counterpart, published by a national statistics office on a known date. Checking is still slow, because the checker must first decide three things:</p>
+<ul>
+<li><em>which</em> statistic is meant (year-on-year or month-on-month? national or provincial?);</li>
+<li><em>which</em> release (often implied only by the article date);</li>
+<li><em>how much</em> rounding is acceptable.</li>
+</ul>
+<p>These are the steps where an automated fact-checker can fail silently. When it fails it produces the most damaging error in fact-checking: a false accusation against a named official.</p>
+<p>We study this for Indonesia. BPS publishes every headline figure in a <em>Berita Resmi Statistik</em> (BRS) release with a stable URL, and government communication cites BPS constantly. We fix the research question before collecting data: <em>Of quantitative claims by Indonesian officials and institutions that cite BPS, what fraction can be bound automatically to an official figure, what fraction mismatch, and how accurately do LLMs do the binding?</em></p>
+<p><strong>Contributions:</strong></p>
+<ol>
+<li><strong>An auditable checking pipeline.</strong> LLMs only extract; a precision-aware rule decides against a versioned evidence table with per-row provenance. All parts are tested and open.</li>
+<li><strong>A failure taxonomy for statistical claims.</strong> It separates wrong frame, stale figure, implausible value and wrong number, and detects each automatically from BPS's own release data. It is exported as a four-level ClaimReview rating.</li>
+<li><strong>Evidence on where LLM fact-checking breaks.</strong><ul>
+<li>Period resolution, not arithmetic.</li>
+<li>Ambiguous sentences, where no model reaches a human decision on more than 2 of 7.</li>
+<li>LLM-as-judge behaviour that differs by model.</li>
+<li>Cross-item leakage under batched prompting.</li>
+</ul>
+</li>
+<li><strong>An Indonesian dataset and benchmarks</strong>:<ul>
+<li>166 sentences;</li>
+<li>adjudicated labels;</li>
+<li>two synthetic benchmarks with known answers (105 easy, 39 hard).</li>
+</ul>
+</li>
+</ol>
+<h2>2. Related Work</h2>
+<p><strong>Numerical fact-checking benchmarks.</strong> QuanTemp [1], earlier released as NUMTEMP, collects real-world numerical, statistical and temporal claims from fact-checking sites and pairs them with web evidence. Its best baselines reach a macro-F1 of about 58. CLEF CheckThat! 2025 Task 3 [2] uses QuanTemp with BM25-retrieved evidence.</p>
+<p>All of them are in English, retrieve prose evidence, and let the model produce the verdict. We instead use a small <em>structured</em> evidence table from the statistics office and a <em>deterministic</em> verdict, so every error is attributable to extraction, to the table, or to the rule. We also work in Indonesian.</p>
+<p><strong>Fact-checking infrastructure.</strong> ClaimReview [3] is the schema.org markup that fact-checkers embed and Google Fact Check Explorer reads. Indonesia's collaborative CekFakta network (22 outlets with Mafindo) [4] and AJI's ClaimReview guidance [5] make it the natural output format.</p>
+<p>Existing ratings are true/false scales. Our failure taxonomy adds the distinctions a statistics desk actually needs: a correct number in the wrong frame, or an outdated number.</p>
+<h2>3. Methods</h2>
+<p><strong>Claims.</strong> We searched for Indonesian articles and press releases stating the four indicators together with BPS attributions ("menurut BPS"). Of 55 URLs, 41 yielded sentences that mention an indicator and a percentage: 166 sentences, 164 after removing duplicates. For the 25 sentences from the Coordinating Ministry for Economic Affairs (ekon.go.id), dates were recovered from the release dateline. Sampling on BPS attribution over-represents claims that quote BPS correctly, so our mismatch rate applies to attributed claims only.</p>
+<p><strong>Evidence.</strong> <code>bps_reference.csv</code> holds 104 national first-release figures (2022–2026): headline inflation y-on-y, open unemployment (TPT), poverty rate and GDP growth. Each row carries its BRS URL, whose path also gives the release date. 68 values were read on the BRS page in a browser and 31 from listing titles. An independent second pass re-opened 12 rows and found all 12 correct, in the right frame (y-on-y, not the q-to-q figure in the same release). <code>bps_variants.csv</code> holds 83 other figures from the same releases (m-to-m and y-to-d inflation, q-to-q and c-to-c growth), each quoting its evidence sentence.</p>
+<p><strong>Pipeline</strong> (Figure 1).</p>
+<ol>
+<li><strong>Extraction.</strong> The extractor reads the sentence, the preceding sentence and the article date, and returns in-scope tuples (indicator, period, value as stated). Scope excludes m-to-m, y-to-d, core and regional figures, and targets.</li>
+<li><strong>Lookup</strong> on (indicator, period).</li>
+<li><strong>Verdict.</strong> UNVERIFIABLE if the period is unknown or absent from the table; otherwise MATCH iff <code>round_half_up(official, d) = stated</code>, where <em>d</em> is the number of decimals stated. Tests caught two traps in a naive version: <code>round(5.05, 1) = 5.0</code> in Python, and JSON parsing that turns "5,0" into "5".</li>
+<li><strong>Failure class.</strong> Each MISMATCH is classified, in order: <strong>wrong frame</strong> (it equals a variant of the same release), <strong>stale</strong> (it equals an earlier release that a newer one superseded before the article date), <strong>implausible</strong> (off by more than a factor of 2: units or typo), else <strong>wrong number</strong>.</li>
+</ol>
+<p><img alt="Figure 1" src="../figs/pipeline.svg" />
+<span class="caption"><strong>Figure 1.</strong> The pipeline on a real claim (c0065). The model only reads language. Lookup, verdict and failure class come from BPS data, so the stale-figure diagnosis cites the release that superseded the number.</span></p>
+<p><strong>Systems.</strong></p>
+<ul>
+<li><strong>Free API models</strong> (temperature 0, batched 20 per request to fit the 50-request/day quota): Nemotron-3 Ultra 550B, ERNIE 5.5 Flash, LFM-3 1.7B, Gemini 3.8 Flash.</li>
+<li><strong>Claude Sonnet 5.5 and Haiku 5.5</strong>, run as isolated Claude Code subagents that saw only the instructions and the sentences. This is less reproducible than an API run.</li>
+<li><strong>Rule baselines</strong>: a naive regex, and <code>rules</code>, which adds clause-level scope cues and relative periods.</li>
+<li><strong>LLM-as-judge ablation (e2e)</strong>: the model gets the whole evidence table and returns the verdict itself.</li>
+</ul>
+<p><strong>Reference labels.</strong> A blind Claude Opus subagent annotated all 164 sentences (94 tuples) from written guidelines. A human then decided every sentence where the systems' majority disagreed with the annotator (7), and audited 20 random sentences where all systems agreed with it (§4.3). A tool pass over all rows in which the human changed nothing is not counted as gold.</p>
+<p><strong>Metrics.</strong></p>
+<ul>
+<li>Bindable and mismatch rates, with 95% bootstrap CIs over sentences.</li>
+<li>Extraction F1, verdict accuracy and macro-F1.</li>
+<li><strong>False MISMATCH</strong> (a false accusation).</li>
+<li>A grounding check: does the extracted value occur in the source text?</li>
+<li>Cohen's κ between systems.</li>
+</ul>
+<p><strong>Synthetic benchmarks</strong> (known answers, built from the tables):</p>
+<ul>
+<li><strong>Easy (105).</strong> Exact, rounded, truncated, last digit +1, off by 0.5, wrong period, absent period.</li>
+<li><strong>Hard (39).</strong> "Bulan lalu" resolved from the article date, the previous month's figure under "bulan lalu", a stale figure under "data terbaru", and an unlabelled m-to-m figure.</li>
+</ul>
+<h2>4. Results</h2>
+<h3>4.1 How many claims are checkable, and how many are wrong?</h3>
+<p><strong>95.7% of claim tuples are bindable</strong> (90/94, CI 91.1–99.1), and <strong>2.2% of bindable tuples mismatch</strong> (2/90, CI 0.0–5.7).</p>
+<table>
+<thead>
+<tr>
+<th>Speaker / source</th>
+<th>Tuples</th>
+<th>Bindable</th>
+<th>Mismatch</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Government officials</td>
+<td>42</td>
+<td>93%</td>
+<td><strong>0/39</strong></td>
+</tr>
+<tr>
+<td>BPS officials</td>
+<td>32</td>
+<td>100%</td>
+<td>0/32</td>
+</tr>
+<tr>
+<td>Journalists / others</td>
+<td>19</td>
+<td>89%</td>
+<td>2/17</td>
+</tr>
+<tr>
+<td>News media (all speakers)</td>
+<td>83</td>
+<td>96%</td>
+<td>2/80</td>
+</tr>
+</tbody>
+</table>
+<p><span class="caption"><strong>Table 1.</strong> Reference labels after human adjudication (<code>results/metrics.md</code>).</span></p>
+<p>Neither mismatch is an official misquoting BPS. The failure taxonomy names both from BPS data alone:</p>
+<ul>
+<li><strong>Stale (c0065).</strong> A news article on 14 Nov 2026 reports "TPT 4,65 persen pada 2026". That was the May figure, and BPS had published the August figure (4.75) nine days earlier.</li>
+<li><strong>Implausible (c0137).</strong> Poverty is given as "23,85%" for "Meret 20025". This is a typo for 23.85 <em>million people</em>.</li>
+</ul>
+<p>Within this sample, attributed government claims match BPS. The failures are in reporting.</p>
+<h3>4.2 Where do systems fail?</h3>
+<table>
+<thead>
+<tr>
+<th>System</th>
+<th>Extract F1</th>
+<th>Verdict acc.</th>
+<th>Macro-F1 [95% CI]</th>
+<th>False MISMATCH</th>
+<th>Values not in source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Claude Sonnet 5.5 †</td>
+<td>0.99</td>
+<td>0.94</td>
+<td>0.51 [0.33, 0.62]</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>Claude Haiku 5.5 †</td>
+<td>0.99</td>
+<td>0.93</td>
+<td>0.51 [0.38, 0.60]</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>Gemini 3.8 Flash</td>
+<td>0.99</td>
+<td>0.87</td>
+<td>0.68 [0.37, 0.86]</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>ERNIE 5.5 Flash</td>
+<td>0.96</td>
+<td>0.81</td>
+<td>0.65 [0.35, 0.82]</td>
+<td>0</td>
+<td><strong>2</strong></td>
+</tr>
+<tr>
+<td>Nemotron-3 Ultra</td>
+<td>0.96</td>
+<td>0.80</td>
+<td>0.50 [0.36, 0.70]</td>
+<td><strong>7</strong></td>
+<td>0</td>
+</tr>
+<tr>
+<td>rules</td>
+<td>0.63</td>
+<td>0.30</td>
+<td>0.30 [0.25, 0.34]</td>
+<td><strong>54</strong></td>
+<td>0</td>
+</tr>
+<tr>
+<td>regex</td>
+<td>0.54</td>
+<td>0.27</td>
+<td>0.27 [0.23, 0.33]</td>
+<td><strong>31</strong></td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p><span class="caption"><strong>Table 2.</strong> Systems vs the adjudicated reference (164 sentences; LFM-3 1.7B produced output for only 38). † The reference annotator is Claude, so Claude rows are an upper bound. Macro-F1 is unstable with two reference mismatches; we lead with accuracy and false accusations.</span></p>
+<p><strong>(i) Period, not arithmetic.</strong> The most frequent disagreement for every LLM is the <em>period</em> (6–15 per system). On the easy synthetic benchmark every system, including LLM judges with the table in context, scores 100% on all seven perturbation types. Matching a stated number to a table is not the hard part.</p>
+<p><strong>(ii) Right number, wrong frame.</strong> All 7 false accusations by Nemotron come from sentences quoting month-on-month inflation as plain "inflasi". Of its 8 MISMATCHes:</p>
+<ul>
+<li>5 equal the published m-to-m figure exactly;</li>
+<li>2 more come from the same sentences but lie outside the variant table's coverage;</li>
+<li>the eighth is the typo the reference also flags.</li>
+</ul>
+<p><strong>(iii) Rules accuse.</strong> Hand-written scope rules raise recall but produce 54 false accusations, more than the naive regex. Encoding the scope as cues does not replace language understanding.</p>
+<p><strong>(iv) Batching leaks.</strong> ERNIE attached 2 of its 95 values to sentences that do not contain them. Both values appear verbatim in <em>neighbouring sentences of the same 20-item batch</em>. A 10-sentence batch-size test (identical outputs, κ = 1.0) did not reveal this; the grounding check did. The pipeline now flags every ungrounded value.</p>
+<h3>4.3 Can LLM labels replace a human?</h3>
+<table>
+<thead>
+<tr>
+<th>Labeller</th>
+<th>7 disputed sentences</th>
+<th>20 random agreed sentences</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Claude Opus (reference annotator)</td>
+<td>2/7</td>
+<td><strong>QUIZ</strong></td>
+</tr>
+<tr>
+<td>Claude Sonnet 5.5</td>
+<td>2/7</td>
+<td>–</td>
+</tr>
+<tr>
+<td>Gemini, ERNIE, Nemotron</td>
+<td>1/7 each</td>
+<td>–</td>
+</tr>
+<tr>
+<td>Claude Haiku 5.5</td>
+<td>0/7</td>
+<td>–</td>
+</tr>
+</tbody>
+</table>
+<p><span class="caption"><strong>Table 3.</strong> Exact agreement with a human decision. The disputed sentences are genuinely ambiguous about the period, e.g. "TPT 4,65 persen pada 2026" when BPS publishes no annual TPT. The human chose "latest release at the article date".</span></p>
+<p>When sentences are ambiguous, no labeller, frontier models included, exceeds 2/7. On the random sample of sentences where all systems agreed, QUIZTEXT</p>
+<h3>4.4 Should the LLM judge with the evidence in view?</h3>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>κ pipeline vs e2e</th>
+<th>Accuracy pipeline → e2e</th>
+<th>False MISMATCH pipeline → e2e</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Gemini 3.8 Flash</td>
+<td>0.91</td>
+<td>0.87 → 0.88</td>
+<td>0 → 0</td>
+</tr>
+<tr>
+<td>ERNIE 5.5 Flash (124 sentences)</td>
+<td>0.90</td>
+<td>0.81 → 0.87</td>
+<td>0 → 0</td>
+</tr>
+<tr>
+<td>Nemotron-3 Ultra</td>
+<td>0.68</td>
+<td>0.80 → 0.85</td>
+<td>7 → 0</td>
+</tr>
+</tbody>
+</table>
+<p><span class="caption"><strong>Table 4.</strong> The LLM-as-judge effect differs by model. Gemini e2e covers 146/166 sentences.</span></p>
+<p>With the answer key in context, Nemotron stops reading month-on-month figures as year-on-year, and its 7 false accusations disappear. Two other models barely change.</p>
+<p>On the hard benchmark (stale figures, relative periods), every LLM scores 95–97% and the rule baseline 74%. The rule baseline fails every stale case: it cannot tell what "data terbaru" refers to. All three LLMs fail the <em>same</em> stale item. On 8 Aug 2026, "data terbaru … TPT 4,68 persen" is the February figure, but BPS had already published the May 2026 rate. Claude Sonnet, Claude Haiku and Gemini 3.5 Flash all labelled it February and called it a MATCH. Since 2025, BPS has published unemployment quarterly; the models apply the older February/August calendar from their training data. The judge version (Gemini e2e, with the table in context) misses one more stale case. A release calendar read from the evidence itself (our table takes release dates from BRS URLs) is what catches these. Gemini 3.8 Flash had reached its free daily quota, so Gemini 3.5 Flash was used here (Appendix B).</p>
+<p>The deterministic design keeps every extraction visible, so a judge that "reconciles" a speaker's number with the table can be audited instead of trusted.</p>
+<h2>5. Discussion and Limitations</h2>
+<p><strong>Implications.</strong> For epistemic tools built on LLMs, the failure that matters is rarely a wrong number. It is <em>which statistic</em> and <em>which release</em>: precisely the judgements a reader also gets wrong. Separating extraction from judgement makes those failures visible. Grounding checks catch a failure mode that aggregate accuracy hides: values borrowed from other items. A fact-checker gets a richer, more honest output than true/false:</p>
+<ul>
+<li><strong>"right number, wrong frame"</strong>;</li>
+<li><strong>"stale: a newer release exists"</strong>.</li>
+</ul>
+<p>We ship both as ClaimReview ratings. The export validates against schema.org (0 errors) and defaults to human-checked verdicts.</p>
+<p><strong>Limitations.</strong></p>
+<ol>
+<li><strong>Reference labels are mostly LLM labels.</strong> A human decided all disputed sentences and audited a random sample of agreed ones. Errors shared by every system and the annotator could still be missed.</li>
+<li><strong>Small n with two mismatches</strong>, so CIs are wide. Sampling on BPS attribution means our "officials 0/39" does not generalise to unattributed claims.</li>
+<li><strong>Free endpoints only.</strong> Claude runs were subagents, not API calls. LFM-3 1.7B (38/166) and two e2e runs (ERNIE 126, Gemini 146) are incomplete.</li>
+<li><strong>Evidence scope:</strong> first-release values, national, four indicators. Three periods are missing or weakly sourced.</li>
+<li><strong>The human's period convention</strong> ("latest release at article date") decides two verdicts. A different convention changes them.</li>
+</ol>
+<p><strong>Future work.</strong></p>
+<ul>
+<li>Unattributed claims: speeches, debates, social media.</li>
+<li>More indicators, and regional BRS releases.</li>
+<li>A second human annotator.</li>
+<li>Partnering with a CekFakta member to publish the ClaimReview feed.</li>
+</ul>
+<h2>6. Conclusion</h2>
+<p>Attributed headline statistics in Indonesian government communication largely match BPS. The few mismatches we found are reporting failures: a stale figure and a typo. Automated checkers fail in different places: frame, period, and leakage between batched items. None of these show up as "wrong numbers".</p>
+<p>A pipeline that lets the model read but not judge, and that classifies failures against the statistics office's own release data, turns these into specific verdicts that are auditable and publishable.</p>
+<h2>Code and Data</h2>
+<ul>
+<li><strong>Code, data, results, tests (15), CI:</strong> https://github.com/PugarHuda/bps-claims-check</li>
+<li><strong>Reproduce:</strong> <code>README.md</code>. Every number in this report is in <code>results/*.md</code>.</li>
+<li><strong>Monthly evidence update</strong> (<code>src/update_bps.py</code>, GitHub Action): a live run on 16 Nov 2026 matched the three newest BPS releases.</li>
+</ul>
+<h2>References</h2>
+<ol>
+<li><em>QuanTemp: A real-world open-domain benchmark for fact-checking numerical claims</em> (earlier version: NUMTEMP). arXiv:2403.17169, 2024. github.com/factiverse/QuanTemp</li>
+<li><em>ClaimIQ at CheckThat! 2025: Comparing prompted and fine-tuned language models for verifying numerical claims.</em> arXiv:2509.11492.</li>
+<li>Google Search Central. <em>Fact check (ClaimReview) structured data.</em> developers.google.com/search/docs/appearance/structured-data/factcheck</li>
+<li>Google News Initiative. <em>CekFakta: collaborative fact-checking in Indonesia.</em> blog.google, 2018.</li>
+<li>AJI Indonesia. <em>ClaimReview: panduan media untuk kredibilitas informasi.</em> 2025.</li>
+<li>Badan Pusat Statistik. <em>Berita Resmi Statistik.</em> bps.go.id (accessed 16 Nov 2026).</li>
+</ol>
+<div class="pagebreak"></div>
+
+<h2>Appendix A. Dual-use and ethics</h2>
+<p><strong>Main harm: false accusation.</strong> A MISMATCH attached to a named official is an accusation. Naive automation produces many: 31–54 false MISMATCHes from the rule baselines. Our mitigations:</p>
+<ul>
+<li>false accusations are reported separately;</li>
+<li>the ClaimReview export defaults to human-checked verdicts and skips UNVERIFIABLE;</li>
+<li>frame and staleness errors get their own ratings, so a correct number is never published as "false".</li>
+</ul>
+<p><strong>Misuse.</strong> A "Sesuai data BPS" stamp could be applied selectively to favourable claims. Publishing the full claim set and all verdicts is the countermeasure. A judge that reconciles claims with the table it sees can hide real misstatements (§4.4), which is a reason to keep extraction and judgement separate.</p>
+<p><strong>Data.</strong> The dataset contains:</p>
+<ul>
+<li>public statements by public officials, stored as short quotations with URLs;</li>
+<li>public BPS figures.</li>
+</ul>
+<p>No private individuals or personal data are included. Untrusted scraped text is sanitised before prompting, and labelling sheets are protected against spreadsheet formula injection.</p>
+<h2>Appendix B. Synthetic benchmarks</h2>
+<p><strong>Easy (105 sentences, 7 kinds).</strong> All five systems scored 100%:</p>
+<ul>
+<li>the deterministic rule given the true tuple;</li>
+<li><code>rules</code>;</li>
+<li>ERNIE;</li>
+<li>the ERNIE e2e judge;</li>
+<li>the Nemotron e2e judge.</li>
+</ul>
+<p><strong>Hard (39).</strong></p>
+<table>
+<thead>
+<tr>
+<th>System</th>
+<th>m-to-m unlabelled</th>
+<th>"bulan lalu"</th>
+<th>"bulan lalu", wrong month</th>
+<th>stale "data terbaru"</th>
+<th>Overall</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Oracle (true tuple → rule)</td>
+<td>10/10</td>
+<td>10/10</td>
+<td>9/9</td>
+<td>10/10</td>
+<td>100%</td>
+</tr>
+<tr>
+<td>Claude Sonnet 5.5</td>
+<td>10/10</td>
+<td>10/10</td>
+<td>9/9</td>
+<td>9/10</td>
+<td>97%</td>
+</tr>
+<tr>
+<td>Claude Haiku 5.5</td>
+<td>10/10</td>
+<td>10/10</td>
+<td>9/9</td>
+<td>9/10</td>
+<td>97%</td>
+</tr>
+<tr>
+<td>Gemini 3.5 Flash</td>
+<td>10/10</td>
+<td>10/10</td>
+<td>9/9</td>
+<td>9/10</td>
+<td>97%</td>
+</tr>
+<tr>
+<td>Gemini 3.5 Flash · e2e judge</td>
+<td>10/10</td>
+<td>10/10</td>
+<td>9/9</td>
+<td>8/10</td>
+<td>95%</td>
+</tr>
+<tr>
+<td>rules</td>
+<td>10/10</td>
+<td>10/10</td>
+<td>9/9</td>
+<td>0/10</td>
+<td>74%</td>
+</tr>
+</tbody>
+</table>
+<p><span class="caption"><strong>Table B1.</strong> Hard synthetic benchmark (<code>results/perturb_hard_metrics.md</code>). Expected verdicts follow the rule "latest release at the article date"; for unlabelled m-to-m figures, anything but a year-on-year MATCH is accepted.</span></p>
+<h2>Appendix C. Prompts and tooling</h2>
+<p>The extraction prompt is in <code>src/pipeline.py</code> (<code>PROMPT</code>, <code>BATCH_PROMPT</code>, <code>E2E_PROMPT</code>). The labelling tool <code>tools/label.html</code> was tested end to end with Playwright (17 checks).</p>
+<h2>LLM Usage Statement</h2>
+<p>We used Claude (Anthropic) extensively as a coding and writing assistant. It helped:</p>
+<ul>
+<li>implement the pipeline, tests and figures;</li>
+<li>collect and verify BPS figures in a browser;</li>
+<li>draft this report.</li>
+</ul>
+<p>Claude models also appear <em>as evaluated systems</em> (Sonnet, Haiku) and as the <em>reference annotator</em> (Opus). We disclose this throughout and do not count LLM labels as human gold. All numbers were produced by scripts in the repository, and the human author made the adjudication decisions.</p></body></html>
