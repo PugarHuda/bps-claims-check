@@ -45,33 +45,33 @@ Labels: 164 checked sentences (2 duplicate sentences dropped), 75 with ≥1 in-s
 
 `__e2e` = the LLM gave the verdict itself with the BPS table in its prompt (ablation); every other row: LLM/rules extract, deterministic lookup decides. Systems that did not process every gold sentence are scored on the ones they did (see 'scored').
 
-| system | scored | extract P | extract R | extract F1 | verdict acc | verdict macro-F1 [95% CI] | false MISMATCH | missed MISMATCH |
-|---|---|---|---|---|---|---|---|---|
-| anthropic__claude-haiku-5.5__agent | 164/164 | 1.00 | 0.99 | 0.99 | 0.96 | 0.60 [0.53, 0.67] | 0 | 1 |
-| anthropic__claude-sonnet-5.5__agent | 164/164 | 1.00 | 0.99 | 0.99 | 0.99 | 0.67 [0.67, 0.67] | 0 | 1 |
-| baidu__ernie-5.5-flash-preview_free | 164/164 | 0.96 | 0.97 | 0.96 | 0.84 | 0.83 [0.42, 0.91] | 0 | 0 |
-| baidu__ernie-5.5-flash-preview_free__e2e | 124/164 | 0.97 | 0.99 | 0.98 | 0.90 | 0.84 [0.40, 0.96] | 0 | 0 |
-| baidu__ernie-5.5-flash-preview_free__persentence | 10/164 | 1.00 | 1.00 | 1.00 | 1.00 | 0.33 [0.00, 0.33] | 0 | 0 |
-| liquid__lfm-3-1.7b_free | 38/164 | 0.92 | 0.85 | 0.88 | 0.79 | 0.29 [0.24, 0.33] | 0 | 0 |
-| nvidia__nemotron-3-ultra-550b-a55b_free | 164/164 | 0.92 | 1.00 | 0.96 | 0.83 | 0.58 [0.43, 0.82] | 7 | 0 |
-| nvidia__nemotron-3-ultra-550b-a55b_free__e2e | 164/164 | 0.99 | 0.98 | 0.98 | 0.89 | 0.83 [0.41, 0.91] | 0 | 0 |
-| regex | 164/164 | 0.43 | 0.73 | 0.54 | 0.29 | 0.30 [0.24, 0.36] | 31 | 0 |
-| rules | 164/164 | 0.46 | 0.98 | 0.63 | 0.31 | 0.32 [0.27, 0.37] | 54 | 0 |
+| system | scored | extract P | extract R | extract F1 | verdict acc | verdict macro-F1 [95% CI] | false MISMATCH | missed MISMATCH | values not in sentence |
+|---|---|---|---|---|---|---|---|---|---|
+| anthropic__claude-haiku-5.5__agent | 164/164 | 1.00 | 0.99 | 0.99 | 0.96 | 0.60 [0.53, 0.67] | 0 | 1 | 0 |
+| anthropic__claude-sonnet-5.5__agent | 164/164 | 1.00 | 0.99 | 0.99 | 0.99 | 0.67 [0.67, 0.67] | 0 | 1 | 0 |
+| baidu__ernie-5.5-flash-preview_free | 164/164 | 0.96 | 0.97 | 0.96 | 0.84 | 0.83 [0.42, 0.91] | 0 | 0 | 2 |
+| baidu__ernie-5.5-flash-preview_free__e2e | 124/164 | 0.97 | 0.99 | 0.98 | 0.90 | 0.84 [0.40, 0.96] | 0 | 0 | 0 |
+| baidu__ernie-5.5-flash-preview_free__persentence | 10/164 | 1.00 | 1.00 | 1.00 | 1.00 | 0.33 [0.00, 0.33] | 0 | 0 | 0 |
+| liquid__lfm-3-1.7b_free | 38/164 | 0.92 | 0.85 | 0.88 | 0.79 | 0.29 [0.24, 0.33] | 0 | 0 | 0 |
+| nvidia__nemotron-3-ultra-550b-a55b_free | 164/164 | 0.92 | 1.00 | 0.96 | 0.83 | 0.58 [0.43, 0.82] | 7 | 0 | 0 |
+| nvidia__nemotron-3-ultra-550b-a55b_free__e2e | 164/164 | 0.99 | 0.98 | 0.98 | 0.89 | 0.83 [0.41, 0.91] | 0 | 0 | 0 |
+| regex | 164/164 | 0.43 | 0.73 | 0.54 | 0.29 | 0.30 [0.24, 0.36] | 31 | 0 | 0 |
+| rules | 164/164 | 0.46 | 0.98 | 0.63 | 0.31 | 0.32 [0.27, 0.37] | 54 | 0 | 0 |
 
 ## Error taxonomy (one cause per disagreement with gold)
 
-| system | wrong period | other out-of-scope figure | target / projection | missed claim | core / component inflation | wrong value | mtm read as y-on-y | regional figure | q-to-q / c-to-c read as y-on-y | ytd read as y-on-y |
+| system | wrong period | other out-of-scope figure | target / projection | missed claim | core / component inflation | mtm read as y-on-y | wrong value | regional figure | q-to-q / c-to-c read as y-on-y | ytd read as y-on-y |
 |---|---|---|---|---|---|---|---|---|---|---|
 | anthropic__claude-haiku-5.5__agent | 12 | 0 | 0 | 1 | 0 | 0 | 0 | 0 | 0 | 0 |
 | anthropic__claude-sonnet-5.5__agent | 1 | 0 | 0 | 1 | 0 | 0 | 0 | 0 | 0 | 0 |
 | baidu__ernie-5.5-flash-preview_free | 16 | 2 | 1 | 3 | 0 | 0 | 0 | 0 | 1 | 0 |
-| baidu__ernie-5.5-flash-preview_free__e2e | 8 | 0 | 1 | 0 | 0 | 1 | 0 | 0 | 0 | 0 |
+| baidu__ernie-5.5-flash-preview_free__e2e | 8 | 0 | 1 | 0 | 0 | 0 | 1 | 0 | 0 | 0 |
 | baidu__ernie-5.5-flash-preview_free__persentence | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | liquid__lfm-3-1.7b_free | 0 | 1 | 0 | 2 | 0 | 0 | 0 | 0 | 0 | 0 |
-| nvidia__nemotron-3-ultra-550b-a55b_free | 14 | 3 | 0 | 0 | 0 | 0 | 5 | 0 | 0 | 0 |
+| nvidia__nemotron-3-ultra-550b-a55b_free | 14 | 3 | 0 | 0 | 0 | 5 | 0 | 0 | 0 | 0 |
 | nvidia__nemotron-3-ultra-550b-a55b_free__e2e | 10 | 1 | 0 | 2 | 0 | 0 | 0 | 0 | 0 | 0 |
 | regex | 19 | 43 | 15 | 19 | 15 | 4 | 4 | 6 | 3 | 3 |
-| rules | 33 | 58 | 18 | 2 | 6 | 13 | 9 | 2 | 1 | 0 |
+| rules | 33 | 58 | 18 | 2 | 6 | 9 | 13 | 2 | 1 | 0 |
 
 ## Model–model agreement (verdict-level Cohen's κ on claims both processed; no gold needed)
 

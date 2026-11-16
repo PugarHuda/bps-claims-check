@@ -38,7 +38,7 @@ def load_gold(path=None):
     gold, meta, dup = {}, {}, duplicate_ids()
     claims = {c["claim_id"]: c for c in p.load_claims()}  # sentence/url for sheets that only carry labels
     for r in csv.DictReader(Path(path or p.ROOT / "data/gold_sheet.csv").open(encoding="utf-8-sig")):
-        r = {**claims.get(r["claim_id"], {}), **{k: v for k, v in r.items() if v is not None}}
+        r = {**{k: v for k, v in r.items() if v is not None}, **claims.get(r["claim_id"], {})}  # text from source
         if not r["checked"].strip() or r["claim_id"] in dup:
             continue
         gold[r["claim_id"]] = p.clean([{"indicator": r[f"indicator{i}"].strip(), "period": r[f"period{i}"].strip(),
@@ -214,6 +214,13 @@ def strata(meta):
             "attributes BPS in sentence": lambda cid: "yes" if "BPS" in meta[cid]["sentence"] else "no"}
 
 
+def ungrounded(pred, only=None):
+    """Tuples whose number does not occur in the sentence or the preceding one: hallucinated, or (batched
+    prompts) answered for another item. Computed the same way for every system, old runs included."""
+    rows = {c["claim_id"]: c for c in p.load_claims()}
+    return sum(not p.grounded(c, rows[cid]) for cid, cl in pred.items() if only is None or cid in only for c in cl)
+
+
 def pregold(ref):
     """What can be said without human labels: verdict mix per system, how many of each system's MISMATCHes are
     exactly another published variant (right number, wrong frame), and system-system agreement."""
@@ -222,8 +229,8 @@ def pregold(ref):
              for f in sorted(glob.glob(str(p.ROOT / "results/extract_*.jsonl")))}
     L = ["# No-gold report (system outputs only — NOT accuracy)\n",
          f"Reference table {len(ref)} rows; variant table {len(variants)} rows. Duplicates dropped: {len(duplicate_ids())}.\n",
-         "| system | sentences | tuples | MATCH | MISMATCH | of which = another published variant | UNVERIFIABLE |",
-         "|---|---|---|---|---|---|---|"]
+         "| system | sentences | tuples | MATCH | MISMATCH | of which = another published variant | UNVERIFIABLE | values not in sentence |",
+         "|---|---|---|---|---|---|---|---|"]
     for name, pred in preds.items():
         c, framed = Counter(), Counter()
         for cid, cl in pred.items():
@@ -233,7 +240,7 @@ def pregold(ref):
                 if v == "MISMATCH" and (f := frame_of(x, variants)):
                     framed[f] += 1
         L.append(f"| {name} | {len(pred)} | {sum(c.values())} | {c['MATCH']} | {c['MISMATCH']} | "
-                 f"{sum(framed.values())} ({', '.join(f'{k} {v}' for k, v in framed.items()) or '–'}) | {c['UNVERIFIABLE']} |")
+                 f"{sum(framed.values())} ({', '.join(f'{k} {v}' for k, v in framed.items()) or '–'}) | {c['UNVERIFIABLE']} | {ungrounded(pred)} |")
     names = list(preds)
     L += ["\n## Verdict agreement (Cohen's κ; n = sentences both systems processed)\n",
           "| | " + " | ".join(names) + " |", "|---" * (len(names) + 1) + "|"]
@@ -297,8 +304,8 @@ def main(gold_path=None, out_name="metrics.md", label="human gold"):
           "`__e2e` = the LLM gave the verdict itself with the BPS table in its prompt (ablation); every other row: "
           "LLM/rules extract, deterministic lookup decides. Systems that did not process every gold sentence are "
           "scored on the ones they did (see 'scored').\n",
-          "| system | scored | extract P | extract R | extract F1 | verdict acc | verdict macro-F1 [95% CI] | false MISMATCH | missed MISMATCH |",
-          "|---|---|---|---|---|---|---|---|---|"]
+          "| system | scored | extract P | extract R | extract F1 | verdict acc | verdict macro-F1 [95% CI] | false MISMATCH | missed MISMATCH | values not in sentence |",
+          "|---|---|---|---|---|---|---|---|---|---|"]
     conf, tax = [], []
     sentences = {cid: meta[cid]["sentence"] for cid in meta}
     preds = {Path(f).stem.removeprefix("extract_"): load_pred(f)
@@ -309,7 +316,7 @@ def main(gold_path=None, out_name="metrics.md", label="human gold"):
         f1ci = ci(sub, lambda d: score(resample(gold, d), resample(pred, d), ref)["verdict_macro_f1"], pct=False) if sub else ""
         L.append(f"| {name} | {s['claims_scored']}/{len(gold)} | {s['extract_p']:.2f} | {s['extract_r']:.2f} | "
                  f"{s['extract_f1']:.2f} | {s['verdict_acc']:.2f} | {s['verdict_macro_f1']:.2f} {f1ci} | "
-                 f"{s['false_mismatch']} | {s['missed_mismatch']} |")
+                 f"{s['false_mismatch']} | {s['missed_mismatch']} | {ungrounded(pred, gold)} |")
         conf.append(f"\n### {name} (rows = gold, cols = system)\n\n| | " + " | ".join(LABELS + ["NONE"]) + " |\n"
                     + "|---" * 5 + "|")
         for a in LABELS + ["NONE"]:

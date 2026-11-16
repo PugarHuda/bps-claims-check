@@ -28,6 +28,12 @@ def disagree(cid):
     return len(answers)
 
 
+def safe(v):
+    """CSV/formula injection: Excel/Sheets run cells starting with = + - @ (or tab/CR) as formulas.
+    Prefix them with ' (OWASP). Metrics take sentence text from claims_raw.csv, never from this sheet."""
+    return "'" + v if v[:1] in ("=", "+", "-", "@", "\t", "\r") else v
+
+
 dst = ROOT / "data/gold_sheet.csv"
 if dst.exists() and any(r.get("checked") for r in csv.DictReader(dst.open(encoding="utf-8-sig"))):
     sys.exit("gold_sheet.csv already has checked rows; refusing to overwrite human labels")
@@ -35,7 +41,7 @@ with dst.open("w", newline="", encoding="utf-8-sig") as f:
     w = csv.DictWriter(f, fieldnames=["checked", "disagree"] + cols + slots + ["speaker_type", "note"])
     w.writeheader()
     for c in claims:
-        row = {k: c[k] for k in cols} | {"disagree": disagree(c["claim_id"])}
+        row = {k: safe(c[k]) for k in cols} | {"disagree": disagree(c["claim_id"])}
         for i, x in enumerate(regex.get(c["claim_id"], [])[:3], 1):
             row |= {f"indicator{i}": x["indicator"], f"period{i}": x["period"] or "", f"value{i}": x.get("text") or x["value"]}
         w.writerow(row)

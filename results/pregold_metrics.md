@@ -2,18 +2,18 @@
 
 Reference table 104 rows; variant table 83 rows. Duplicates dropped: 2.
 
-| system | sentences | tuples | MATCH | MISMATCH | of which = another published variant | UNVERIFIABLE |
-|---|---|---|---|---|---|---|
-| anthropic__claude-haiku-5.5__agent | 164 | 93 | 83 | 0 | 0 (–) | 10 |
-| anthropic__claude-sonnet-5.5__agent | 164 | 93 | 86 | 0 | 0 (–) | 7 |
-| baidu__ernie-5.5-flash-preview_free | 164 | 95 | 77 | 1 | 0 (–) | 17 |
-| baidu__ernie-5.5-flash-preview_free__e2e | 124 | 76 | 65 | 1 | 0 (–) | 10 |
-| baidu__ernie-5.5-flash-preview_free__persentence | 10 | 2 | 2 | 0 | 0 (–) | 0 |
-| liquid__lfm-3-1.7b_free | 38 | 12 | 12 | 0 | 0 (–) | 0 |
-| nvidia__nemotron-3-ultra-550b-a55b_free | 164 | 102 | 77 | 8 | 5 (inflation_mtm 5) | 17 |
-| nvidia__nemotron-3-ultra-550b-a55b_free__e2e | 164 | 93 | 80 | 1 | 0 (–) | 12 |
-| regex | 164 | 162 | 49 | 32 | 8 (inflation_ytd 2, inflation_mtm 4, gdp_growth_ctc 2) | 81 |
-| rules | 164 | 204 | 60 | 55 | 7 (inflation_mtm 5, gdp_growth_ctc 2) | 89 |
+| system | sentences | tuples | MATCH | MISMATCH | of which = another published variant | UNVERIFIABLE | values not in sentence |
+|---|---|---|---|---|---|---|---|
+| anthropic__claude-haiku-5.5__agent | 164 | 93 | 83 | 0 | 0 (–) | 10 | 0 |
+| anthropic__claude-sonnet-5.5__agent | 164 | 93 | 86 | 0 | 0 (–) | 7 | 0 |
+| baidu__ernie-5.5-flash-preview_free | 164 | 95 | 77 | 1 | 0 (–) | 17 | 2 |
+| baidu__ernie-5.5-flash-preview_free__e2e | 124 | 76 | 65 | 1 | 0 (–) | 10 | 0 |
+| baidu__ernie-5.5-flash-preview_free__persentence | 10 | 2 | 2 | 0 | 0 (–) | 0 | 0 |
+| liquid__lfm-3-1.7b_free | 38 | 12 | 12 | 0 | 0 (–) | 0 | 0 |
+| nvidia__nemotron-3-ultra-550b-a55b_free | 164 | 102 | 77 | 8 | 5 (inflation_mtm 5) | 17 | 0 |
+| nvidia__nemotron-3-ultra-550b-a55b_free__e2e | 164 | 93 | 80 | 1 | 0 (–) | 12 | 0 |
+| regex | 164 | 162 | 49 | 32 | 8 (inflation_ytd 2, inflation_mtm 4, gdp_growth_ctc 2) | 81 | 0 |
+| rules | 164 | 204 | 60 | 55 | 7 (inflation_mtm 5, gdp_growth_ctc 2) | 89 | 0 |
 
 ## Verdict agreement (Cohen's κ; n = sentences both systems processed)
 

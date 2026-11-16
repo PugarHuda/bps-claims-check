@@ -313,6 +313,15 @@ The deterministic design keeps the extraction visible either way.
 
 - **Article dates.** Re-running Nemotron and ERNIE on the 25 government sentences with recovered dates gave identical verdicts to the runs without dates (10 MATCH + 1 UNVERIFIABLE per model). Those sentences state their periods explicitly.
 - **Batching.** For 10 sentences re-run one per request, ERNIE's extracted tuples were identical to the batched run: 10/10, κ = 1.0. The sample is small. It rules out a large batching effect for ERNIE, not a small one.
+- **Batching leaks values across items.** We checked every extracted value against its own sentence and the preceding one. Number words count, e.g. "dua persen".
+  - **ERNIE attached 2 of its 95 values to sentences that do not contain them.** Both appear verbatim in *neighbouring sentences of the same 20-item batch*:
+    - 5.61 comes from c0072, the item directly before.
+    - 5.47 comes from c0076–c0078.
+  - No other system has such values: Nemotron, Claude agents, rules and regex all have 0.
+
+  The 10-sentence batch-size test did not catch this. A grounding check did.
+
+  This is also the mechanism by which untrusted scraped text could forge another item's answer. The pipeline therefore strips item markers from scraped text and flags every ungrounded value (`grounded: false`) instead of trusting it.
 
 ## 6. Discussion
 

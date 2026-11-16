@@ -93,13 +93,30 @@ def extract_batch(model, rows, effort=None, e2e=False):
     table = "\n".join(f"{i},{per},{v}" for (i, per), v in sorted(load_ref().items()))
     msg = (E2E_PROMPT.replace("{table}", table) if e2e else BATCH_PROMPT) +"\n\n".join(
         f"[{r['claim_id']}]\nArticle date: {r['article_date'] or 'unknown'}\n"
-        f"Preceding sentence: {r['context_prev'][:500]}\nSentence: {r['sentence']}" for r in rows)
+        f"Preceding sentence: {untag(r['context_prev'][:500])}\nSentence: {untag(r['sentence'])}" for r in rows)
     for attempt in range(5):  # free providers 429 a lot; back off and retry
         got, err = _batch_once(model, msg, effort)
         if not err or "429" not in err:
             return got, err
         time.sleep(30 * (attempt + 1))
     return got, err
+
+
+def untag(text):
+    """Scraped text is untrusted: drop anything shaped like our item markers so one sentence can't speak for another."""
+    return re.sub(r"\[\s*c\d+\s*\]", " ", text)
+
+
+def grounded(claim, row):
+    """True if the claimed number literally occurs in the sentence or its preceding sentence. A value that does not
+    is hallucinated or (batched mode) answered for the wrong item; it is flagged, not silently dropped."""
+    text = row["sentence"] + " " + row.get("context_prev", "")
+    nums = {float(n.replace(",", ".")) for n in re.findall(r"\d+(?:[.,]\d+)?", text)}
+    nums |= {float(v) for w, v in NUMBER_WORDS.items() if re.search(rf"\b{w}\b", text, re.I)}  # "dua persen"
+    return abs(claim["value"]) in nums
+
+
+NUMBER_WORDS = dict(zip("satu dua tiga empat lima enam tujuh delapan sembilan sepuluh".split(), range(1, 11)))
 
 
 def _batch_once(model, msg, effort=None):
@@ -261,12 +278,14 @@ def run_batched(model, todo, ref, out, size, effort=None, e2e=False):
             got, err = extract_batch(model, chunk, effort, e2e)
             if err:
                 print(f"batch {i}: {err}", file=sys.stderr)
-            ids = {r["claim_id"] for r in chunk}
+            rows = {r["claim_id"]: r for r in chunk}
             for cid, cl in got.items():
-                if cid not in ids:
+                if cid not in rows:
                     continue
                 for c in cl:
                     c["verdict"], c["official"] = verdict(c, ref)
+                    if not (c.setdefault("grounded", grounded(c, rows[cid]))):
+                        print(f"  {cid}: value {c['text']} not in its sentence (grounded=false)", file=sys.stderr)
                 f.write(json.dumps({"claim_id": cid, "claims": cl, "error": None}, ensure_ascii=False) + "\n")
             f.flush()
             print(f"{model}: batch {i // size + 1}, {len(got)}/{len(chunk)} returned", file=sys.stderr)
@@ -293,6 +312,7 @@ def run(model, limit, workers, batch=0, effort=None, e2e=False, claims_path=None
                 continue
             for c in cl:
                 c["verdict"], c["official"] = verdict(c, ref)
+                c["grounded"] = grounded(c, row)
             f.write(json.dumps({"claim_id": row["claim_id"], "claims": cl, "error": err}, ensure_ascii=False) + "\n")
             f.flush()
     print(f"{model}: {len(todo)} new, {errors} errors -> {out}", file=sys.stderr)
