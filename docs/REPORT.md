@@ -1,7 +1,7 @@
 # Do Their Numbers Match? Checking Indonesian Statistical Claims Against Official BPS Data, and What Goes Wrong When They Don't
 
 <div class="authors" markdown="1">
-**Pugar Huda Mantoro** · Independent researcher — with Apart Research · AI x Epistemics Research Sprint, November 2026
+**Pugar Huda Mantoro** · Universitas Islam Indonesia — with Apart Research · AI x Epistemics Research Sprint, November 2026
 </div>
 
 <div class="abstract" markdown="1">
