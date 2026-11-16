@@ -8,3 +8,5 @@ ANALISIS_HACKATHON.md
 # full article text is cached for extraction only; not redistributed
 data/text_cache/
 # docs/claimreview.html is published ONLY via `claimreview.py --human-checked-only` (sentences a person decided or audited)
+video/node_modules/
+video/out/

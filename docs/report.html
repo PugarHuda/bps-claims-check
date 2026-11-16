@@ -21,21 +21,15 @@ code { font-size: 8.8pt; }
 <p><strong>Pugar Huda Mantoro</strong> · Universitas Islam Indonesia — with Apart Research · AI x Epistemics Research Sprint, November 2026</p>
 </div>
 <div class="abstract">
-<p><strong>Abstract.</strong> Indonesian officials and media routinely attribute headline statistics to Statistics Indonesia (BPS). We ask:</p>
+<p><strong>Abstract.</strong> In Indonesia, ministers, ministries and news outlets quote numbers from Statistics Indonesia (BPS) every day. I wanted to know three things. Can those claims be matched automatically to the official figure? How often do they disagree with it? And can a language model be trusted to do the matching?</p>
+<p>I collected 166 claim sentences from ministry press releases and national news, and built a table of 104 first-release BPS figures (2022–2026). Each figure keeps its release URL and date. A second table holds 83 related figures from the same releases, such as month-on-month inflation. The language model only reads the sentence and pulls out the indicator, the period and the number. A fixed rule, not the model, then decides whether the number matches, rounding the official value to the precision of the claim.</p>
+<p>Most claims could be checked (95.7%), and only 2.2% did not match. Neither mismatch was an official misquoting BPS: one was an out-of-date figure in a news article, the other a typo. The automated checkers failed in other ways:</p>
 <ul>
-<li>how many such claims can be bound automatically to the official figure;</li>
-<li>how many disagree with it;</li>
-<li>how reliably language models do the binding.</li>
+<li>they misread which statistic or which period was meant;</li>
+<li>they accepted outdated numbers because they assume an old BPS release calendar;</li>
+<li>they leaked numbers between sentences sent in the same prompt.</li>
 </ul>
-<p>We collected 166 claim sentences from ministry releases and national news, and built an evidence table of 104 first-release BPS figures (2022–2026, each with its release URL and date). We added a second table of 83 <em>variant</em> figures from the same releases. An LLM only extracts (indicator, period, value). The verdict is a deterministic, precision-aware comparison, so it is auditable and cannot be hallucinated.</p>
-<p><strong>Findings.</strong></p>
-<ul>
-<li>95.7% of claims are bindable, and 2.2% of those mismatch (95% CI 0–5.7). Neither mismatch is an official misquoting BPS: one is a <em>stale</em> figure in a news article, the other a typo.</li>
-<li>The errors that matter are not wrong numbers. They are <strong>right numbers in the wrong frame</strong> (month-on-month presented as inflation), <strong>stale numbers</strong>, and <strong>wrong periods</strong>.</li>
-<li>On sentences where models disagreed with the reference labeller, a human decided, and no labeller, frontier models included, matched the human on more than 2 of 7.</li>
-<li>Batched prompting leaked values between items.</li>
-</ul>
-<p>We turn these failure types into schema.org ClaimReview ratings fact-checkers can publish, and keep the evidence table current with a monthly job.</p>
+<p>On ambiguous sentences, no model matched my own judgement on more than 2 of 7. I turned these failure types into fact-check ratings that newsrooms can publish.</p>
 </div>
 <h2>1. Introduction</h2>
 <p>Statistical claims are unusually checkable: "unemployment fell to 4.65 percent" has one authoritative counterpart, published by a national statistics office on a known date. Checking is still slow, because the checker must first decide three things:</p>
@@ -329,8 +323,8 @@ code { font-size: 8.8pt; }
 <li>Partnering with a CekFakta member to publish the ClaimReview feed.</li>
 </ul>
 <h2>6. Conclusion</h2>
-<p>Attributed headline statistics in Indonesian government communication largely match BPS. The few mismatches we found are reporting failures: a stale figure and a typo. Automated checkers fail in different places: frame, period, and leakage between batched items. None of these show up as "wrong numbers".</p>
-<p>A pipeline that lets the model read but not judge, and that classifies failures against the statistics office's own release data, turns these into specific verdicts that are auditable and publishable.</p>
+<p>When Indonesian officials cite BPS, their numbers are almost always right. The problems I found came from reporting, not from officials: one figure that was out of date and one typo. The automated checkers I tested went wrong somewhere else entirely. They misjudged which statistic and which period a sentence meant, and they trusted an old release calendar. None of this shows up if a checker only asks "is the number right?"</p>
+<p>My main lesson is to let the model read and let the data decide. Keep every verdict traceable to an official release, and send the ambiguous cases to a person. A fact-checker can then publish not just "true" or "false", but "right number, wrong frame" and "stale". Those labels are closer to how statistics actually mislead people.</p>
 <h2>Code and Data</h2>
 <ul>
 <li><strong>Code, data, results, tests (16), CI:</strong> https://github.com/PugarHuda/bps-claims-check</li>
@@ -448,4 +442,4 @@ code { font-size: 8.8pt; }
 <li>collect and verify BPS figures in a browser;</li>
 <li>draft this report.</li>
 </ul>
-<p>Claude models also appear <em>as evaluated systems</em> (Sonnet, Haiku) and as the <em>reference annotator</em> (Opus). We disclose this throughout and do not count LLM labels as human gold. All numbers were produced by scripts in the repository, and the human author made the adjudication decisions.</p></body></html>
+<p>Claude models also appear <em>as evaluated systems</em> (Sonnet, Haiku) and as the <em>reference annotator</em> (Opus). This is disclosed throughout, and LLM labels are never counted as human gold. All numbers were produced by scripts in the repository. The author made the adjudication and audit decisions, and reviewed and edited the abstract and conclusion.</p></body></html>

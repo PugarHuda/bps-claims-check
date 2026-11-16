@@ -1,0 +1,514 @@
+[
+ {
+  "name": "title",
+  "text": "Do their numbers match? We checked Indonesian government statistical claims against the official figures from Statistics Indonesia, BPS. And we looked closely at what goes wrong when they don't.",
+  "audio": "voice/title.mp3",
+  "seconds": 13.04,
+  "cues": [
+   {
+    "start": 0.104166,
+    "end": 1.132833,
+    "text": "Do their numbers match?"
+   },
+   {
+    "start": 1.5495,
+    "end": 4.947916,
+    "text": "We checked Indonesian government statistical claims against"
+   },
+   {
+    "start": 4.947916,
+    "end": 7.799499,
+    "text": "the official figures from Statistics Indonesia,"
+   },
+   {
+    "start": 8.112,
+    "end": 10.559916,
+    "text": "BPS. And we looked closely at what"
+   },
+   {
+    "start": 10.559916,
+    "end": 12.135456999999999,
+    "text": "goes wrong when they don't."
+   }
+  ]
+ },
+ {
+  "name": "problem",
+  "text": "Ministers and journalists quote BPS every day. Checking one claim sounds easy, but a fact checker must first decide which statistic is meant, which release, and how much rounding is fair. Get that wrong, and you publish the worst error in fact checking: a false accusation against a named official.",
+  "audio": "voice/problem.mp3",
+  "seconds": 21.9,
+  "cues": [
+   {
+    "start": 0.091166,
+    "end": 3.4115,
+    "text": "Ministers and journalists quote BPS every day."
+   },
+   {
+    "start": 3.841166,
+    "end": 5.755208,
+    "text": "Checking one claim sounds easy,"
+   },
+   {
+    "start": 6.237,
+    "end": 8.710958,
+    "text": "but a fact checker must first decide"
+   },
+   {
+    "start": 8.710958,
+    "end": 10.039081999999999,
+    "text": "which statistic is meant,"
+   },
+   {
+    "start": 10.325541,
+    "end": 12.734373999999999,
+    "text": "which release, and how much rounding is"
+   },
+   {
+    "start": 12.734375,
+    "end": 14.648458,
+    "text": "fair. Get that wrong,"
+   },
+   {
+    "start": 15.117208,
+    "end": 16.966165999999998,
+    "text": "and you publish the worst error in"
+   },
+   {
+    "start": 16.979166,
+    "end": 17.968791,
+    "text": "fact checking:"
+   },
+   {
+    "start": 18.489583,
+    "end": 21.002625,
+    "text": "a false accusation against a named official."
+   }
+  ]
+ },
+ {
+  "name": "pipeline",
+  "text": "Our pipeline lets the language model do only one thing: read. It extracts the indicator, the period, and the value exactly as stated. Then a deterministic rule takes over. It looks the figure up in an evidence table of 104 first-release BPS numbers, each with its release URL and date, rounds the official value to the precision of the claim, and decides. Every verdict traces to one table row. The model can misread a sentence, but it can never decide that a number is wrong.",
+  "audio": "voice/pipeline.mp3",
+  "seconds": 34.55,
+  "cues": [
+   {
+    "start": 0.104166,
+    "end": 2.4999990000000003,
+    "text": "Our pipeline lets the language model do"
+   },
+   {
+    "start": 2.552083,
+    "end": 3.645833,
+    "text": "only one thing:"
+   },
+   {
+    "start": 4.192708,
+    "end": 6.523458,
+    "text": "read. It extracts the indicator,"
+   },
+   {
+    "start": 6.809916,
+    "end": 9.192706999999999,
+    "text": "the period, and the value exactly as"
+   },
+   {
+    "start": 9.20575,
+    "end": 12.421875,
+    "text": "stated. Then a deterministic rule takes over."
+   },
+   {
+    "start": 12.838541,
+    "end": 14.114583,
+    "text": "It looks the figure up in an"
+   },
+   {
+    "start": 14.231791,
+    "end": 18.164083,
+    "text": "evidence table of 104 first-release BPS numbers,"
+   },
+   {
+    "start": 18.606791,
+    "end": 20.690124,
+    "text": "each with its release URL and date,"
+   },
+   {
+    "start": 21.171875,
+    "end": 23.385416,
+    "text": "rounds the official value to the precision"
+   },
+   {
+    "start": 23.385416,
+    "end": 24.0495,
+    "text": "of the claim,"
+   },
+   {
+    "start": 24.505208,
+    "end": 28.046916000000003,
+    "text": "and decides. Every verdict traces to one"
+   },
+   {
+    "start": 28.059916,
+    "end": 30.221374,
+    "text": "table row. The model can misread a"
+   },
+   {
+    "start": 30.221375,
+    "end": 32.604166,
+    "text": "sentence, but it can never decide that"
+   },
+   {
+    "start": 32.604166,
+    "end": 33.645874,
+    "text": "a number is wrong."
+   }
+  ]
+ },
+ {
+  "name": "headline",
+  "text": "Across 166 sentences, 95.7% of claims could be bound to an official figure. Only 2.2% mismatched. And government officials? Zero mismatches out of 39.",
+  "audio": "voice/headline.mp3",
+  "seconds": 15.59,
+  "cues": [
+   {
+    "start": 0.104166,
+    "end": 2.330749,
+    "text": "Across 166 sentences,"
+   },
+   {
+    "start": 2.734375,
+    "end": 6.276040999999999,
+    "text": "95.7% of claims could be bound to"
+   },
+   {
+    "start": 6.276041,
+    "end": 7.304708,
+    "text": "an official figure."
+   },
+   {
+    "start": 7.734375,
+    "end": 9.843791,
+    "text": "Only 2.2% mismatched."
+   },
+   {
+    "start": 10.260416,
+    "end": 10.377623999999999,
+    "text": "And"
+   },
+   {
+    "start": 10.872416,
+    "end": 14.687499899999999,
+    "text": "government officials? Zero mismatches out of 39."
+   }
+  ]
+ },
+ {
+  "name": "stale",
+  "text": "Neither mismatch was an official misquoting BPS. Here is one. On the fourteenth of November, a news article said unemployment fell to 4.65%. That was the May figure. BPS had already published the August rate, 4.75, nine days earlier. The number was once true. It is stale. Our system detects this automatically, from the release dates in the evidence itself.",
+  "audio": "voice/stale.mp3",
+  "seconds": 29.01,
+  "cues": [
+   {
+    "start": 0.078125,
+    "end": 3.893249,
+    "text": "Neither mismatch was an official misquoting BPS."
+   },
+   {
+    "start": 4.322916,
+    "end": 4.947958,
+    "text": "Here is one."
+   },
+   {
+    "start": 5.351583,
+    "end": 6.822957000000001,
+    "text": "On the fourteenth of November,"
+   },
+   {
+    "start": 7.265625,
+    "end": 10.14325,
+    "text": "a news article said unemployment fell to"
+   },
+   {
+    "start": 10.15625,
+    "end": 13.463581999999999,
+    "text": "4.65%. That was the May figure."
+   },
+   {
+    "start": 13.89325,
+    "end": 16.341165999999998,
+    "text": "BPS had already published the August rate,"
+   },
+   {
+    "start": 16.588541,
+    "end": 19.518249,
+    "text": "4.75, nine days earlier."
+   },
+   {
+    "start": 19.947916,
+    "end": 21.236999,
+    "text": "The number was once true."
+   },
+   {
+    "start": 21.653666,
+    "end": 22.343791000000003,
+    "text": "It is stale."
+   },
+   {
+    "start": 22.760416,
+    "end": 25.130249000000003,
+    "text": "Our system detects this automatically,"
+   },
+   {
+    "start": 25.377625,
+    "end": 27.395832000000002,
+    "text": "from the release dates in the evidence"
+   },
+   {
+    "start": 27.395833,
+    "end": 28.111999,
+    "text": "itself."
+   }
+  ]
+ },
+ {
+  "name": "systems",
+  "text": "So where do automated checkers fail? Not in arithmetic. On synthetic tests every system scores 100%. They fail on the frame and the period. One large model made seven false accusations, all from month on month inflation quoted as plain inflation. Hand-written rules made 54. And batched prompts even leaked numbers from one sentence into its neighbour.",
+  "audio": "voice/systems.mp3",
+  "seconds": 27.88,
+  "cues": [
+   {
+    "start": 0.104166,
+    "end": 2.239583,
+    "text": "So where do automated checkers fail?"
+   },
+   {
+    "start": 2.64325,
+    "end": 3.645833,
+    "text": "Not in arithmetic."
+   },
+   {
+    "start": 4.075541,
+    "end": 8.0078329,
+    "text": "On synthetic tests every system scores 100%."
+   },
+   {
+    "start": 8.4375,
+    "end": 10.078166,
+    "text": "They fail on the frame and the"
+   },
+   {
+    "start": 10.091166,
+    "end": 13.4375,
+    "text": "period. One large model made seven false"
+   },
+   {
+    "start": 13.4375,
+    "end": 16.614624000000003,
+    "text": "accusations, all from month on month inflation"
+   },
+   {
+    "start": 16.627625,
+    "end": 18.385416,
+    "text": "quoted as plain inflation."
+   },
+   {
+    "start": 18.828125,
+    "end": 21.497416,
+    "text": "Hand-written rules made 54."
+   },
+   {
+    "start": 21.927083,
+    "end": 24.895833000000003,
+    "text": "And batched prompts even leaked numbers from"
+   },
+   {
+    "start": 24.895833,
+    "end": 26.979166,
+    "text": "one sentence into its neighbour."
+   }
+  ]
+ },
+ {
+  "name": "humans",
+  "text": "Can language model labels replace a human? On 20 random sentences where every model agreed, the labels were right, 20 out of 20. But on the seven sentences where models disagreed, no labeller, frontier models included, matched the human on more than two. So the protocol is simple: let models label everything, and route every disagreement to a person.",
+  "audio": "voice/humans.mp3",
+  "seconds": 27.02,
+  "cues": [
+   {
+    "start": 0.104166,
+    "end": 2.6953329999999998,
+    "text": "Can language model labels replace a human?"
+   },
+   {
+    "start": 3.098958,
+    "end": 5.820333,
+    "text": "On 20 random sentences where every model"
+   },
+   {
+    "start": 5.820333,
+    "end": 7.721374,
+    "text": "agreed, the labels were right,"
+   },
+   {
+    "start": 8.007833,
+    "end": 9.062541,
+    "text": "20 out of 20."
+   },
+   {
+    "start": 9.505208,
+    "end": 11.731791,
+    "text": "But on the seven sentences where models"
+   },
+   {
+    "start": 11.809916,
+    "end": 12.500041,
+    "text": "disagreed,"
+   },
+   {
+    "start": 13.033875,
+    "end": 14.023456999999999,
+    "text": "no labeller,"
+   },
+   {
+    "start": 14.53125,
+    "end": 16.315124,
+    "text": "frontier models included,"
+   },
+   {
+    "start": 16.901041,
+    "end": 18.854166,
+    "text": "matched the human on more than two."
+   },
+   {
+    "start": 19.283875,
+    "end": 20.898458,
+    "text": "So the protocol is simple:"
+   },
+   {
+    "start": 21.471375,
+    "end": 23.359374,
+    "text": "let models label everything,"
+   },
+   {
+    "start": 23.59375,
+    "end": 26.119833,
+    "text": "and route every disagreement to a person."
+   }
+  ]
+ },
+ {
+  "name": "calendar",
+  "text": "One stale figure fooled every model we tested. They all assumed the old BPS calendar, February and August. Since 2025, unemployment is also released in May and November. Only an evidence table that records when each number was released can catch that.",
+  "audio": "voice/calendar.mp3",
+  "seconds": 18.57,
+  "cues": [
+   {
+    "start": 0.117208,
+    "end": 2.4479159999999998,
+    "text": "One stale figure fooled every model we"
+   },
+   {
+    "start": 2.447916,
+    "end": 5.182291,
+    "text": "tested. They all assumed the old BPS"
+   },
+   {
+    "start": 5.195333,
+    "end": 7.617208,
+    "text": "calendar, February and August."
+   },
+   {
+    "start": 8.033875,
+    "end": 9.427083,
+    "text": "Since 2025"
+   },
+   {
+    "start": 9.921875,
+    "end": 12.395833,
+    "text": "unemployment is also released in May and"
+   },
+   {
+    "start": 12.408875,
+    "end": 15.312541,
+    "text": "November. Only an evidence table that records"
+   },
+   {
+    "start": 15.325541,
+    "end": 17.265666000000003,
+    "text": "when each number was released can catch"
+   },
+   {
+    "start": 17.278666,
+    "end": 17.669291,
+    "text": "that."
+   }
+  ]
+ },
+ {
+  "name": "adoption",
+  "text": "We turn all of this into something fact checkers already publish: schema.org ClaimReview, with four ratings. Matches. Right number, wrong frame. Stale. And mismatch. Every review opens a verification card, and only human checked verdicts are public. A monthly job keeps the BPS table current. The code, data, and report are open. Thank you.",
+  "audio": "voice/adoption.mp3",
+  "seconds": 27.23,
+  "cues": [
+   {
+    "start": 0.091166,
+    "end": 1.666666,
+    "text": "We turn all of this into something"
+   },
+   {
+    "start": 1.679708,
+    "end": 4.1797070000000005,
+    "text": "fact checkers already publish:"
+   },
+   {
+    "start": 4.609375,
+    "end": 6.263041,
+    "text": "schema.org ClaimReview,"
+   },
+   {
+    "start": 6.71875,
+    "end": 7.708375,
+    "text": "with four ratings."
+   },
+   {
+    "start": 8.125,
+    "end": 9.687541,
+    "text": "Matches. Right number,"
+   },
+   {
+    "start": 10.130208,
+    "end": 11.757833,
+    "text": "wrong frame. Stale."
+   },
+   {
+    "start": 12.1745,
+    "end": 15.624998999999999,
+    "text": "And mismatch. Every review opens a verification"
+   },
+   {
+    "start": 15.625,
+    "end": 18.138041,
+    "text": "card, and only human checked verdicts are"
+   },
+   {
+    "start": 18.151041,
+    "end": 21.601582999999998,
+    "text": "public. A monthly job keeps the BPS"
+   },
+   {
+    "start": 21.601583,
+    "end": 23.294291,
+    "text": "table current. The code,"
+   },
+   {
+    "start": 23.606791,
+    "end": 25.429708,
+    "text": "data, and report are open."
+   },
+   {
+    "start": 25.885416,
+    "end": 26.328125,
+    "text": "Thank you."
+   }
+  ]
+ }
+]
