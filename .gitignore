@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+.playwright-mcp/
+.env
+# internal working notes (Indonesian), not part of the submission
+PLAN.md
+ANALISIS_HACKATHON.md
+# full article text is cached for extraction only; not redistributed
+data/text_cache/
+# regenerated from HUMAN-verified gold only (see README, Ethics); never published from model output
+docs/claimreview.html
+results/claimreview.jsonld

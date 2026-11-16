@@ -1,0 +1,10 @@
+{"claim_id": "c0001", "claims": [], "error": null}
+{"claim_id": "c0002", "claims": [], "error": null}
+{"claim_id": "c0003", "claims": [], "error": null}
+{"claim_id": "c0004", "claims": [], "error": null}
+{"claim_id": "c0005", "claims": [{"indicator": "inflation_yoy", "period": "2026-10", "value": 3.23, "text": "3.23", "verdict": "MATCH", "official": 3.23}], "error": null}
+{"claim_id": "c0006", "claims": [{"indicator": "inflation_yoy", "period": "2026-10", "value": 3.23, "text": "3.23", "verdict": "MATCH", "official": 3.23}], "error": null}
+{"claim_id": "c0007", "claims": [], "error": null}
+{"claim_id": "c0008", "claims": [], "error": null}
+{"claim_id": "c0009", "claims": [], "error": null}
+{"claim_id": "c0010", "claims": [], "error": null}

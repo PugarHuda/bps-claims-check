@@ -1,0 +1,25 @@
+{"claim_id": "c0084", "claims": [{"indicator": "inflation_yoy", "period": "2025-10", "value": 2.86, "text": "2.86", "verdict": "MATCH", "official": 2.86}], "error": null}
+{"claim_id": "c0085", "claims": [{"indicator": "inflation_yoy", "period": "2025-10", "value": 2.86, "text": "2.86", "verdict": "MATCH", "official": 2.86}], "error": null}
+{"claim_id": "c0086", "claims": [], "error": null}
+{"claim_id": "c0087", "claims": [{"indicator": "inflation_yoy", "period": "2023", "value": 2.61, "text": "2.61", "verdict": "UNVERIFIABLE", "official": null}], "error": null}
+{"claim_id": "c0088", "claims": [], "error": null}
+{"claim_id": "c0089", "claims": [{"indicator": "gdp_growth_yoy", "period": "2024-Q3", "value": 4.95, "text": "4.95", "verdict": "UNVERIFIABLE", "official": null}], "error": null}
+{"claim_id": "c0090", "claims": [], "error": null}
+{"claim_id": "c0091", "claims": [], "error": null}
+{"claim_id": "c0092", "claims": [{"indicator": "inflation_yoy", "period": "2025-11", "value": 2.72, "text": "2.72", "verdict": "MATCH", "official": 2.72}], "error": null}
+{"claim_id": "c0093", "claims": [], "error": null}
+{"claim_id": "c0094", "claims": [], "error": null}
+{"claim_id": "c0095", "claims": [], "error": null}
+{"claim_id": "c0096", "claims": [], "error": null}
+{"claim_id": "c0097", "claims": [{"indicator": "inflation_yoy", "period": "2025", "value": 2.92, "text": "2.92", "verdict": "MATCH", "official": 2.92}], "error": null}
+{"claim_id": "c0098", "claims": [{"indicator": "inflation_yoy", "period": "2026-01", "value": 3.55, "text": "3.55", "verdict": "MATCH", "official": 3.55}], "error": null}
+{"claim_id": "c0099", "claims": [], "error": null}
+{"claim_id": "c0100", "claims": [], "error": null}
+{"claim_id": "c0101", "claims": [], "error": null}
+{"claim_id": "c0102", "claims": [], "error": null}
+{"claim_id": "c0103", "claims": [], "error": null}
+{"claim_id": "c0104", "claims": [{"indicator": "gdp_growth_yoy", "period": "2025-Q3", "value": 5.04, "text": "5.04", "verdict": "MATCH", "official": 5.04}], "error": null}
+{"claim_id": "c0105", "claims": [{"indicator": "inflation_yoy", "period": "2025-11", "value": 2.72, "text": "2.72", "verdict": "MATCH", "official": 2.72}], "error": null}
+{"claim_id": "c0106", "claims": [{"indicator": "unemployment_rate", "period": null, "value": 4.85, "text": "4.85", "verdict": "UNVERIFIABLE", "official": null}], "error": null}
+{"claim_id": "c0107", "claims": [{"indicator": "poverty_rate", "period": "2025-03", "value": 8.47, "text": "8.47", "verdict": "MATCH", "official": 8.47}], "error": null}
+{"claim_id": "c0108", "claims": [], "error": null}

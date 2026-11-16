@@ -1,0 +1,167 @@
+checked,claim_id,indicator1,period1,value1,indicator2,period2,value2,indicator3,period3,value3,speaker_type,note
+x,c0001,,,,,,,,,,bps_official,year-to-date Jan-Sep; out of scope
+x,c0002,,,,,,,,,,bps_official,October values 0.17/0.08/0.28 are m-to-m magnitudes; excluded
+x,c0003,,,,,,,,,,journalist_or_other,Dec/Nov values are m-to-m magnitudes; excluded
+x,c0004,,,,,,,,,,journalist_or_other,m-to-m magnitudes; excluded
+x,c0005,inflation_yoy,2026-10,3.23,,,,,,,bps_official,
+x,c0006,inflation_yoy,2026-10,3.23,,,,,,,bps_official,
+x,c0007,,,,,,,,,,bps_official,group inflation; out of scope
+x,c0008,,,,,,,,,,bps_official,group inflation; out of scope
+x,c0009,,,,,,,,,,bps_official,group contribution; out of scope
+x,c0010,,,,,,,,,,bps_official,provincial; out of scope
+x,c0011,inflation_yoy,2026-10,3.23,,,,,,,bps_official,
+x,c0012,,,,,,,,,,journalist_or_other,target range; out of scope
+x,c0013,inflation_yoy,2026-10,3.23,,,,,,,bps_official,
+x,c0014,,,,,,,,,,bps_official,group inflation; out of scope
+x,c0015,,,,,,,,,,bps_official,group inflation; out of scope
+x,c0016,,,,,,,,,,bps_official,group inflation; out of scope
+x,c0017,,,,,,,,,,bps_official,core inflation; out of scope
+x,c0018,,,,,,,,,,bps_official,administered prices; out of scope
+x,c0019,,,,,,,,,,bps_official,volatile food; out of scope
+x,c0020,,,,,,,,,,bps_official,provincial; out of scope
+x,c0021,,,,,,,,,,bps_official,m-to-m; out of scope
+x,c0022,,,,,,,,,,bps_official,group contribution; out of scope
+x,c0023,inflation_yoy,2026-10,3.23,,,,,,,bps_official,
+x,c0024,,,,,,,,,,bps_official,m-to-m and year-to-date; out of scope
+x,c0025,,,,,,,,,,journalist_or_other,target range; out of scope
+x,c0026,inflation_yoy,2026-09,3.28,,,,,,,journalist_or_other,
+x,c0027,,,,,,,,,,bps_official,group contribution; out of scope
+x,c0028,,,,,,,,,,bps_official,provincial; out of scope
+x,c0029,inflation_yoy,2026-10,3.23,,,,,,,government_official,m-to-m and ytd values excluded
+x,c0030,,,,,,,,,,government_official,volatile food; out of scope
+x,c0031,inflation_yoy,2026-10,3.23,,,,,,,journalist_or_other,
+x,c0032,unemployment_rate,2026-02,4.68,,,,,,,bps_official,
+x,c0033,unemployment_rate,2026-02,4.68,,,,,,,bps_official,
+x,c0034,,,,,,,,,,bps_official,worker composition; out of scope
+x,c0035,unemployment_rate,,4.65,,,,,,,bps_official,"stated only as 'pada 2026'; survey month not determinable (does not match Feb 2026 4.68)"
+x,c0036,unemployment_rate,,4.65,,,,,,,bps_official,"stated only as 'pada 2026'; survey month not determinable"
+x,c0037,unemployment_rate,,4.65,,,,,,,government_official,"period from context 'pada 2026'; survey month not determinable"
+x,c0038,,,,,,,,,,journalist_or_other,"'rasio pengangguran' 4.36 is not clearly TPT; excluded"
+x,c0039,unemployment_rate,2005,11.24,,,,,,,government_official,"historical; stated only as year 2005"
+x,c0040,unemployment_rate,2026-08,4.75,,,,,,,bps_official,
+x,c0041,,,,,,,,,,bps_official,change in pp only; no level
+x,c0042,unemployment_rate,2026-08,4.75,,,,,,,bps_official,
+x,c0043,,,,,,,,,,bps_official,female TPT; out of scope
+x,c0044,,,,,,,,,,bps_official,male TPT; out of scope
+x,c0045,unemployment_rate,2026-08,4.75,,,,,,,bps_official,
+x,c0046,unemployment_rate,2026-02,4.68,,,,,,,journalist_or_other,"headline; 'pengangguran' read as TPT; period inferred as latest release (Feb 2026) from article date"
+x,c0047,,,,,,,,,,government_official,target; out of scope
+x,c0048,,,,,,,,,,government_official,target; out of scope
+x,c0049,,,,,,,,,,government_official,target; out of scope
+x,c0050,,,,,,,,,,government_official,target; out of scope
+x,c0051,poverty_rate,2025-03,8.47,,,,,,,bps_official,
+x,c0052,,,,,,,,,,bps_official,extreme poverty; out of scope
+x,c0053,,,,,,,,,,bps_official,urban poverty; out of scope
+x,c0054,,,,,,,,,,bps_official,rural poverty; out of scope
+x,c0055,,,,,,,,,,bps_official,regional share; out of scope
+x,c0056,,,,,,,,,,journalist_or_other,no figure
+x,c0057,poverty_rate,2026-03,8.07,,,,,,,government_official,
+x,c0058,poverty_rate,2021-03,10.14,poverty_rate,2025-03,8.47,,,,government_official,"stated as 2021-2025; survey month inferred as March"
+x,c0059,poverty_rate,2026-03,8.07,,,,,,,journalist_or_other,"headline; period inferred (latest release Mar 2026)"
+x,c0060,poverty_rate,2026-03,8.07,,,,,,,bps_official,
+x,c0061,poverty_rate,2026-03,8.07,,,,,,,government_official,quoted government report
+x,c0062,poverty_rate,2021-03,10.14,poverty_rate,2025-03,8.47,,,,journalist_or_other,"stated as 2021-2025; survey month inferred as March"
+x,c0063,,,,,,,,,,journalist_or_other,extreme poverty; out of scope
+x,c0064,poverty_rate,2026-03,8.07,,,,,,,bps_official,
+x,c0065,unemployment_rate,,4.65,,,,,,,journalist_or_other,"stated only as 'pada 2026'; survey month not determinable"
+x,c0066,,,,,,,,,,journalist_or_other,international poverty line; out of scope
+x,c0067,gdp_growth_yoy,2026-Q2,5.29,,,,,,,government_official,headline
+x,c0068,gdp_growth_yoy,2026-Q2,5.29,,,,,,,government_official,~6 percent H2 is forecast; excluded
+x,c0069,,,,,,,,,,government_official,regional growth; out of scope
+x,c0070,,,,,,,,,,journalist_or_other,q-to-q; out of scope
+x,c0071,,,,,,,,,,journalist_or_other,cumulative semester; out of scope
+x,c0072,gdp_growth_yoy,2026-Q1,5.61,,,,,,,government_official,
+x,c0073,,,,,,,,,,government_official,consumption contribution; out of scope
+x,c0074,,,,,,,,,,journalist_or_other,BI rate; out of scope
+x,c0075,,,,,,,,,,journalist_or_other,investment contribution; out of scope
+x,c0076,gdp_growth_yoy,2026-Q3,5.47,,,,,,,government_official,cumulative 5.45 excluded
+x,c0077,gdp_growth_yoy,2026-Q3,5.47,,,,,,,government_official,
+x,c0078,,,,,,,,,,government_official,cumulative c-to-c; out of scope
+x,c0079,,,,,,,,,,government_official,other countries; out of scope
+x,c0080,,,,,,,,,,government_official,consumption growth; out of scope
+x,c0081,,,,,,,,,,government_official,investment growth; out of scope
+x,c0082,gdp_growth_yoy,2026-Q1,5.61,,,,,,,journalist_or_other,
+x,c0083,gdp_growth_yoy,2025-Q4,5.39,gdp_growth_yoy,2026-Q1,5.61,,,,government_official,
+x,c0084,inflation_yoy,2025-10,2.86,,,,,,,government_official,
+x,c0085,inflation_yoy,2025-10,2.86,,,,,,,government_official,
+x,c0086,,,,,,,,,,government_official,target; out of scope
+x,c0087,inflation_yoy,2023,2.61,,,,,,,government_official,
+x,c0088,,,,,,,,,,government_official,other countries; out of scope
+x,c0089,gdp_growth_yoy,2024-Q3,4.95,,,,,,,government_official,
+x,c0090,,,,,,,,,,government_official,target; out of scope
+x,c0091,,,,,,,,,,government_official,volatile food target; out of scope
+x,c0092,inflation_yoy,2025-11,2.72,,,,,,,government_official,
+x,c0093,,,,,,,,,,government_official,core inflation; out of scope
+x,c0094,,,,,,,,,,government_official,VF/AP components; out of scope
+x,c0095,,,,,,,,,,government_official,target; out of scope
+x,c0096,,,,,,,,,,government_official,target; out of scope
+x,c0097,inflation_yoy,2025,2.92,,,,,,,government_official,
+x,c0098,inflation_yoy,2026-01,3.55,,,,,,,government_official,
+x,c0099,,,,,,,,,,government_official,group m-to-m; out of scope
+x,c0100,,,,,,,,,,government_official,volatile food m-to-m; out of scope
+x,c0101,,,,,,,,,,government_official,core m-to-m; out of scope
+x,c0102,,,,,,,,,,government_official,target; out of scope
+x,c0103,,,,,,,,,,government_official,target; out of scope
+x,c0104,gdp_growth_yoy,2025-Q3,5.04,,,,,,,government_official,'kisaran 5%' for full year too vague; excluded
+x,c0105,inflation_yoy,2025-11,2.72,,,,,,,government_official,
+x,c0106,unemployment_rate,2025-08,4.85,,,,,,,government_official,period not stated; inferred as latest release (Aug 2025) from article date
+x,c0107,poverty_rate,2025-03,8.47,,,,,,,government_official,
+x,c0108,,,,,,,,,,government_official,extreme poverty; out of scope
+x,c0109,inflation_yoy,2025-09,2.65,,,,,,,journalist_or_other,asserted by Bank Indonesia citing BPS; m-to-m 0.21 excluded
+x,c0110,,,,,,,,,,journalist_or_other,target range; out of scope (BI)
+x,c0111,,,,,,,,,,journalist_or_other,forecast; out of scope (BI)
+x,c0112,,,,,,,,,,journalist_or_other,core m-to-m; out of scope
+x,c0113,,,,,,,,,,journalist_or_other,core yoy; out of scope
+x,c0114,,,,,,,,,,journalist_or_other,volatile food; out of scope
+x,c0115,,,,,,,,,,journalist_or_other,volatile food; out of scope
+x,c0116,,,,,,,,,,journalist_or_other,administered prices; out of scope
+x,c0117,,,,,,,,,,journalist_or_other,administered prices; out of scope
+x,c0118,gdp_growth_yoy,2026-Q1,5.61,,,,,,,dpr_or_politician,
+x,c0119,gdp_growth_yoy,2026-Q1,5.61,gdp_growth_yoy,2025-Q1,4.87,,,,bps_official,
+x,c0120,gdp_growth_yoy,2026-Q1,5.61,gdp_growth_yoy,2025-Q1,4.87,,,,bps_official,
+x,c0121,,,,,,,,,,journalist_or_other,number of unemployed; out of scope
+x,c0122,gdp_growth_yoy,2026-Q1,5.61,gdp_growth_yoy,2025-Q1,4.87,,,,bps_official,
+x,c0123,inflation_yoy,2026-01,3.55,,,,,,,journalist_or_other,
+x,c0124,inflation_yoy,2026-01,3.55,inflation_yoy,2025-12,2.92,,,,bps_official,
+x,c0125,,,,,,,,,,government_official,core inflation; out of scope
+x,c0126,,,,,,,,,,government_official,administered prices; out of scope
+x,c0127,inflation_yoy,2026-01,3.55,,,,,,,government_official,"frame-ambiguous; 'inflasi IHK 3,55' without yoy label; month from context (Jan 2026)"
+x,c0128,inflation_yoy,2026-03,3.48,,,,,,,journalist_or_other,
+x,c0129,,,,,,,,,,government_official,inflation excluding electricity discount; not headline
+x,c0130,,,,,,,,,,government_official,0.41 in 'Baca juga' is m-to-m; excluded
+x,c0131,inflation_yoy,2026-03,3.48,inflation_yoy,2025-03,1.03,,,,bps_official,
+x,c0132,,,,,,,,,,journalist_or_other,group inflation; out of scope
+x,c0133,,,,,,,,,,journalist_or_other,m-to-m; out of scope
+x,c0134,,,,,,,,,,journalist_or_other,m-to-m; out of scope
+x,c0135,,,,,,,,,,journalist_or_other,year-to-date March; out of scope
+x,c0136,,,,,,,,,,journalist_or_other,year-to-date; out of scope
+x,c0137,poverty_rate,2025-03,23.85,,,,,,,journalist_or_other,"stated as '23,85%' for 'Meret 20025'; almost certainly a typo for 23.85 million people"
+x,c0138,,,,,,,,,,government_official,target; out of scope
+x,c0139,poverty_rate,2024-09,8.57,,,,,,,bps_official,
+x,c0140,poverty_rate,2024-09,8.57,,,,,,,bps_official,
+x,c0141,unemployment_rate,2024-02,4.82,unemployment_rate,2025-02,4.76,,,,government_official,
+x,c0142,,,,,,,,,,government_official,forecast; out of scope
+x,c0143,poverty_rate,2024-09,8.57,,,,,,,bps_official,
+x,c0144,unemployment_rate,2025-08,4.85,unemployment_rate,2024-08,4.91,,,,government_official,
+x,c0145,poverty_rate,2025-09,8.25,poverty_rate,2024-09,8.57,,,,government_official,
+x,c0146,gdp_growth_yoy,2025,5.11,inflation_yoy,2025,2.92,,,,government_official,consumption growth excluded
+x,c0147,,,,,,,,,,government_official,fiscal deficit; out of scope
+x,c0148,poverty_rate,2025-03,8.47,,,,,,,journalist_or_other,period not stated; inferred as latest release (Mar 2025)
+x,c0149,poverty_rate,2025-03,8.47,unemployment_rate,2025-02,4.76,,,,journalist_or_other,"periods inferred as latest releases; vague 'kisaran lima persen' and 'dua persen' excluded"
+x,c0150,poverty_rate,2025-03,8.47,,,,,,,government_official,period not stated; inferred as latest release (Mar 2025)
+x,c0151,unemployment_rate,2025-02,4.76,,,,,,,government_official,period inferred from context (Feb 2025)
+x,c0152,unemployment_rate,2025-08,4.85,unemployment_rate,2024-08,4.91,,,,government_official,
+x,c0153,poverty_rate,2024-09,8.57,poverty_rate,2025-09,8.25,,,,government_official,
+x,c0154,gdp_growth_yoy,2025,5.11,inflation_yoy,2025,2.92,,,,government_official,consumption growth excluded
+x,c0155,,,,,,,,,,government_official,fiscal deficit; out of scope
+x,c0156,gdp_growth_yoy,2025,5.11,,,,,,,journalist_or_other,headline
+x,c0157,,,,,,,,,,government_official,target; out of scope
+x,c0158,gdp_growth_yoy,2025-Q2,5.12,gdp_growth_yoy,2025-Q3,5.04,gdp_growth_yoy,2025-Q4,5.39,journalist_or_other,
+x,c0159,gdp_growth_yoy,2025,5.11,,,,,,,government_official,
+x,c0160,gdp_growth_yoy,2025,5.11,,,,,,,government_official,
+x,c0161,gdp_growth_yoy,2025,5.11,gdp_growth_yoy,2025-Q4,5.39,,,,bps_official,5.6-5.7 expectation excluded
+x,c0162,,,,,,,,,,government_official,vague range over five years; excluded
+x,c0163,,,,,,,,,,government_official,target; out of scope
+x,c0164,gdp_growth_yoy,2025,5.11,gdp_growth_yoy,2024,5.03,,,,bps_official,
+x,c0165,gdp_growth_yoy,2025,5.11,,,,,,,bps_official,
+x,c0166,,,,,,,,,,journalist_or_other,other countries; out of scope

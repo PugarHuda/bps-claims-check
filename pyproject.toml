@@ -1,0 +1,10 @@
+[project]
+name = "apart-research-hackathon"
+version = "0.1.0"
+requires-python = ">=3.14"
+dependencies = [
+    "matplotlib>=3.11.2",
+    "playwright>=1.65.2",
+    "requests>=2.34.2",
+    "trafilatura>=2.3.1",
+]

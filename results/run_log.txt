@@ -1,0 +1,83 @@
+nvidia/nemotron-3-ultra-550b-a55b:free: batch 1, 20/20 returned
+nvidia/nemotron-3-ultra-550b-a55b:free: batch 2, 20/20 returned
+nvidia/nemotron-3-ultra-550b-a55b:free: batch 3, 20/20 returned
+nvidia/nemotron-3-ultra-550b-a55b:free: batch 4, 20/20 returned
+nvidia/nemotron-3-ultra-550b-a55b:free: batch 5, 20/20 returned
+nvidia/nemotron-3-ultra-550b-a55b:free: batch 6, 20/20 returned
+nvidia/nemotron-3-ultra-550b-a55b:free: batch 7, 20/20 returned
+nvidia/nemotron-3-ultra-550b-a55b:free: batch 8, 16/16 returned
+baidu/ernie-5.5-flash-preview:free: batch 1, 20/20 returned
+baidu/ernie-5.5-flash-preview:free: batch 2, 20/20 returned
+baidu/ernie-5.5-flash-preview:free: batch 3, 20/20 returned
+baidu/ernie-5.5-flash-preview:free: batch 4, 20/20 returned
+baidu/ernie-5.5-flash-preview:free: batch 5, 20/20 returned
+baidu/ernie-5.5-flash-preview:free: batch 6, 20/20 returned
+baidu/ernie-5.5-flash-preview:free: batch 7, 20/20 returned
+baidu/ernie-5.5-flash-preview:free: batch 8, 20/20 returned
+baidu/ernie-5.5-flash-preview:free: batch 9, 6/6 returned
+batch 0: TypeError: expected string or bytes-like object, got 'NoneType'
+liquid/lfm-3-1.7b:free: batch 1, 0/20 returned
+batch 20: TypeError: expected string or bytes-like object, got 'NoneType'
+liquid/lfm-3-1.7b:free: batch 2, 0/20 returned
+batch 40: TypeError: expected string or bytes-like object, got 'NoneType'
+liquid/lfm-3-1.7b:free: batch 3, 0/20 returned
+batch 60: TypeError: expected string or bytes-like object, got 'NoneType'
+liquid/lfm-3-1.7b:free: batch 4, 0/20 returned
+batch 80: TypeError: expected string or bytes-like object, got 'NoneType'
+liquid/lfm-3-1.7b:free: batch 5, 0/20 returned
+batch 100: HTTPError: 504 Server Error: Gateway Timeout for url: https://openrouter.ai/api/v1/chat/completions
+liquid/lfm-3-1.7b:free: batch 6, 0/20 returned
+batch 120: TypeError: expected string or bytes-like object, got 'NoneType'
+liquid/lfm-3-1.7b:free: batch 7, 0/20 returned
+batch 140: HTTPError: 504 Server Error: Gateway Timeout for url: https://openrouter.ai/api/v1/chat/completions
+liquid/lfm-3-1.7b:free: batch 8, 0/20 returned
+liquid/lfm-3-1.7b:free: batch 9, 6/6 returned
+liquid/lfm-3-1.7b:free: batch 1, 8/8 returned
+batch 8: HTTPError: 504 Server Error: Gateway Timeout for url: https://openrouter.ai/api/v1/chat/completions
+liquid/lfm-3-1.7b:free: batch 2, 0/8 returned
+batch 16: JSONDecodeError: Expecting ',' delimiter: line 56 column 10 (char 965)
+liquid/lfm-3-1.7b:free: batch 3, 0/8 returned
+batch 24: ValueError: empty content, finish_reason=length
+liquid/lfm-3-1.7b:free: batch 4, 0/8 returned
+batch 32: ValueError: empty content, finish_reason=length
+liquid/lfm-3-1.7b:free: batch 5, 0/8 returned
+liquid/lfm-3-1.7b:free: batch 6, 8/8 returned
+batch 48: ValueError: empty content, finish_reason=length
+liquid/lfm-3-1.7b:free: batch 7, 0/8 returned
+batch 56: ValueError: empty content, finish_reason=length
+liquid/lfm-3-1.7b:free: batch 8, 0/8 returned
+batch 64: ValueError: empty content, finish_reason=length
+liquid/lfm-3-1.7b:free: batch 9, 0/8 returned
+batch 72: ValueError: empty content, finish_reason=length
+liquid/lfm-3-1.7b:free: batch 10, 0/8 returned
+batch 0: ValueError: empty content, finish_reason=length
+liquid/lfm-3-1.7b:free: batch 1, 0/8 returned
+batch 8: ValueError: empty content, finish_reason=length
+liquid/lfm-3-1.7b:free: batch 2, 0/8 returned
+batch 16: ValueError: empty content, finish_reason=length
+liquid/lfm-3-1.7b:free: batch 3, 0/8 returned
+liquid/lfm-3-1.7b:free: batch 4, 8/8 returned
+batch 32: ValueError: empty content, finish_reason=length
+liquid/lfm-3-1.7b:free: batch 5, 0/8 returned
+batch 40: ValueError: empty content, finish_reason=length
+liquid/lfm-3-1.7b:free: batch 6, 0/8 returned
+baidu/ernie-5.5-flash-preview:free: batch 7, 20/20 returned
+baidu/ernie-5.5-flash-preview:free: batch 8, 20/20 returned
+baidu/ernie-5.5-flash-preview:free: batch 9, 6/6 returned
+nvidia/nemotron-3-ultra-550b-a55b:free: batch 7, 20/20 returned
+nvidia/nemotron-3-ultra-550b-a55b:free: batch 8, 20/20 returned
+nvidia/nemotron-3-ultra-550b-a55b:free: batch 9, 6/6 returned
+baidu/ernie-5.5-flash-preview:free: batch 1, 35/35 returned
+baidu/ernie-5.5-flash-preview:free: batch 2, 35/35 returned
+baidu/ernie-5.5-flash-preview:free: batch 3, 35/35 returned
+nvidia/nemotron-3-ultra-550b-a55b:free: batch 1, 35/35 returned
+nvidia/nemotron-3-ultra-550b-a55b:free: batch 2, 35/35 returned
+nvidia/nemotron-3-ultra-550b-a55b:free: batch 3, 35/35 returned
+baidu/ernie-5.5-flash-preview:free: batch 1, 35/35 returned
+baidu/ernie-5.5-flash-preview:free: batch 2, 35/35 returned
+baidu/ernie-5.5-flash-preview:free: batch 3, 35/35 returned
+batch 0: ValueError: empty content, finish_reason=length
+baidu/ernie-5.5-flash-preview:free: batch 1, 0/20 returned
+batch 20: ValueError: empty content, finish_reason=length
+baidu/ernie-5.5-flash-preview:free: batch 2, 0/20 returned
+baidu/ernie-5.5-flash-preview:free: 10 new, 0 errors -> C:\Hackathons\Apart Research Hackathon\results\extract_baidu__ernie-5.5-flash-preview_free__persentence.jsonl
