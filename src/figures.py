@@ -25,7 +25,9 @@ VERDICT = {"MATCH": "#2a78d6", "MISMATCH": "#eb6834", "UNVERIFIABLE": "#c3c2b7"}
 SEQ = LinearSegmentedColormap.from_list("seq", ["#f4f8fd", "#cde2fb", "#86b6ef", "#3987e5", "#1c5cab", "#0d366b"])
 SHORT = {"baidu__ernie-5.5-flash-preview_free": "ERNIE 5.5 Flash",
          "nvidia__nemotron-3-ultra-550b-a55b_free": "Nemotron-3 Ultra",
-         "liquid__lfm-3-1.7b_free": "LFM-3 1.7B", "regex": "regex (naive)", "rules": "rules"}
+         "liquid__lfm-3-1.7b_free": "LFM-3 1.7B", "regex": "regex (naive)", "rules": "rules",
+         "anthropic__claude-sonnet-5.5__agent": "Claude Sonnet 5.5 (agent)",
+         "anthropic__claude-haiku-5.5__agent": "Claude Haiku 5.5 (agent)", "gemini__gemini-3.8-flash": "Gemini 3.8 Flash"}
 
 plt.rcParams.update({"figure.facecolor": SURFACE, "axes.facecolor": SURFACE, "savefig.facecolor": SURFACE,
                      "text.color": INK, "axes.labelcolor": INK2, "xtick.color": MUTED, "ytick.color": INK2,
@@ -93,6 +95,13 @@ def fig_perturbation():
     save(fig, "perturbation.png")
 
 
+def ref_label(meta):
+    """Say what the reference labels are, so a figure can't pass LLM labels off as human gold."""
+    adj = sum(m.get("label_source", "").startswith("human_adjudicated") for m in meta.values())
+    return f"adjudicated silver: LLM labels, {adj} disputes decided by a human" if any(
+        m.get("label_source") for m in meta.values()) else "human gold"
+
+
 def fig_gold():
     ref = p.load_ref()
     gold, meta = m.load_gold()
@@ -115,7 +124,7 @@ def fig_gold():
         left = [a + b for a, b in zip(left, vals)]
     ax.set_yticks(range(len(inds)), inds)
     ax.invert_yaxis()
-    ax.set_xlabel("claim tuples (human gold)")
+    ax.set_xlabel(f"claim tuples ({ref_label(meta)})")
     ax.grid(axis="x", color=GRID, linewidth=0.6)
     ax.set_axisbelow(True)
     ax.legend(frameon=False, ncols=3, loc="lower left", bbox_to_anchor=(0, 1.0))
@@ -130,7 +139,7 @@ def fig_gold():
     for ax, f in zip(axes.flat, files):
         s = m.score(gold, m.load_pred(f), ref)
         M = [[s["confusion"][(a, b)] for b in labs] for a in labs]
-        heat(ax, [f"gold {x[:5]}" for x in labs], [x[:5] for x in labs], M, str, short(Path(f).stem.removeprefix("extract_")))
+        heat(ax, [f"ref {x[:5]}" for x in labs], [x[:5] for x in labs], M, str, short(Path(f).stem.removeprefix("extract_")))
     for ax in list(axes.flat)[len(files):]:
         ax.axis("off")
     fig.tight_layout()

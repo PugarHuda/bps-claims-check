@@ -2,7 +2,7 @@
 
 *AI × Epistemics Research Sprint (Apart Research), November 2026. Draft.*
 
-Each `[[...]]` marker is a number that `src/metrics.py` or `src/figures.py` will produce once the human gold labels are in. None of them is estimated here. Every number that appears without a marker comes from `results/pregold_metrics.md`, `results/perturb_metrics.md` or `results/run_log.txt`.
+Every number comes from a file in the repository: `results/metrics.md`, `results/silver_metrics.md`, `results/pregold_metrics.md`, `results/perturb_metrics.md` or `results/run_log.txt`.
 
 ## Abstract
 
@@ -15,7 +15,7 @@ Indonesian officials, ministries and journalists routinely quote headline statis
 
 **Method.** The LLM only *extracts* (indicator, period, stated value). Lookup and verdict are deterministic and precision-aware. A claim MATCHes when the official value, rounded half-up to the precision the claim states, equals it.
 
-**Evaluation.** We compare free LLMs and two rule baselines against single-annotator gold labels. Headline results: bindable rate `[[bindable + CI]]`, mismatch rate `[[mismatch + CI]]`, best macro-F1 `[[best F1 + CI]]`.
+**Evaluation.** We compare seven LLM systems and two rule baselines against reference labels. These are a blind LLM annotation in which a human decided every sentence the systems disputed. 95.7% of claim tuples are bindable (CI 91.1–99.1), and 2.2% of bindable tuples mismatch (CI 0.0–5.7). Neither mismatch is an official misquoting BPS: one is a stale figure in a news article, the other a typo. Government officials' claims: 0/39 mismatches. On the seven hardest sentences, no system or annotator agrees with the human on more than 2.
 
 **Findings.**
 - Many apparent mismatches are not wrong numbers. They are **right numbers in the wrong frame**: before gold, 5 of the 8 mismatches flagged by the largest model are exactly the official month-on-month figure.
@@ -83,7 +83,7 @@ A recall-oriented filter kept sentences that mention an indicator and a percenta
 
 **Duplicates.** Two sentences appear twice and are counted once.
 
-**Selection bias.** Searching for BPS attributions over-represents claims that *quote* BPS. Our mismatch rate therefore estimates the rate for attributed claims, not for government statements in general. Each gold sentence records a `speaker_type`. We also stratify by source (go.id vs media) and by whether the sentence names BPS: `[[per-stratum tables]]`.
+**Selection bias.** Searching for BPS attributions over-represents claims that *quote* BPS. Our mismatch rate therefore estimates the rate for attributed claims, not for government statements in general. Each gold sentence records a `speaker_type`. We also stratify by source (go.id vs media) and by whether the sentence names BPS (§5.1).
 
 ### 3.2 Evidence tables
 
@@ -133,7 +133,7 @@ Only rows marked `checked` count. To avoid anchoring the annotator:
 
 The tool was tested end-to-end in a browser (17 scripted checks plus resume). The exported CSV round-trips into `metrics.py` with stated precision intact.
 
-Coverage: `[[n checked / n tuples]]`.
+**What was human-checked.** All 166 sentences were reviewed in the tool with Claude Opus labels pre-filled. No prefilled label was changed (0/166 edits in about 20 minutes). We therefore do *not* report this pass as human gold. Instead, a human adjudicated the 7 sentences where the systems' majority disagreed with the annotator, through a written three-question audit (`data/human_adjudication.csv`).
 
 **Silver labels (LLM, not human).** No second human annotator was available. A fresh Claude Opus subagent annotated all 166 sentences blind (`data/silver_sheet.csv`):
 - it followed written guidelines;
@@ -142,7 +142,7 @@ Coverage: `[[n checked / n tuples]]`.
 
 We use silver labels in two ways:
 1. a **provisional full-coverage** report (`results/silver_metrics.md`);
-2. a **human-vs-LLM-annotator κ** on the human-checked subset `[[κ]]`, which measures how far LLM labels can stand in for human ones on this task.
+2. the reference set itself, after human adjudication of the disputes. On those 7 sentences the LLM annotator matched the human on 2.
 
 Silver labels are not treated as gold anywhere. Because the silver annotator is a Claude model, any comparison against silver favours the Claude systems (§5.2).
 
@@ -183,6 +183,7 @@ We use `Decimal` and keep the stated text.
 | ERNIE 5.5 Flash (preview) | free endpoint |
 | LFM-3 1.7B | open-weight small reasoning model, free endpoint |
 | Claude Sonnet 5.5, Claude Haiku 5.5 | frontier models, run as **fresh, isolated Claude Code subagents** (details below) |
+| Gemini 3.8 Flash | frontier model, Google AI Studio free tier (OpenAI-compatible endpoint), temperature 0, batched 20 |
 
 **Claude subagent runs.** Each subagent:
 - saw only the identical extraction instructions and `claims_raw.csv`;
@@ -246,38 +247,60 @@ Error-taxonomy causes:
 
 ### 5.1 How many claims can be checked, and how many are wrong?
 
-`[[headline: bindable rate, mismatch rate, unverifiable — with 95% CI]]` · `[[fig: figs/verdict_by_indicator.png]]` · `[[tables by speaker type, source, BPS attribution]]` · `[[gold MISMATCH split: misframed (by variant) vs wrong number]]`
+**Reference labels** (`data/gold_sheet.csv`, `results/metrics.md`): blind Claude Opus labels for all 164 deduplicated sentences (94 claim tuples). A human decided every sentence where the systems' majority disagreed with them (7 sentences, `data/human_adjudication.csv`). Sentences where all systems agreed with the annotator were not human-checked, so errors shared by all models are invisible here (§7).
+
+- **Bindable rate: 90/94 = 95.7%** (95% CI 91.1–99.1).
+- **Mismatch rate among bindable claims: 2/90 = 2.2%** (95% CI 0.0–5.7).
+- 4 tuples are unverifiable: a period that cannot be determined, or one outside the table.
+
+![Verdict per indicator](../figs/verdict_by_indicator.png)
+
+| Stratum | Sentences | Tuples | Bindable | Mismatch among bindable |
+|---|---|---|---|---|
+| government officials | 70 | 42 | 93% | **0/39** |
+| BPS officials | 51 | 32 | 100% | 0/32 |
+| journalists / others | 42 | 19 | 89% | 2/17 |
+| government releases (.go.id) | 25 | 11 | 91% | 0/10 |
+| news media | 139 | 83 | 96% | 2/80 |
+
+**Neither mismatch is an official misquoting BPS.** Both come from news copy:
+- **A stale figure (c0065, 14 Nov 2026).** The article reports "TPT 4,65 persen pada 2026" nine days after BPS released the August 2026 rate of 4.75. 4.65 was the May figure. The human annotator chose the rule "latest release at the article date", which makes this a mismatch.
+- **A typo (c0137).** The article reports poverty as "23,85%" for "Meret 20025". This is almost certainly 23.85 *million people*, not a rate.
+
+So in this sample, attributed headline figures from government sources match BPS. The failures are in reporting: staleness and typos. The selection bias of §3.1 applies: these are claims that cite BPS.
+
+**The hard part is the period, not the number.** Across all LLM systems, the most frequent disagreement with the reference is a wrong period (6–15 per system, §5.2). On the seven human-adjudicated sentences, "which release does '4,65 persen pada 2026' refer to?" had no majority answer that matched the human's.
 
 ### 5.2 How accurate are the systems?
 
-`[[table: per system P/R/F1, verdict acc, macro-F1 (CI), false/missed MISMATCH]]` · `[[fig: figs/confusion.png]]` · `[[error taxonomy table]]`
+Scores against the adjudicated reference (`results/metrics.md`). *Values not in sentence* means the extracted number does not occur in the sentence or the preceding one.
 
-**Provisional, against silver labels** (`results/silver_metrics.md`; 164 sentences, 94 tuples):
+| System | Scored | Extract F1 | Verdict acc | Macro-F1 [95% CI] | False MISMATCH | Missed MISMATCH | Values not in sentence |
+|---|---|---|---|---|---|---|---|
+| Claude Sonnet 5.5 (agent) | 164 | 0.99 | 0.94 | 0.51 [0.33, 0.62] | 0 | 2 | 0 |
+| Claude Haiku 5.5 (agent) | 164 | 0.99 | 0.93 | 0.51 [0.38, 0.60] | 0 | 2 | 0 |
+| Gemini 3.8 Flash | 164 | 0.99 | 0.87 | 0.68 [0.37, 0.86] | 0 | 1 | 0 |
+| ERNIE 5.5 Flash | 164 | 0.96 | 0.81 | 0.65 [0.35, 0.82] | 0 | 1 | 2 |
+| ERNIE · e2e judge | 124 | 0.98 | 0.87 | 0.76 [0.31, 0.88] | 0 | 0 | 0 |
+| Nemotron-3 Ultra | 164 | 0.96 | 0.80 | 0.50 [0.36, 0.70] | **7** | 1 | 0 |
+| Nemotron · e2e judge | 164 | 0.98 | 0.85 | 0.62 [0.31, 0.80] | 0 | 1 | 0 |
+| LFM-3 1.7B | 38 | 0.88 | 0.79 | 0.29 [0.24, 0.33] | 0 | 0 | 0 |
+| `rules` | 164 | 0.63 | 0.30 | 0.30 [0.25, 0.34] | **54** | 1 | 0 |
+| `regex` | 164 | 0.54 | 0.27 | 0.27 [0.23, 0.33] | **31** | 1 | 0 |
 
-*Headline:*
-- Bindable rate: 87/94 = 92.6%, 95% CI [86.9, 97.6].
-- Mismatch rate among bindable: 1/87 = 1.1%, 95% CI [0.0, 3.8].
-- By speaker type, government officials show 0/39 mismatches.
+![Confusion matrices](../figs/confusion.png)
 
-*Systems:*
+**How to read this table:**
+- **The Claude rows are an upper bound.** The reference annotator is a Claude model, so Claude systems share its conventions.
+- **On the seven sentences a human decided, no labeller exceeded 2/7.** That includes the Claude annotator itself (2/7), Claude Sonnet (2/7), ERNIE, Nemotron and Gemini (1/7), and Claude Haiku (0/7). When sentences are genuinely ambiguous, LLM labels, Claude's included, are not a substitute for a human decision.
+- **Macro-F1 is unstable.** The reference has only two MISMATCHes, so macro-F1 swings on a single tuple. We lead with accuracy and with false MISMATCH, the count that matters to a fact-checker.
+- **The 7 false accusations by Nemotron are all frame errors.** Five equal the official month-on-month figure (§4.5). With the evidence table in its prompt (e2e), it makes none.
 
-| System | Extract F1 | Verdict acc | False MISMATCH |
-|---|---|---|---|
-| Claude Sonnet 5.5 (agent) | 0.99 | 0.99 | 0 |
-| Claude Haiku 5.5 (agent) | 0.99 | 0.96 | 0 |
-| ERNIE 5.5 Flash | 0.96 | 0.84 | 0 |
-| Nemotron-3 Ultra | 0.96 | 0.83 | **7** |
-| Nemotron · e2e judge | 0.98 | 0.89 | 0 |
-| `rules` | 0.63 | 0.31 | **54** |
-| `regex` | 0.54 | 0.29 | **31** |
+**Error causes** (`results/metrics.md`, one cause per disagreement):
+- **LLMs.** Wrong period dominates (ERNIE 15, Nemotron 14, Gemini 12, Haiku 12, Sonnet 6). Then come m-to-m read as y-on-y (Nemotron 5) and missed claims (1–3).
+- **Rule baselines.** They fail on scope: out-of-scope figures (`rules` 58, `regex` 43), targets and projections (18, 15), and core inflation (6, 15).
 
-*Caveats:*
-- **Claude's near-perfect scores here are an upper bound.** The silver annotator is itself Claude. `[[human gold decides]]`.
-- **Macro-F1 is unstable at this sample size** (silver contains one MISMATCH), so we lead with accuracy and false-MISMATCH counts.
-
-*Two findings that hold regardless of who labels:*
-- **The dominant error class is the period**, not the number: 8–16 wrong periods per LLM.
-- **The hand-written rule baseline buys recall at the price of false accusations**: 54, more than the naive regex. Writing scope rules by hand does not substitute for language understanding.
+**The hand-written rule baseline buys recall at the price of accusations.** It makes 54 false MISMATCHes, more than the naive regex. Encoding the scope definition as cues does not substitute for language understanding.
 
 **Before gold** (`results/pregold_metrics.md`; system outputs, not accuracy):
 
@@ -289,7 +312,7 @@ Error-taxonomy causes:
 | ERNIE 5.5 Flash | 164 | 95 | 77 | 1 | 0 |
 | ERNIE · e2e judge | 124 | 76 | 65 | 1 | 0 |
 
-- **Misframing is concrete.** Nemotron's m-to-m reads are 0.08 (Oct 2024), 0.28 (Oct 2025), 0.17 (Nov 2025), 0.64 (Dec 2025) and 0.30 (Nov 2024). Each equals the official m-to-m figure in that month's BRS. Two more of its mismatches come from the same sentences: 0.17 for Oct 2023, and 0.44 for Dec 2024, whose BRS page returns 404. Both fall outside the variant table, so they stay counted as wrong numbers. 5/8 is therefore a lower bound. The source sentences present them as plain "inflasi" or "realisasi inflasi", e.g. *"Pada Desember 2025, realisasi inflasi menyentuh 0,64 persen, setelah November berada pada level 0,17 persen"*. Whether a careful reader would take these as year-on-year is what gold decides `[[gold verdict for these sentences]]`.
+- **Misframing is concrete.** Nemotron's m-to-m reads are 0.08 (Oct 2024), 0.28 (Oct 2025), 0.17 (Nov 2025), 0.64 (Dec 2025) and 0.30 (Nov 2024). Each equals the official m-to-m figure in that month's BRS. Two more of its mismatches come from the same sentences: 0.17 for Oct 2023, and 0.44 for Dec 2024, whose BRS page returns 404. Both fall outside the variant table, so they stay counted as wrong numbers. 5/8 is therefore a lower bound. The source sentences present them as plain "inflasi" or "realisasi inflasi", e.g. *"Pada Desember 2025, realisasi inflasi menyentuh 0,64 persen, setelah November berada pada level 0,17 persen"*. The reference labels treat these sentences as not making a year-on-year claim at all (out of scope). That makes Nemotron's mismatches false accusations: right number, wrong frame.
 - **The naive baseline would accuse.** It reads "inflasi tahun kalender (year-to-date) … 2,17 persen" as September year-on-year inflation and reports a mismatch with the official 3.28.
 - **Agreement.** Verdict-level κ between Nemotron and ERNIE is 0.68. Between either LLM and the naive regex it is ≈0.1, and with the `rules` baseline 0.21–0.28 (`figs/agreement_kappa.png`).
 - **LFM-3 1.7B** returned output for only 38/166 sentences. Other batches ended with empty content and `finish_reason=length`, even with low reasoning effort and 8 sentences per request.
@@ -305,7 +328,7 @@ Error-taxonomy causes:
 
 There are 0 false accusations and 0 missed errors. The arithmetic of matching a stated figure to a table is not where systems fail.
 
-**On real sentences, the judge changes the answers.** Nemotron as e2e judge reports 1 MISMATCH where its own extractions, under the deterministic rule, gave 8. Its verdict κ with its own pipeline is 0.68, versus 0.90 for ERNIE. With the answer key in the prompt, the model stops reading month-on-month figures as year-on-year. That would reduce false accusations if those reads were wrong, but it would also *hide* real mismatches if a speaker had actually misstated a number. `[[gold: false vs missed MISMATCH, pipeline vs e2e]]` decides which.
+**On real sentences, the judge changes the answers.** Nemotron as e2e judge reports 1 MISMATCH where its own extractions, under the deterministic rule, gave 8. Its verdict κ with its own pipeline is 0.68, versus 0.90 for ERNIE. With the answer key in the prompt, the model stops reading month-on-month figures as year-on-year. That would reduce false accusations if those reads were wrong, but it would also *hide* real mismatches if a speaker had actually misstated a number. Against the adjudicated reference, the e2e judge removes all 7 false accusations without missing more mismatches (1 missed, as in the pipeline). On this sample, the answer key helped. But the mechanism, a model reconciling a speaker's claim with the table it was shown, is exactly the one that would hide a real misstatement, and our sample has too few real mismatches (2) to rule that out.
 
 The deterministic design keeps the extraction visible either way.
 
@@ -360,7 +383,8 @@ Verdicts are recomputed from the current table, so stored extractions are re-sco
 - **Single human annotator.** The second annotator is an LLM (Claude Opus, blind), which is reported as such and never used as gold. Comparisons against silver favour the Claude systems.
 - **Claude systems ran as Claude Code subagents**, not through an API with fixed decoding parameters, so they are less reproducible than the OpenRouter runs.
 - **Selection bias** toward BPS-attributed claims. Speeches, debates and social media are out of sample.
-- **Small n**: 166 sentences, `[[n]]` gold tuples. CIs are reported.
+- **Small n**: 164 deduplicated sentences and 94 reference tuples. CIs are reported and wide; only 2 mismatches.
+- **Reference labels are mostly LLM labels.** A human decided only the 7 disputed sentences. Errors shared by the annotator and all systems are not caught, and a human review pass with zero edits was not counted as gold.
 - **Models:** free endpoints only, no frontier closed model, batched prompting.
 - **Coverage:** partial for LFM (38/166) and ERNIE e2e (126/166); systems are scored on what they processed.
 - **Evidence:** first-release only; three periods missing or weakly sourced; national level; four indicators.

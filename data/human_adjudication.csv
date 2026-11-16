@@ -1,0 +1,8 @@
+claim_id,question,human_answer,indicator1,period1,value1,indicator2,period2,value2,note
+c0058,"Q1: 'kemiskinan turun dari 10,14% menjadi 8,47%' (2021-2025): which release?",A (March releases),poverty_rate,2021-03,10.14,poverty_rate,2025-03,8.47,
+c0062,"Q1: same claim, different article",A (March releases),poverty_rate,2021-03,10.14,poverty_rate,2025-03,8.47,
+c0106,"Q2: 'TPT tercatat sebesar 4,85 persen' (release of 2025-12-31): which survey?",B (cannot be determined),unemployment_rate,,4.85,,,,
+c0035,"Q3: 'TPT 4,65 persen pada 2026': which period?",B (latest release at article date),unemployment_rate,2026-05,4.65,,,,article 2026-10-27; latest TPT release then = May 2026
+c0036,"Q3: same",B (latest release at article date),unemployment_rate,2026-05,4.65,,,,article 2026-10-27
+c0037,"Q3: same",B (latest release at article date),unemployment_rate,2026-05,4.65,,,,article 2026-10-27
+c0065,"Q3: same",B (latest release at article date),unemployment_rate,2026-08,4.65,,,,"article 2026-11-14; Aug 2026 TPT (4.75) released 2026-11-05, so 4.65 is a stale figure"

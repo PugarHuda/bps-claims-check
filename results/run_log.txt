@@ -81,3 +81,22 @@ baidu/ernie-5.5-flash-preview:free: batch 1, 0/20 returned
 batch 20: ValueError: empty content, finish_reason=length
 baidu/ernie-5.5-flash-preview:free: batch 2, 0/20 returned
 baidu/ernie-5.5-flash-preview:free: 10 new, 0 errors -> C:\Hackathons\Apart Research Hackathon\results\extract_baidu__ernie-5.5-flash-preview_free__persentence.jsonl
+gemini/gemini-3.8-flash: batch 1, 20/20 returned
+batch 20: ChunkedEncodingError: ("Connection broken: ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None)", ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))
+gemini/gemini-3.8-flash: batch 2, 0/20 returned
+batch 40: HTTPError: 503 Server Error: Service Unavailable for url: https://generativelanguage.googleapis.com/v1beta/openai/chat/completions
+gemini/gemini-3.8-flash: batch 3, 0/20 returned
+gemini/gemini-3.8-flash: batch 4, 20/20 returned
+gemini/gemini-3.8-flash: batch 5, 20/20 returned
+gemini/gemini-3.8-flash: batch 6, 20/20 returned
+gemini/gemini-3.8-flash: batch 7, 20/20 returned
+gemini/gemini-3.8-flash: batch 8, 20/20 returned
+gemini/gemini-3.8-flash: batch 9, 6/6 returned
+gemini/gemini-3.8-flash: batch 1, 20/20 returned
+batch 20: HTTPError: 503 Server Error: Service Unavailable for url: https://generativelanguage.googleapis.com/v1beta/openai/chat/completions
+gemini/gemini-3.8-flash: batch 2, 0/20 returned
+gemini/gemini-3.8-flash: batch 1, 20/20 returned
+gemini/gemini-3.8-flash: batch 1, 20/20 returned
+batch 20: JSONDecodeError: Expecting ',' delimiter: line 85 column 6 (char 1487)
+gemini/gemini-3.8-flash: batch 2, 0/20 returned
+gemini/gemini-3.8-flash: batch 3, 20/20 returned

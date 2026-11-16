@@ -261,12 +261,19 @@ def main(gold_path=None, out_name="metrics.md", label="human gold"):
         print("no `checked` rows in the gold sheet yet -> writing the no-gold report only")
         return pregold(ref)
     variants = load_variants()
+    adjudicated = [cid for cid in gold if meta[cid].get("label_source", "").startswith("human_adjudicated")]
+    if label == "human gold" and any(meta[cid].get("label_source") for cid in gold):
+        label = (f"adjudicated silver: blind Claude Opus labels, with all {len(adjudicated)} sentences where the "
+                 "systems' majority disagreed with them decided by a human")
     c, bind, lab = headline(gold, ref)
     n = sum(c.values())
     with_claims = sum(1 for cid in gold if gold[cid])
     L = [f"# Metrics — reference labels: {label}\n",
          *(["> **Provisional.** These labels come from a blind LLM annotator (Claude Opus), not a person. "
-            "Use them for coverage only; the human-gold report is `results/metrics.md`.\n"] if label != "human gold" else []),
+            "Use them for coverage only; the human-gold report is `results/metrics.md`.\n"] if label.startswith("silver") else []),
+         *([f"> Reference labels are LLM labels except {len(adjudicated)} human-adjudicated sentences. Sentences "
+            "where every system agreed with the annotator were not human-checked: correlated errors there are "
+            "invisible to these metrics.\n"] if adjudicated else []),
          f"Labels: {len(gold)} checked sentences ({len(duplicate_ids())} duplicate sentences dropped), {with_claims} with "
          f"≥1 in-scope claim, {n} claim tuples. Reference table: {len(ref)} rows; variant table: {len(variants)} rows. "
          "CIs: 95% bootstrap over sentences (2,000 resamples).\n",
@@ -340,6 +347,19 @@ def main(gold_path=None, out_name="metrics.md", label="human gold"):
         k, n2 = agreement(gold, load_gold(SILVER)[0], ref)
         L.append(f"\n**Human vs LLM-annotator κ** (gold vs blind Claude Opus labels, {n2} sentences): **{k:.2f}** — "
                  "how far LLM silver labels can stand in for human ones on this task")
+    if adjudicated:
+        sub = {cid: gold[cid] for cid in adjudicated}
+        silver = load_gold(SILVER)[0]
+        L += [f"\n## Human adjudication ({len(adjudicated)} hardest sentences: the annotator vs the systems' majority)\n",
+              "Exact-tuple agreement with the human decision (indicator, period, value).\n",
+              "| labeller | sentences matching the human decision |", "|---|---|"]
+        exact = lambda d, cid: sorted((x["indicator"], x["period"], x["value"]) for x in d.get(cid, [])) == \
+            sorted((x["indicator"], x["period"], x["value"]) for x in sub[cid])
+        L.append(f"| LLM annotator (Claude Opus, silver) | {sum(exact(silver, cid) for cid in sub)}/{len(sub)} |")
+        for name, pred in preds.items():
+            got = [cid for cid in sub if cid in pred]
+            if got:
+                L.append(f"| {name} | {sum(exact(pred, cid) for cid in got)}/{len(got)} |")
     L += ["\n## Confusion matrices"] + conf
     out = p.ROOT / "results" / out_name
     out.write_text("\n".join(L) + "\n", encoding="utf-8")

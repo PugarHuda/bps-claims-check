@@ -96,7 +96,7 @@ def extract_batch(model, rows, effort=None, e2e=False):
         f"Preceding sentence: {untag(r['context_prev'][:500])}\nSentence: {untag(r['sentence'])}" for r in rows)
     for attempt in range(5):  # free providers 429 a lot; back off and retry
         got, err = _batch_once(model, msg, effort)
-        if not err or "429" not in err:
+        if not err or not any(t in err for t in ("429", "503", "Connection")):  # only transient errors retry
             return got, err
         time.sleep(30 * (attempt + 1))
     return got, err

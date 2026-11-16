@@ -175,7 +175,7 @@ def test_untrusted_text_handling():
     spec = importlib.util.spec_from_file_location("mgs_safe", p.ROOT / "src/make_gold_sheet.py")
     src = spec.loader.get_data(spec.origin).decode("utf-8")
     ns = {}
-    exec(src[src.index("def safe"):src.index("dst = ROOT")], ns)  # just the helper, not the sheet rebuild
+    exec(src[src.index("def safe"):src.index("ap = argparse")], ns)  # just the helper, not the sheet rebuild
     assert ns["safe"]("=HYPERLINK(1)") == "'=HYPERLINK(1)" and ns["safe"]("- Menteri") == "'- Menteri"
     assert ns["safe"]("Inflasi 2 persen") == "Inflasi 2 persen"
 
