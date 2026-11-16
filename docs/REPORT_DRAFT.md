@@ -200,7 +200,9 @@ Gemma 4 31B was rate-limited (HTTP 429) and was not run, because the quota went 
 
 ### 4.3 LLM-as-judge ablation (e2e)
 
-Nemotron and ERNIE receive the full 104-row table in the prompt and return the verdict themselves under the same written rule. Metrics score their own verdicts. ERNIE's e2e run covers 126/166 sentences: two batches ended at the output limit (`finish_reason=length`) because the table plus 20 sentences is long.
+Nemotron, ERNIE and Gemini receive the full 104-row table in the prompt and return the verdict themselves under the same written rule. Metrics score their own verdicts. Coverage is incomplete for two of them. Some batches hit the output limit (`finish_reason=length`, since the table plus 20 sentences is long), returned malformed JSON, or failed with transient server errors:
+- ERNIE: 126/166 sentences;
+- Gemini: 146/166 sentences.
 
 ### 4.4 Stress tests
 
@@ -284,6 +286,7 @@ Scores against the adjudicated reference (`results/metrics.md`). *Values not in 
 | ERNIE · e2e judge | 124 | 0.98 | 0.87 | 0.76 [0.31, 0.88] | 0 | 0 | 0 |
 | Nemotron-3 Ultra | 164 | 0.96 | 0.80 | 0.50 [0.36, 0.70] | **7** | 1 | 0 |
 | Nemotron · e2e judge | 164 | 0.98 | 0.85 | 0.62 [0.31, 0.80] | 0 | 1 | 0 |
+| Gemini · e2e judge | 144 | 0.98 | 0.88 | 0.65 [0.32, 0.85] | 0 | 1 | 0 |
 | LFM-3 1.7B | 38 | 0.88 | 0.79 | 0.29 [0.24, 0.33] | 0 | 0 | 0 |
 | `rules` | 164 | 0.63 | 0.30 | 0.30 [0.25, 0.34] | **54** | 1 | 0 |
 | `regex` | 164 | 0.54 | 0.27 | 0.27 [0.23, 0.33] | **31** | 1 | 0 |
@@ -329,6 +332,16 @@ Scores against the adjudicated reference (`results/metrics.md`). *Values not in 
 There are 0 false accusations and 0 missed errors. The arithmetic of matching a stated figure to a table is not where systems fail.
 
 **On real sentences, the judge changes the answers.** Nemotron as e2e judge reports 1 MISMATCH where its own extractions, under the deterministic rule, gave 8. Its verdict κ with its own pipeline is 0.68, versus 0.90 for ERNIE. With the answer key in the prompt, the model stops reading month-on-month figures as year-on-year. That would reduce false accusations if those reads were wrong, but it would also *hide* real mismatches if a speaker had actually misstated a number. Against the adjudicated reference, the e2e judge removes all 7 false accusations without missing more mismatches (1 missed, as in the pipeline). On this sample, the answer key helped. But the mechanism, a model reconciling a speaker's claim with the table it was shown, is exactly the one that would hide a real misstatement, and our sample has too few real mismatches (2) to rule that out.
+
+**The judge effect depends on the model.** Verdict κ between each model's own pipeline run and its e2e-judge run:
+
+| Model | κ (pipeline vs e2e) | Sentences | Accuracy, pipeline → e2e |
+|---|---|---|---|
+| Gemini 3.8 Flash | 0.91 | 144 | 0.87 → 0.88 |
+| ERNIE 5.5 Flash | 0.90 | 124 | 0.81 → 0.87 |
+| Nemotron-3 Ultra | 0.68 | 164 | 0.80 → 0.85 |
+
+For two of three models, the answer key barely changes what they extract. For the third it removes a whole class of errors. So the benefit (or risk) of letting an LLM judge with the evidence in view cannot be assumed; it has to be measured per model.
 
 The deterministic design keeps the extraction visible either way.
 
