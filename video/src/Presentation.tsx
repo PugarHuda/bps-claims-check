@@ -14,36 +14,36 @@ type Scene = { name: string; audio: string; seconds: number; cues: Cue[] };
 type Region = [number, number, number, number]; // x, y, w, h in slide pixels
 const FULL: Region = [0, 0, SW, SH];
 
+// Element boxes come from the deck itself (docs/slides_regions.json, inches on a 13.333 x 7.5 in slide),
+// so a redesign of the slides moves the camera with it. 150 px per inch = the 2000-px slide coordinate system.
+import regionsJson from "./regions.json";
+const PX_PER_IN = SW / 13.333;
+const R = (slide: number, name: string): Region => {
+  const r = (regionsJson as Record<string, Record<string, number[]>>)[String(slide)]?.[name];
+  if (!r) return FULL;  // missing region: fall back to the whole slide rather than zooming to nowhere
+  const pad = 0.12;     // a little air around the element
+  return [(r[0] - pad) * PX_PER_IN, (r[1] - pad) * PX_PER_IN, (r[2] + 2 * pad) * PX_PER_IN, (r[3] + 2 * pad) * PX_PER_IN];
+};
+
 // Which slide each narration scene shows, and where the camera goes when a phrase is spoken.
 // Every focus is triggered by the first subtitle cue containing the keyword, so zooms land on the spoken words.
 const PLAN: Record<string, { slide: number; focus: [string, Region][]; slideSwitch?: [string, number] }> = {
   title: { slide: 1, focus: [] },
   problem: { slide: 2, focus: [] },
   pipeline: {
-    slide: 3, focus: [["read.", [118, 250, 395, 340]], ["extracts", [578, 250, 357, 340]],
-      ["evidence table", [1000, 250, 393, 340]], ["rounds", [1460, 250, 420, 340]],
-      ["Every verdict", [100, 610, 1800, 150]], ["never decide", FULL]],
+    slide: 3, focus: [["read.", R(3, "box1")], ["extracts", R(3, "box2")], ["evidence table", R(3, "box3")],
+      ["rounds", R(3, "box4")], ["Every verdict", R(3, "caption")], ["never decide", FULL]],
   },
-  headline: {
-    slide: 4, focus: [["95.7%", [80, 250, 640, 200]], ["2.2%", [80, 475, 640, 200]],
-      ["39", [80, 700, 640, 200]]],
-  },
-  stale: {
-    slide: 5, focus: [["Here is one", [100, 690, 1770, 280]], ["stale", [555, 250, 410, 370]],
-      ["automatically", FULL]],
-  },
+  headline: { slide: 4, focus: [["95.7%", R(4, "n957")], ["2.2%", R(4, "n22")], ["39", R(4, "n039")]] },
+  stale: { slide: 5, focus: [["Here is one", R(5, "quote")], ["stale", R(5, "stale_row")], ["automatically", FULL]] },
   systems: {
-    slide: 6, focus: [["arithmetic", [1170, 230, 780, 150]], ["seven false", [100, 668, 1000, 90]],
-      ["54", [100, 752, 1000, 90]], ["leaked", FULL]],
+    slide: 6, focus: [["arithmetic", R(6, "col_right_1")], ["seven false", R(6, "row_nemotron")],
+      ["54", R(6, "row_rules")], ["leaked", FULL]],
   },
-  humans: {
-    slide: 7, focus: [["20 out of 20", [668, 248, 522, 442]], ["seven sentences", [100, 248, 520, 442]],
-      ["protocol", [1270, 250, 700, 620]]],
-  },
-  calendar: { slide: 8, focus: [["One stale", [100, 240, 920, 720]], ["Since 2025", [130, 520, 860, 130]], ["evidence table", FULL]] },
+  humans: { slide: 7, focus: [["20 out of 20", R(7, "n2020")], ["seven sentences", R(7, "n27")], ["protocol", R(7, "protocol")]] },
+  calendar: { slide: 8, focus: [["One stale", R(8, "quote_box")], ["Since 2025", R(8, "calendar_line")], ["evidence table", FULL]] },
   adoption: {
-    slide: 9, focus: [["verification card", [630, 420, 680, 280]], ["monthly job", [1360, 480, 560, 160]],
-      ["open.", [90, 820, 1000, 140]]],
+    slide: 9, focus: [["verification card", R(9, "cards_image")], ["monthly job", R(9, "monthly")], ["open.", R(9, "urls")]],
     slideSwitch: ["Thank you", 10],
   },
 };
@@ -52,7 +52,7 @@ const scenes = scenesJson as Scene[];
 const frames = (s: Scene) => Math.ceil(s.seconds * FPS);
 export const totalFrames = () => scenes.reduce((a, s) => a + frames(s), 0);
 
-const ink = "#0b0b0b", amber = "#eda100";
+const ink = "#161616", amber = "#b3261e";  // editorial deck: ink + one deep-red accent (name kept for the highlight)
 
 function focusTimeline(scene: Scene): { t: number; r: Region }[] {
   const plan = PLAN[scene.name];
@@ -99,13 +99,17 @@ const Camera: React.FC<{ scene: Scene }> = ({ scene }) => {
     && t >= scene.cues.find((c) => c.text.includes(plan.slideSwitch![0]))!.start ? plan.slideSwitch[1] : plan.slide;
 
   const fit = W / SW; // slide pixels -> video pixels at scale 1
-  const tx = W / 2 - cx * fit * scale, ty = H / 2 - cy * fit * scale;
+  // keep the camera inside the slide: never show the backdrop beside a zoomed-in region
+  const halfW = W / 2 / (fit * scale), halfH = H / 2 / (fit * scale);
+  const clamp = (v: number, lo: number, hi: number) => (lo > hi ? (lo + hi) / 2 : Math.min(hi, Math.max(lo, v)));
+  const ccx = clamp(cx, halfW, SW - halfW), ccy = clamp(cy, halfH, SH - halfH);
+  const tx = W / 2 - ccx * fit * scale, ty = H / 2 - ccy * fit * scale;
   const region = timeline[i].r;
   const hl = i > 0 && region !== FULL;
   const hlOpacity = hl ? interpolate(since, [6, 16], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }) : 0;
 
   return (
-    <AbsoluteFill style={{ perspective: 1600, backgroundColor: "#e9e8e2" }}>
+    <AbsoluteFill style={{ perspective: 1600, backgroundColor: "#e4ded1" }}>
       <AbsoluteFill style={{ transform: `translateZ(${z}px) rotateY(${rotY}deg) rotateX(${rotX}deg)`, transformStyle: "preserve-3d" }}>
         <div style={{ position: "absolute", left: 0, top: 0, width: SW * fit, height: SH * fit, transformOrigin: "0 0",
           transform: `translate(${tx}px, ${ty}px) scale(${scale})`,
@@ -114,7 +118,7 @@ const Camera: React.FC<{ scene: Scene }> = ({ scene }) => {
           {hl && (
             <div style={{ position: "absolute", left: region[0] * fit - 6, top: region[1] * fit - 6,
               width: region[2] * fit + 12, height: region[3] * fit + 12, border: `${4 / scale}px solid ${amber}`,
-              borderRadius: 12 / scale, opacity: hlOpacity, boxShadow: `0 0 ${24 / scale}px ${amber}` }} />
+              borderRadius: 0, opacity: hlOpacity }} />
           )}
         </div>
       </AbsoluteFill>
@@ -131,8 +135,8 @@ const Subtitles: React.FC<{ scene: Scene }> = ({ scene }) => {
   const o = interpolate(local, [0, 5], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
   return (
     <AbsoluteFill style={{ justifyContent: "flex-end", alignItems: "center", paddingBottom: 56 }}>
-      <div style={{ opacity: o, background: "rgba(11,11,11,0.78)", color: "#fff", fontFamily: "Segoe UI, Helvetica, Arial, sans-serif",
-        fontSize: 44, fontWeight: 600, lineHeight: 1.25, padding: "14px 30px", borderRadius: 14, maxWidth: 1500,
+      <div style={{ opacity: o, background: "rgba(22,22,22,0.82)", color: "#f6f3ec", fontFamily: "Georgia, serif",
+        fontSize: 42, fontWeight: 400, lineHeight: 1.25, padding: "14px 30px", borderRadius: 14, maxWidth: 1500,
         textAlign: "center", letterSpacing: 0.2 }}>{cue.text}</div>
     </AbsoluteFill>
   );
@@ -145,8 +149,9 @@ const Chrome: React.FC<{ index: number }> = ({ index }) => {
   return (
     <>
       <div style={{ position: "absolute", left: 0, top: 0, height: 8, width: `${p * 100}%`, background: amber }} />
-      <div style={{ position: "absolute", right: 36, top: 24, fontFamily: "Segoe UI, Helvetica, Arial", fontSize: 24,
-        color: ink, background: "rgba(252,252,251,0.85)", padding: "6px 14px", borderRadius: 10 }}>
+      <div style={{ position: "absolute", right: 36, top: 24, fontSize: 22, letterSpacing: 1.5, textTransform: "uppercase",
+        color: ink, background: "rgba(246,243,236,0.9)", fontFamily: "Arial, sans-serif", padding: "6px 14px",
+        borderBottom: `1px solid #cfc8b8` }}>
         Do Their Numbers Match? · Apart AI x Epistemics Sprint
       </div>
     </>
@@ -156,7 +161,7 @@ const Chrome: React.FC<{ index: number }> = ({ index }) => {
 export const Presentation: React.FC = () => {
   let from = 0;
   return (
-    <AbsoluteFill style={{ backgroundColor: "#e9e8e2" }}>
+    <AbsoluteFill style={{ backgroundColor: "#e4ded1" }}>
       {scenes.map((s, i) => {
         const seq = (
           <Sequence key={s.name} from={from} durationInFrames={frames(s)}>
