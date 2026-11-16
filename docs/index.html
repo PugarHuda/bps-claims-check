@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Do their numbers match?</title>
+<meta name="description" content="Checking Indonesian statistical claims against official BPS data, and what goes wrong when they don't. Apart AI x Epistemics Research Sprint, November 2026.">
+<style>
+:root { --paper:#f6f3ec; --ink:#161616; --muted:#5b5b5b; --rule:#cfc8b8; --red:#b3261e; --ochre:#a8781f; }
+@media (prefers-color-scheme: dark) { :root { --paper:#17150f; --ink:#ece7dc; --muted:#a39d90; --rule:#3a362d; --red:#e0675d; --ochre:#d1a352; } }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 17px/1.6 Georgia, "Times New Roman", serif; }
+main { max-width: 860px; margin: 0 auto; padding: 40px 20px 64px; }
+.kicker { font: 12px/1 Arial, sans-serif; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); border-bottom: 1px solid var(--rule); padding-bottom: 12px; }
+h1 { font-weight: 400; font-size: clamp(36px, 7vw, 60px); line-height: 1.08; margin: 28px 0 10px; }
+.sub { color: var(--muted); font-size: 21px; margin: 0 0 22px; }
+.by { font: 15px Arial, sans-serif; border-top: 1px solid var(--rule); padding-top: 14px; }
+.by span { color: var(--muted); }
+video { width: 100%; margin: 30px 0 6px; background: #000; display: block; }
+.cap { font: 13px Arial, sans-serif; color: var(--muted); }
+.nums { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0 28px; margin: 34px 0 8px; }
+.nums div { border-top: 1px solid var(--rule); padding: 12px 0; }
+.nums b { display: block; font-weight: 400; font-size: 44px; line-height: 1.1; }
+.nums span { font: 14px Arial, sans-serif; color: var(--muted); }
+.red { color: var(--red); }
+h2 { font: 12px Arial, sans-serif; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); margin: 40px 0 6px; }
+p { margin: 0 0 14px; }
+ul.links { list-style: none; padding: 0; margin: 0; }
+ul.links li { border-bottom: 1px solid var(--rule); padding: 12px 0; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+ul.links a { color: var(--ink); text-decoration-color: var(--rule); text-underline-offset: 3px; }
+ul.links a:hover { text-decoration-color: var(--red); }
+ul.links span { font: 14px Arial, sans-serif; color: var(--muted); }
+footer { margin-top: 40px; font: 13px Arial, sans-serif; color: var(--muted); }
+</style>
+</head>
+<body>
+<main>
+  <div class="kicker">Apart AI × Epistemics Research Sprint · November 2026</div>
+  <h1>Do their numbers match?</h1>
+  <p class="sub">Checking Indonesian statistical claims against official BPS data, and what goes wrong when they don't.</p>
+  <div class="by">Pugar Huda Mantoro <span>· Universitas Islam Indonesia · Team "Ampun Bang"</span></div>
+
+  <video controls preload="metadata" src="presentation.mp4"></video>
+  <div class="cap">3-minute walkthrough, narrated, with subtitles.</div>
+
+  <div class="nums">
+    <div><b>95.7%</b><span>of claims bindable to a BPS figure (90/94)</span></div>
+    <div><b class="red">2.2%</b><span>mismatch (2/90, 95% CI 0–5.7)</span></div>
+    <div><b>0/39</b><span>mismatches from government officials</span></div>
+  </div>
+
+  <h2>What I found</h2>
+  <p>Officials citing BPS almost always got the number right. The two mismatches came from news copy: a stale figure (unemployment quoted as 4.65% nine days after BPS published 4.75%) and a typo.</p>
+  <p>The automated checkers failed elsewhere. They misread which statistic or which period a sentence meant, accepted out-of-date numbers because they assume an old BPS release calendar, and leaked numbers between sentences batched in one prompt. On ambiguous sentences no model matched a human decision on more than 2 of 7.</p>
+
+  <h2>Read, watch, check</h2>
+  <ul class="links">
+    <li><a href="report.pdf">Report (PDF)</a><span>full method, results and limitations</span></li>
+    <li><a href="presentation.mp4">Video</a><span>3:35 walkthrough</span></li>
+    <li><a href="slides.pptx">Slides (PPTX)</a><span>10 slides with speaker notes</span></li>
+    <li><a href="claimreview.html">ClaimReview page</a><span>human-checked verdicts with verification cards</span></li>
+    <li><a href="https://github.com/PugarHuda/bps-claims-check">Code and data</a><span>pipeline, evidence tables, tests</span></li>
+  </ul>
+
+  <footer>Every number on this page comes from the report. BPS = Badan Pusat Statistik (Statistics Indonesia).</footer>
+</main>
+</body>
+</html>
